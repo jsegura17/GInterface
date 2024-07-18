@@ -1,0 +1,9 @@
+﻿@page "/"
+
+<RadzenButton Click=@(args => OnClick("Option 1")) Text="DISPOSABLES" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Large" />
+@code {
+    private void OnClick(string text)
+    {
+        NotificationService.Notify(new NotificationMessage { Severity = NotificationSeverity.Info, Summary = "Button Clicked", Detail = text });
+    }
+}

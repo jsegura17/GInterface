@@ -1,5 +1,4 @@
-﻿
-<RadzenDialog />
+﻿<RadzenDialog />
 <RadzenNotification />
 <RadzenContextMenu />
 <RadzenTooltip />
@@ -15,8 +14,10 @@
     </RadzenHeader>
     <RadzenSidebar @bind-Expanded="@sidebar1Expanded">
         <RadzenPanelMenu>
-            <RadzenPanelMenuItem Text="Home" Icon="home" />
-            <RadzenPanelMenuItem Text="Users" Icon="account_box" />
+            <RadzenPanelMenuItem Text="Home" Icon="home"
+                                 Click=@(args => OnClick(EnumTypes.TransactionTask.GET_HOME)) />
+            <RadzenPanelMenuItem Text="Config" Icon="assessment"
+                                 Click=@(args => OnClick(EnumTypes.TransactionTask.GET_CONFIG)) />
         </RadzenPanelMenu>
         <div class="rz-p-4">
             Sidebar
@@ -33,5 +34,40 @@
 </RadzenLayout>
 
 @code {
+    //Get Global Core Settings
+    private Core.AppCore _appCore = Core.AppCore.Instance;
+
     bool sidebar1Expanded = true;
+
+    #region MainMenu
+    public async Task OnClick(EnumTypes.TransactionTask transactionItem)
+    {
+        _appCore.LastTransactionTask = transactionItem;
+        switch (transactionItem)
+        {
+            case EnumTypes.TransactionTask.GET_HOME:
+                //TODO: We need implement a CURRENT_HOME because if you are in other Page, this approach don't work it
+                sidebar1Expanded = !sidebar1Expanded;
+                if (_appCore.IsLoginUser)
+                {
+                    UriHelper.NavigateTo("/");
+                }
+                else
+                {
+                    UriHelper.NavigateTo("/login");
+                }
+                break;
+            case EnumTypes.TransactionTask.GET_CONFIG:
+                sidebar1Expanded = !sidebar1Expanded;
+                UriHelper.NavigateTo("/config");
+                break;
+            case EnumTypes.TransactionTask.GET_LOGIN:
+                UriHelper.NavigateTo("/login");
+                break;
+            case EnumTypes.TransactionTask.GET_MAIN_MENU:
+                UriHelper.NavigateTo("/");
+                break;
+        }
+    }
+    #endregion MainMenu
 }

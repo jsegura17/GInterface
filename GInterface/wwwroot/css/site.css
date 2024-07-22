@@ -66,3 +66,31 @@ a, .btn-link {
     .blazor-error-boundary::after {
         content: "An error has occurred."
     }
+
+.dashboard-image {
+    width: 100%; /* O un ancho específico, como 500px */
+    height: auto; /* Mantiene la proporción de la imagen */
+    border: 1px solid #ccc; /* Opcional: añade un borde a la imagen */
+    /* Otros estilos que desees aplicar */
+}
+
+.login-container {
+    max-width: 300px;
+    margin: auto;
+    padding: 1rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.login-logo {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+    .login-logo img {
+        max-width: 100%;
+        height: auto;
+    }
+
+.login-form {
+    margin-top: 1rem;
+}

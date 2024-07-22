@@ -1,5 +1,6 @@
 ﻿@using System.Timers;
 @using System.Net.Http
+@using System.Text.RegularExpressions
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.AspNetCore.Components.Forms
@@ -10,9 +11,11 @@
 @using GInterface
 @using GInterface.Shared
 @using GInterface.Models
-
 @using Radzen
 @using Radzen.Blazor
+@using Radzen.Blazor.Rendering
+
+@using static GInterface.Models.EnumTypes
 
 @inject NavigationManager UriHelper
 @inject DialogService DialogService

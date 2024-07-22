@@ -113,5 +113,12 @@ namespace GInterface.Models
             /// <summary>Update Footer Info </summary>
             GET_UPDATE_FOOTER_INFO
         }
+
+        public enum IssueState
+        {
+            Open,
+            Closed,
+            All
+        }
     }
 }

@@ -40,6 +40,7 @@
     bool sidebar1Expanded = true;
 
     #region MainMenu
+    
     public async Task OnClick(EnumTypes.TransactionTask transactionItem)
     {
         _appCore.LastTransactionTask = transactionItem;
@@ -47,7 +48,7 @@
         {
             case EnumTypes.TransactionTask.GET_HOME:
                 //TODO: We need implement a CURRENT_HOME because if you are in other Page, this approach don't work it
-                sidebar1Expanded = !sidebar1Expanded;
+                //sidebar1Expanded = !sidebar1Expanded;
                 if (_appCore.IsLoginUser)
                 {
                     UriHelper.NavigateTo("/");
@@ -58,7 +59,7 @@
                 }
                 break;
             case EnumTypes.TransactionTask.GET_CONFIG:
-                sidebar1Expanded = !sidebar1Expanded;
+                //sidebar1Expanded = !sidebar1Expanded;
                 UriHelper.NavigateTo("/config");
                 break;
             case EnumTypes.TransactionTask.GET_LOGIN:

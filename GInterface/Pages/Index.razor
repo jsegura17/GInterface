@@ -1,9 +1,23 @@
 ﻿@page "/"
 
-<RadzenButton Click=@(args => OnClick("Option 1")) Text="DISPOSABLES" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Large" />
+<div>
+    <img src="images/Dashboard.png" alt="Dashboard Image" class="dashboard-image" />
+</div>
+
 @code {
-    private void OnClick(string text)
+    //Get Global Core Settings
+    private Core.AppCore _appCore = Core.AppCore.Instance;
+
+    protected override void OnAfterRender(bool firstRender)
     {
-        NotificationService.Notify(new NotificationMessage { Severity = NotificationSeverity.Info, Summary = "Button Clicked", Detail = text });
+        base.OnAfterRender(firstRender);
+        if (_appCore.IsLoginUser)
+        {
+            UriHelper.NavigateTo("/");
+        }
+        else
+        {
+            UriHelper.NavigateTo("/login");
+        }
     }
 }

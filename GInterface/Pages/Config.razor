@@ -1,6 +1,6 @@
 ﻿@page "/config"
 
-<PageTitle>Counter</PageTitle>
+<PageTitle>Configuración de Tipos de Documentos</PageTitle>
 
 <RadzenCard>
     <RadzenHeading Size="H1">Configuración de Tipos de Documentos</RadzenHeading>
@@ -38,6 +38,36 @@
 
                 <RadzenDropZone Value="Status.Deleted" Class="rz-display-flex rz-flex-column rz-background-color-danger-lighter rz-border-danger-light rz-border-radius-2 rz-p-4" Style="flex: 1; gap: 1rem;">
                     <RadzenText Text="Drop here to delete" TextStyle="TextStyle.Subtitle2" />
+                </RadzenDropZone>
+            </RadzenStack>
+        </ChildContent>
+        <Template>
+            <strong>@context.Name</strong>
+        </Template>
+    </RadzenDropZoneContainer>
+
+    <RadzenHeading Size="H2">Configuración Detallada del Documento</RadzenHeading>
+
+    <RadzenDropZoneContainer TItem="ConfigItem" Data="configData"
+                             ItemSelector="@ConfigItemSelector"
+                             ItemRender="@OnConfigItemRender"
+                             Drop="@OnConfigDrop">
+        <ChildContent>
+            <RadzenStack Orientation="Orientation.Horizontal" Gap="1rem" Wrap="FlexWrap.Wrap" Class="rz-p-12">
+                <RadzenDropZone Value="ConfigArea.FuenteDeDatos" Class="rz-display-flex rz-flex-column rz-background-color-info-lighter rz-border-info-light rz-border-radius-2 rz-p-4" Style="flex: 1; gap: 1rem;">
+                    <RadzenText Text="Fuente de datos" TextStyle="TextStyle.Subtitle2" />
+                </RadzenDropZone>
+
+                <RadzenDropZone Value="ConfigArea.CamposDeOrigen" Class="rz-display-flex rz-flex-column rz-background-color-warning-lighter rz-border-warning-light rz-border-radius-2 rz-p-4" Style="flex: 1; gap: 1rem;">
+                    <RadzenText Text="Campos de Origen" TextStyle="TextStyle.Subtitle2" />
+                </RadzenDropZone>
+
+                <RadzenDropZone Value="ConfigArea.FuenteDeDestino" Class="rz-display-flex rz-flex-column rz-background-color-success-lighter rz-border-success-light rz-border-radius-2 rz-p-4" Style="flex: 1; gap: 1rem;">
+                    <RadzenText Text="Fuente de Destino" TextStyle="TextStyle.Subtitle2" />
+                </RadzenDropZone>
+
+                <RadzenDropZone Value="ConfigArea.CamposDeMapeo" Class="rz-display-flex rz-flex-column rz-background-color-danger-lighter rz-border-danger-light rz-border-radius-2 rz-p-4" Style="flex: 1; gap: 1rem;">
+                    <RadzenText Text="Campos de Mapeo" TextStyle="TextStyle.Subtitle2" />
                 </RadzenDropZone>
             </RadzenStack>
         </ChildContent>
@@ -100,7 +130,32 @@
         }
     }
 
+    // Config Items
+    Func<ConfigItem, RadzenDropZone<ConfigItem>, bool> ConfigItemSelector = (item, zone) => item.Area == (ConfigArea)zone.Value;
+
+    void OnConfigItemRender(RadzenDropZoneItemRenderEventArgs<ConfigItem> args)
+    {
+        args.Attributes["class"] = "rz-card rz-variant-filled rz-background-color-primary-light rz-color-on-primary-light";
+    }
+
+    void OnConfigDrop(RadzenDropZoneItemEventArgs<ConfigItem> args)
+    {
+        if (args.FromZone != args.ToZone)
+        {
+            // update item zone
+            args.Item.Area = (ConfigArea)args.ToZone.Value;
+        }
+
+        if (args.ToItem != null && args.ToItem != args.Item)
+        {
+            // reorder items in same zone or place the item at specific index in new zone
+            configData.Remove(args.Item);
+            configData.Insert(configData.IndexOf(args.ToItem), args.Item);
+        }
+    }
+
     IList<MyTask> data;
+    IList<ConfigItem> configData;
 
     protected override void OnInitialized()
     {
@@ -113,6 +168,14 @@
                         Status = i < 3 ? Status.NotStarted : Status.Started
                     })
             .ToList();
+
+        configData = new List<ConfigItem>
+        {
+            new ConfigItem { Id = 1, Name = "Fuente de Datos CSV", Area = ConfigArea.FuenteDeDatos },
+            new ConfigItem { Id = 2, Name = "Campos de Origen", Area = ConfigArea.CamposDeOrigen },
+            new ConfigItem { Id = 3, Name = "Fuente de Destino", Area = ConfigArea.FuenteDeDestino },
+            new ConfigItem { Id = 4, Name = "Campos de Mapeo", Area = ConfigArea.CamposDeMapeo }
+        };
     }
 
     private void CreateItem()
@@ -139,5 +202,19 @@
         Completed,
         Deleted
     }
-}
 
+    public class ConfigItem
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public ConfigArea Area { get; set; }
+    }
+
+    public enum ConfigArea
+    {
+        FuenteDeDatos,
+        CamposDeOrigen,
+        FuenteDeDestino,
+        CamposDeMapeo
+    }
+  }

@@ -1,6 +1,58 @@
 ﻿@page "/login"
-<h3>Login</h3>
+
+<div class="login-container">
+    <div class="login-logo">
+        <img src="images/logo.png" alt="Company Logo" />
+    </div>
+    <EditForm Model="@loginModel" OnValidSubmit="@HandleLogin">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="login-form">
+            <RadzenFieldset>
+                <RadzenLabel Text="Usuario" />
+                <RadzenTextBox @bind-Value="@loginModel.Username" Name="Username" Style="width: 100%" />
+                <RadzenRequiredValidator Text="El usuario es requerido" Component="Username" />
+
+                <RadzenLabel Text="Clave" />
+                <RadzenPassword @bind-Value="@loginModel.Password" Name="Password" Style="width: 100%" />
+                <RadzenRequiredValidator Text="La clave es requerida" Component="Password" />
+            </RadzenFieldset>
+            <RadzenButton ButtonType="ButtonType.Submit" Text="Iniciar sesión" Style="width: 100%; margin-top: 1rem;" />
+        </div>
+    </EditForm>
+</div>
 
 @code {
+    //Get Global Core Settings
+    private Core.AppCore _appCore = Core.AppCore.Instance;
 
+    private LoginModel loginModel;
+
+    protected override void OnInitialized()
+    {
+        loginModel = new LoginModel { Username = "test", Password = "123456" };
+        _appCore.IsLoginUser = true;
+    }
+
+    private void HandleLogin()
+    {
+        // Aquí iría la lógica de autenticación
+        if (loginModel.Username != null && loginModel.Password == "123456")
+        {
+            // Autenticación exitosa
+            Console.WriteLine("Inicio de sesión exitoso");
+        }
+        else
+        {
+            // Autenticación fallida
+            Console.WriteLine("Inicio de sesión fallido");
+        }
+    }
+
+    public class LoginModel
+    {
+        public string Username { get; set; }
+        public string Password { get; set; }
+    }
 }

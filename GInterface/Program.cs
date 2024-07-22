@@ -1,4 +1,5 @@
 using GInterface.Data;
+
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Radzen;
@@ -14,6 +15,7 @@ builder.Services.AddScoped<DialogService>();
 builder.Services.AddScoped<NotificationService>();
 builder.Services.AddScoped<TooltipService>();
 builder.Services.AddScoped<ContextMenuService>();
+
 builder.Services.AddRadzenComponents();
 
 var app = builder.Build();

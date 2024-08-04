@@ -10,6 +10,8 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Radzen.Blazor" Version="4.34.3" />
     <PackageReference Include="RestSharp" Version="111.4.0" />
+	<PackageReference Include="Microsoft.AspNetCore.Authentication" Version="7.0.0" />
+	<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.0" />
   </ItemGroup>
 
   <ItemGroup>

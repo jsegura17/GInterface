@@ -7,6 +7,7 @@ using RestSharp;
 using GInterface.Models;
 using Newtonsoft.Json;
 using GInterface.Core.Utils;
+using static GInterface.Models.EnumTypes;
 
 namespace GInterface.Core
 {
@@ -66,6 +67,9 @@ namespace GInterface.Core
         public DateTime LastSyncPullDateTime { get; set; }
         public DateTime LastSyncPushDateTime { get; set; }
         public List<TransactionEvent> lstTransactionEvents { get; set; }
+
+        //Lista de Tipos de Documentos
+        public List<DocumentType> GlobalDocType { get; set; }
                 
         /*
         * Set initial Data for Singleton Pattern Class
@@ -113,6 +117,9 @@ namespace GInterface.Core
                 temp.LastSyncPushDateTime = DateTime.Now;
                 temp.PullProcessTime = true;
                 temp.PushProcessTime = true;
+
+                temp.GlobalDocType = EnumHelpers<DocumentType>.GetValues().ToList();
+                
             }
             catch (Exception ex)
             {

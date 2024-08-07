@@ -5,129 +5,77 @@
 <RadzenCard>
     <RadzenHeading Size="H1">Configuración de Tipos de Documentos</RadzenHeading>
 
-    <RadzenDropDown Data="@(new List<string> { "TipoDocumento1", "TipoDocumento2" })"
+    <RadzenDropDown Data="@_appCore.GlobalDocType"
                     @bind-Value="selectedDocumentType"
                     Placeholder="Seleccionar Tipo de Documento"
-                    Style="width: 300px;" />
+                    Change="@OnChange"
+                    Style="width: 100%;" />
 
-    <RadzenDropZoneContainer TItem="MyTask" Data="data"
-                             ItemSelector="@ItemSelector"
-                             ItemRender="@OnItemRender"
-                             CanDrop="@CanDrop"
-                             Drop="@OnDrop">
-        <ChildContent>
-            <RadzenStack Orientation="Orientation.Horizontal" Gap="1rem" Wrap="FlexWrap.Wrap" Class="rz-p-12">
-                <RadzenDropZone Value="Status.NotStarted" Class="rz-display-flex rz-flex-column rz-background-color-warning-lighter rz-border-warning-light rz-border-radius-2 rz-p-4" Style="flex: 1; gap: 1rem;">
-                    <ChildContent>
-                        <RadzenText Text="Not started" TextStyle="TextStyle.Subtitle2" />
-                    </ChildContent>
-                    <Footer>
-                        <div>
-                            <RadzenButton Size="ButtonSize.ExtraSmall" Icon="add" ButtonStyle="ButtonStyle.Success" Click="@CreateItem" />
-                        </div>
-                    </Footer>
-                </RadzenDropZone>
+    @if (showDropZone)
+    {       
+        <RadzenHeading Size="H2">Configuración Detallada del Documento</RadzenHeading>
 
-                <RadzenDropZone Value="Status.Started" Class="rz-display-flex rz-flex-column rz-background-color-info-lighter rz-border-info-light rz-border-radius-2 rz-p-4" Style="flex: 1; gap: 1rem;">
-                    <RadzenText Text="Started" TextStyle="TextStyle.Subtitle2" />
-                </RadzenDropZone>
+        <RadzenDropZoneContainer TItem="ConfigItem" Data="configData"
+                                 ItemSelector="@ConfigItemSelector"
+                                 ItemRender="@OnConfigItemRender"
+                                 Drop="@OnConfigDrop">
+            <ChildContent>
+                <RadzenStack Orientation="Orientation.Horizontal" Gap="1rem" Wrap="FlexWrap.Wrap" Class="rz-p-12">
+                    <RadzenDropZone Value="ConfigArea.FuenteDeDatos" Class="rz-display-flex rz-flex-column rz-background-color-info-lighter rz-border-info-light rz-border-radius-2 rz-p-4" Style="flex: 1; gap: 1rem;">
+                        <RadzenText Text="Fuente de datos" TextStyle="TextStyle.Subtitle2" />
+                    </RadzenDropZone>
 
-                <RadzenDropZone Value="Status.Completed" Class="rz-display-flex rz-flex-column rz-background-color-success-lighter rz-border-success-light rz-border-radius-2 rz-p-4" Style="flex: 1; gap: 1rem;">
-                    <RadzenText Text="Completed" TextStyle="TextStyle.Subtitle2" />
-                </RadzenDropZone>
+                    <RadzenDropZone Value="ConfigArea.CamposDeOrigen" Class="rz-display-flex rz-flex-column rz-background-color-warning-lighter rz-border-warning-light rz-border-radius-2 rz-p-4" Style="flex: 1; gap: 1rem;">
+                        <RadzenText Text="Campos de Origen" TextStyle="TextStyle.Subtitle2" />
+                    </RadzenDropZone>
 
-                <RadzenDropZone Value="Status.Deleted" Class="rz-display-flex rz-flex-column rz-background-color-danger-lighter rz-border-danger-light rz-border-radius-2 rz-p-4" Style="flex: 1; gap: 1rem;">
-                    <RadzenText Text="Drop here to delete" TextStyle="TextStyle.Subtitle2" />
-                </RadzenDropZone>
-            </RadzenStack>
-        </ChildContent>
-        <Template>
-            <strong>@context.Name</strong>
-        </Template>
-    </RadzenDropZoneContainer>
+                    <RadzenDropZone Value="ConfigArea.FuenteDeDestino" Class="rz-display-flex rz-flex-column rz-background-color-success-lighter rz-border-success-light rz-border-radius-2 rz-p-4" Style="flex: 1; gap: 1rem;">
+                        <RadzenText Text="Fuente de Destino" TextStyle="TextStyle.Subtitle2" />
+                    </RadzenDropZone>
 
-    <RadzenHeading Size="H2">Configuración Detallada del Documento</RadzenHeading>
-
-    <RadzenDropZoneContainer TItem="ConfigItem" Data="configData"
-                             ItemSelector="@ConfigItemSelector"
-                             ItemRender="@OnConfigItemRender"
-                             Drop="@OnConfigDrop">
-        <ChildContent>
-            <RadzenStack Orientation="Orientation.Horizontal" Gap="1rem" Wrap="FlexWrap.Wrap" Class="rz-p-12">
-                <RadzenDropZone Value="ConfigArea.FuenteDeDatos" Class="rz-display-flex rz-flex-column rz-background-color-info-lighter rz-border-info-light rz-border-radius-2 rz-p-4" Style="flex: 1; gap: 1rem;">
-                    <RadzenText Text="Fuente de datos" TextStyle="TextStyle.Subtitle2" />
-                </RadzenDropZone>
-
-                <RadzenDropZone Value="ConfigArea.CamposDeOrigen" Class="rz-display-flex rz-flex-column rz-background-color-warning-lighter rz-border-warning-light rz-border-radius-2 rz-p-4" Style="flex: 1; gap: 1rem;">
-                    <RadzenText Text="Campos de Origen" TextStyle="TextStyle.Subtitle2" />
-                </RadzenDropZone>
-
-                <RadzenDropZone Value="ConfigArea.FuenteDeDestino" Class="rz-display-flex rz-flex-column rz-background-color-success-lighter rz-border-success-light rz-border-radius-2 rz-p-4" Style="flex: 1; gap: 1rem;">
-                    <RadzenText Text="Fuente de Destino" TextStyle="TextStyle.Subtitle2" />
-                </RadzenDropZone>
-
-                <RadzenDropZone Value="ConfigArea.CamposDeMapeo" Class="rz-display-flex rz-flex-column rz-background-color-danger-lighter rz-border-danger-light rz-border-radius-2 rz-p-4" Style="flex: 1; gap: 1rem;">
-                    <RadzenText Text="Campos de Mapeo" TextStyle="TextStyle.Subtitle2" />
-                </RadzenDropZone>
-            </RadzenStack>
-        </ChildContent>
-        <Template>
-            <strong>@context.Name</strong>
-        </Template>
-    </RadzenDropZoneContainer>
-
-    <style>
-        .rz-can-drop {
-            background-color: var(--rz-background-color-primary);
-        }
-    </style>
+                    <RadzenDropZone Value="ConfigArea.CamposDeMapeo" Class="rz-display-flex rz-flex-column rz-background-color-danger-lighter rz-border-danger-light rz-border-radius-2 rz-p-4" Style="flex: 1; gap: 1rem;">
+                        <RadzenText Text="Campos de Mapeo" TextStyle="TextStyle.Subtitle2" />
+                    </RadzenDropZone>
+                </RadzenStack>
+                <RadzenStack Orientation="Orientation.Horizontal" Gap="1rem" Wrap="FlexWrap.Wrap" Class="rz-p-12">
+                    <RadzenDropZone Value="ConfigArea.Documento" Class="rz-display-flex rz-flex-column rz-background-color-info-lighter rz-border-info-light rz-border-radius-2 rz-p-4" Style="flex: 1; gap: 1rem;">
+                        <RadzenText Text="Documento" TextStyle="TextStyle.Subtitle2" />
+                    </RadzenDropZone>
+                </RadzenStack>
+            </ChildContent>
+            <Template>
+                <strong>@context.Name</strong>
+            </Template>
+        </RadzenDropZoneContainer>
+    }
 </RadzenCard>
 
 @code {
-    private string selectedDocumentType;
+    //Get Global Core Settings
+    private Core.AppCore _appCore = Core.AppCore.Instance;
 
-    // Filter items by zone value
-    Func<MyTask, RadzenDropZone<MyTask>, bool> ItemSelector = (item, zone) => item.Status == (Status)zone.Value && item.Status != Status.Deleted;
+    private DocumentType selectedDocumentType;
 
-    Func<RadzenDropZoneItemEventArgs<MyTask>, bool> CanDrop = request =>
+    private bool showDropZone = false;
+
+    IList<ConfigItem> configData;
+
+    protected override void OnInitialized()
     {
-        // Allow item drop only in the same zone, in "Deleted" zone or in the next/previous zone.
-        return request.FromZone == request.ToZone || (Status)request.ToZone.Value == Status.Deleted ||
-               Math.Abs((int)request.Item.Status - (int)request.ToZone.Value) == 1;
-    };
-
-    void OnItemRender(RadzenDropZoneItemRenderEventArgs<MyTask> args)
-    {
-        // Customize item appearance
-        if (args.Item.Name == "Task2")
+        configData = new List<ConfigItem>
         {
-            args.Attributes["draggable"] = "false";
-            args.Attributes["style"] = "cursor:not-allowed";
-            args.Attributes["class"] = "rz-card rz-variant-flat rz-background-color-primary-lighter rz-color-on-primary-lighter";
-        }
-        else
-        {
-            args.Attributes["class"] = "rz-card rz-variant-filled rz-background-color-primary-light rz-color-on-primary-light";
-        }
-
-        // Do not render item if deleted
-        args.Visible = args.Item.Status != Status.Deleted;
+            new ConfigItem { Id = 1, Name = "Fuente de Datos CSV", Area = ConfigArea.FuenteDeDatos },
+            new ConfigItem { Id = 2, Name = "Campos de Origen", Area = ConfigArea.CamposDeOrigen },
+            new ConfigItem { Id = 3, Name = "Fuente de Destino", Area = ConfigArea.FuenteDeDestino },
+            new ConfigItem { Id = 4, Name = "Campos de Mapeo", Area = ConfigArea.CamposDeMapeo }
+        };
     }
 
-    void OnDrop(RadzenDropZoneItemEventArgs<MyTask> args)
+    // Mostrar Panel de Configuracion del Documento
+    private void OnChange(dynamic value)
     {
-        if (args.FromZone != args.ToZone)
-        {
-            // update item zone
-            args.Item.Status = (Status)args.ToZone.Value;
-        }
-
-        if (args.ToItem != null && args.ToItem != args.Item)
-        {
-            // reorder items in same zone or place the item at specific index in new zone
-            data.Remove(args.Item);
-            data.Insert(data.IndexOf(args.ToItem), args.Item);
-        }
+        selectedDocumentType = value;
+        showDropZone = true;
     }
 
     // Config Items
@@ -138,12 +86,22 @@
         args.Attributes["class"] = "rz-card rz-variant-filled rz-background-color-primary-light rz-color-on-primary-light";
     }
 
-    void OnConfigDrop(RadzenDropZoneItemEventArgs<ConfigItem> args)
+    async void OnConfigDrop(RadzenDropZoneItemEventArgs<ConfigItem> args)
     {
         if (args.FromZone != args.ToZone)
         {
             // update item zone
             args.Item.Area = (ConfigArea)args.ToZone.Value;
+
+            //Validate item
+            switch (args.FromZone.Value)
+            {
+                case ConfigArea.FuenteDeDatos:
+                    await OpenUpLoadFile();
+                    break;
+                default:
+                    break;
+            }
         }
 
         if (args.ToItem != null && args.ToItem != args.Item)
@@ -154,67 +112,14 @@
         }
     }
 
-    IList<MyTask> data;
-    IList<ConfigItem> configData;
-
-    protected override void OnInitialized()
-    {
-        data = Enumerable.Range(0, 5)
-            .Select(i =>
-                new MyTask()
-                    {
-                        Id = i,
-                        Name = $"Task{i}",
-                        Status = i < 3 ? Status.NotStarted : Status.Started
-                    })
-            .ToList();
-
-        configData = new List<ConfigItem>
-        {
-            new ConfigItem { Id = 1, Name = "Fuente de Datos CSV", Area = ConfigArea.FuenteDeDatos },
-            new ConfigItem { Id = 2, Name = "Campos de Origen", Area = ConfigArea.CamposDeOrigen },
-            new ConfigItem { Id = 3, Name = "Fuente de Destino", Area = ConfigArea.FuenteDeDestino },
-            new ConfigItem { Id = 4, Name = "Campos de Mapeo", Area = ConfigArea.CamposDeMapeo }
-        };
+    public async Task OpenUpLoadFile()
+    {        
+        await DialogService.OpenAsync<FileUpLoad>("Subir Archivo",
+               new Dictionary<string, object>() { },
+               new DialogOptions()
+                   {
+                       Resizable = true,
+                       Draggable = true
+                   });
     }
-
-    private void CreateItem()
-    {
-        data.Add(new MyTask()
-            {
-                Id = data.Max(t => t.Id) + 1,
-                Name = "New Task",
-                Status = Status.NotStarted
-            });
-    }
-
-    public class MyTask
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public Status Status { get; set; } = Status.NotStarted;
-    }
-
-    public enum Status
-    {
-        NotStarted,
-        Started,
-        Completed,
-        Deleted
-    }
-
-    public class ConfigItem
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public ConfigArea Area { get; set; }
-    }
-
-    public enum ConfigArea
-    {
-        FuenteDeDatos,
-        CamposDeOrigen,
-        FuenteDeDestino,
-        CamposDeMapeo
-    }
-  }
+}

@@ -1,0 +1,27 @@
+﻿<RadzenRow Gap="2rem" RowGap="2rem" class="rz-m-0 rz-m-md-12">
+    <RadzenColumn Size="12">
+        <RadzenCard Variant="Variant.Outlined">
+            <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Arrastre y Suelte el Archivo a Subir</RadzenText>
+            <RadzenUpload id="ddUpload" @ref="uploadDD" ChooseText="Arrastre y Suelte aqui el Archivo a Subir" Auto="false" Multiple="false" Url="upload/multiple" InputAttributes="@(new Dictionary<string,object>(){ { "aria-label", "select file" }})"
+                          Progress=@(args => OnProgress(args, "Drag and drop files to upload")) Style="width: 100%" />
+            <RadzenButton Text="Upload" Click=@(args => uploadDD.Upload()) class="rz-mt-4" />
+        </RadzenCard>
+    </RadzenColumn>
+</RadzenRow>
+
+@code {
+    RadzenUpload uploadDD;
+
+    void OnProgress(UploadProgressArgs args, string name)
+    {
+        //console.Log($"{args.Progress}% '{name}' / {args.Loaded} of {args.Total} bytes.");
+
+        if (args.Progress == 100)
+        {
+            foreach (var file in args.Files)
+            {
+                //console.Log($"Uploaded: {file.Name} / {file.Size} bytes");
+            }
+        }
+    }
+}

@@ -94,3 +94,20 @@ a, .btn-link {
 .login-form {
     margin-top: 1rem;
 }
+
+.rz-can-drop {
+    background-color: var(--rz-background-color-primary);
+}
+
+#ddUpload {
+    left: 0;
+    --rz-upload-button-bar-background-color: transparent;
+    --rz-upload-button-bar-padding: 0;
+}
+
+    #ddUpload .rz-fileupload-buttonbar .rz-fileupload-choose {
+        width: 100%;
+        text-align: center;
+        font-size: 16px;
+        padding: 100px 0;
+    }

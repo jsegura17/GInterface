@@ -11,11 +11,20 @@ namespace GInterface.Models
 	/// </summary>
 	public class EnumTypes
     {
-        public enum Environment
+        public enum DocumentType
         {
-            Production = 1,
-            PreProd = 2,
-            Development = 3,
+            Generico = 0,
+            TipoDocumento_01 = 1,
+            TipoDocumento_02 = 2,
+            TipoDocumento_03 = 3,
+        }
+        public enum ConfigArea
+        {
+            FuenteDeDatos,
+            CamposDeOrigen,
+            FuenteDeDestino,
+            CamposDeMapeo,
+            Documento
         }
 
         public enum LastConnectionStatus

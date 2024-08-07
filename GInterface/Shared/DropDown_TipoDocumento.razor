@@ -1,0 +1,64 @@
+﻿@typeparam TEnum
+@inherits InputBase<TEnum>
+
+<RadzenDropDown Data="@enumItems" TextProperty="Text" ValueProperty="Value" TValue="string" 
+    Value="@CurrentValueAsString" Style="width: 200px" Change="@OnChangeHandler" />
+
+@code {
+    private List<SelectItem> enumItems;
+
+    protected override void OnParametersSet()
+    {
+        enumItems = Enum.GetValues(typeof(TEnum))
+            .Cast<Enum>()
+            .Select(e => new SelectItem
+            {
+                Text = e.ToString(),
+                Value = Convert.ToInt32(e).ToString()
+            }).ToList();
+    }
+
+    private async Task OnChangeHandler(dynamic value)
+    {
+        // Especifica el tipo explícitamente en lugar de usar 'var'
+        if (int.TryParse(value.ToString(), out int intValue))
+        {
+            CurrentValue = (TEnum)Enum.ToObject(typeof(TEnum), intValue);
+        }
+
+        if (ValueChanged.HasDelegate)
+        {
+            await ValueChanged.InvokeAsync(CurrentValue);
+        }
+
+        if (OnChange.HasDelegate)
+        {
+            await OnChange.InvokeAsync(CurrentValue);
+        }
+    }
+
+
+    protected override bool TryParseValueFromString(string? value, out TEnum result, out string? validationErrorMessage)
+    {
+        validationErrorMessage = null;
+        if (value == null)
+        {
+            result = default;
+            return false;
+        }
+
+        try
+        {
+            result = (TEnum)Enum.ToObject(typeof(TEnum), int.Parse(value));
+            return true;
+        }
+        catch (Exception)
+        {
+            result = default;
+            validationErrorMessage = $"The selected value is not valid for {typeof(TEnum).Name}.";
+            return false;
+        }
+    }
+
+    [Parameter] public EventCallback<TEnum> OnChange { get; set; }
+}

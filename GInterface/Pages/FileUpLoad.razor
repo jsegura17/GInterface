@@ -1,27 +1,69 @@
-﻿<RadzenRow Gap="2rem" RowGap="2rem" class="rz-m-0 rz-m-md-12">
-    <RadzenColumn Size="12">
-        <RadzenCard Variant="Variant.Outlined">
-            <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Arrastre y Suelte el Archivo a Subir</RadzenText>
-            <RadzenUpload id="ddUpload" @ref="uploadDD" ChooseText="Arrastre y Suelte aqui el Archivo a Subir" Auto="false" Multiple="false" Url="upload/multiple" InputAttributes="@(new Dictionary<string,object>(){ { "aria-label", "select file" }})"
-                          Progress=@(args => OnProgress(args, "Drag and drop files to upload")) Style="width: 100%" />
-            <RadzenButton Text="Upload" Click=@(args => uploadDD.Upload()) class="rz-mt-4" />
-        </RadzenCard>
-    </RadzenColumn>
-</RadzenRow>
+﻿<h3>Cargar Archivo CSV</h3>
+
+<InputFile OnChange="HandleFileSelected" accept=".csv" />
+<br />
+@if (!string.IsNullOrEmpty(UploadedContent))
+{
+    <h4>Tamaño del archivo: @FileSizeInKB KB</h4>
+    <RadzenButton Click=@(args => OnClick("Primary button")) Text="Ok" ButtonStyle="ButtonStyle.Primary" />
+}
 
 @code {
-    RadzenUpload uploadDD;
+    private string UploadedContent { get; set; } = string.Empty;
+    private long FileSizeInBytes { get; set; }
+    private double FileSizeInKB => FileSizeInBytes / 1024.0;
 
-    void OnProgress(UploadProgressArgs args, string name)
+    string[] csvFile;
+    string[] headers;
+
+    private void OnClick(string text)
     {
-        //console.Log($"{args.Progress}% '{name}' / {args.Loaded} of {args.Total} bytes.");
+        NotificationService.Notify(new NotificationMessage { Severity = NotificationSeverity.Info, Summary = "Button Clicked", Detail = text });
+    }
 
-        if (args.Progress == 100)
+    private async Task HandleFileSelected(InputFileChangeEventArgs e)
+    {
+        var file = e.File;
+        if (file != null)
         {
-            foreach (var file in args.Files)
+            FileSizeInBytes = file.Size; // Tamaño en bytes
+            try
             {
-                //console.Log($"Uploaded: {file.Name} / {file.Size} bytes");
+                using (var stream = file.OpenReadStream())
+                using (var reader = new StreamReader(stream))
+                {
+                    UploadedContent = await reader.ReadToEndAsync();
+                    // Read file into a string array
+                    csvFile = UploadedContent.Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                    // Get the header row of the CSV file and put it in an array
+                    headers = csvFile[0].Split(',');
+                }
+
+                // Llamar al método para mostrar la información de los campos
+                await ShowFieldInfoDialog(headers.Length, headers);
+
+                NotificationService.Notify(new NotificationMessage
+                    {
+                        Severity = NotificationSeverity.Info,
+                        Summary = $"{file.Name}",
+                        Detail = $"{FileSizeInKB} KB",
+                        Duration = 4000
+                    });
+            }
+            catch (Exception ex)
+            {
+                UploadedContent = $"Error al leer el archivo: {ex.Message}";
             }
         }
+        else
+        {
+            UploadedContent = "No se seleccionó ningún archivo.";
+        }
+    }
+
+    private async Task ShowFieldInfoDialog(int fieldCount, string[] fields)
+    {
+        var message = $"El archivo CSV contiene {fieldCount} campos.\n\nCampos:\n{string.Join("\n", fields)}";
+        await DialogService.OpenAsync("Información de Campos", ds =>@<div>@message</div>  );
     }
 }

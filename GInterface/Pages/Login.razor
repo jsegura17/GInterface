@@ -41,7 +41,7 @@
         if (isAuthenticated)
         {
             // Autenticación exitosa
-            ShowNotification(new NotificationMessage
+            NotificationService.Notify(new NotificationMessage
                 {
                     Severity = NotificationSeverity.Info,
                     Summary = "Login Summary",
@@ -52,7 +52,7 @@
         else
         {
             // Autenticación fallida
-            ShowNotification(new NotificationMessage
+            NotificationService.Notify(new NotificationMessage
                 {
                     Severity = NotificationSeverity.Error,
                     Summary = "Login Summary",
@@ -61,13 +61,5 @@
                 });
         }
     }
-
-    #region Notification
-
-    public void ShowNotification(NotificationMessage message)
-    {
-        NotificationService.Notify(message);
-    }
-
-    #endregion Notification
+    
 }

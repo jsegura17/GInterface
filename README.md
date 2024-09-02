@@ -49,7 +49,7 @@ Consulta también la lista de [contribuyentes](https://github.com/tu-usuario/tu-
 
 ## Licencia
 
-Este proyecto está licenciado bajo la Licencia MIT - mira el archivo [LICENSE.md](LICENSE.md) para detalles.
+N/A
 
 ## Reconocimientos
 

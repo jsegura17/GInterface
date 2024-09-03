@@ -248,7 +248,7 @@ namespace GInterface.Core
                 try
                 {
                     connection.Open();
-                    using (SqlCommand command = new SqlCommand("ValidateUserCredentials", connection))
+                    using (SqlCommand command = new SqlCommand("sp_i_ValidateUserCredentials", connection))
                     {
                         command.CommandType = CommandType.StoredProcedure;
 
@@ -261,36 +261,29 @@ namespace GInterface.Core
                         {
                             Direction = ParameterDirection.Output
                         };
+                        SqlParameter outputAdmin = new SqlParameter("@IsAdmin", SqlDbType.Bit)
+                        {
+                            Direction = ParameterDirection.Output
+                        };
                         command.Parameters.Add(outputParam);
+                        command.Parameters.Add(outputAdmin);
 
                         command.ExecuteNonQuery();
 
-                        bool isValid = (bool)outputParam.Value;
-                        if (isValid)
-                        {
-                            Console.WriteLine("Las credenciales son correctas.");
-                            _return = true;
-                        }
-                        else
-                        {
-                            Console.WriteLine("Las credenciales son incorrectas.");
-                            _return = false;
-                        }
+                        instance.IsLoginUser = (bool)outputParam.Value;
+                        instance.IsAdmin= (bool)outputParam.Value;
+                       _return = IsLoginUser;
                     }
-
-                    
                 }
                 catch (SqlException ex)
-                {
-                    Console.WriteLine("Error:"+ex.Message);
+                {             
+                    instance.GlobalMsg = "Error:" + ex.Message;
                 }
                 finally
                 {
                     connection.Close();
                 }
             }            
-
-
             return _return;
         }
 

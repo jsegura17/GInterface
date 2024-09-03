@@ -118,6 +118,6 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ConnectionString" xml:space="preserve">
-    <value>Server=localhost;Database=GInterface;User Id=sa;Password=csp.123;</value>
+    <value>Server=genesiscgt.database.windows.net;Database=FacturaElectronicaCR;User Id=sagenesis;Password=Infra170176;</value>
   </data>
 </root>

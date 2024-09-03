@@ -61,7 +61,7 @@ namespace GInterface.Properties {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Server=localhost;Database=GInterface;User Id=sa;Password=csp.123;.
+        ///   Busca una cadena traducida similar a Server=genesiscgt.database.windows.net;Database=FacturaElectronicaCR;User Id=sagenesis;Password=Infra170176;.
         /// </summary>
         internal static string ConnectionString {
             get {

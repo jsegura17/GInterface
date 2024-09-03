@@ -12,6 +12,7 @@ using System.Data.SqlClient;
 using System.Configuration;
 using GInterface.Properties;
 using GInterface.Shared;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 
 namespace GInterface.Core
 {
@@ -122,6 +123,8 @@ namespace GInterface.Core
                 temp.LastSyncPushDateTime = DateTime.Now;
                 temp.PullProcessTime = true;
                 temp.PushProcessTime = true;
+                temp.IsLoginUser = false;
+                temp.IsAdmin = false;
 
                 temp.GlobalDocType = EnumHelpers<DocumentType>.GetValues().ToList();
                 
@@ -286,6 +289,12 @@ namespace GInterface.Core
                 }
             }            
             return _return;
+        }
+
+        public void LogOut()
+        {
+            instance.IsLoginUser = false;
+            instance.IsAdmin = false;
         }
 
         #region SYNC_PROCESS

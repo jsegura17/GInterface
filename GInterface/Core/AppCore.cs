@@ -1,6 +1,5 @@
 ﻿using System;
 using Microsoft.JSInterop;
-using System;
 using System.Text;
 using System.Net;
 using RestSharp;
@@ -8,6 +7,11 @@ using GInterface.Models;
 using Newtonsoft.Json;
 using GInterface.Core.Utils;
 using static GInterface.Models.EnumTypes;
+using System.Data;
+using System.Data.SqlClient;
+using System.Configuration;
+using GInterface.Properties;
+using GInterface.Shared;
 
 namespace GInterface.Core
 {
@@ -43,6 +47,7 @@ namespace GInterface.Core
         public bool IsOnline { get; set; }
         public bool IsInEmulator { get; set; } = false;
         public bool IsLoginUser { get; set; } = false;
+        public bool IsAdmin { get; set; } = false;
         public EnumTypes.TransactionTask LastTransactionTask { get; set; }
         public HttpClient Global_HttpClient;
         JsonSerializerSettings settings;
@@ -224,6 +229,71 @@ namespace GInterface.Core
             return _result;
         }
 
+        public SqlConnection GetDBConnection()
+        {
+            string connString = Resources.ConnectionString;
+
+            SqlConnection connection = new SqlConnection(connString);
+
+            return connection;
+        }
+
+        public bool SqlVerificationUser(string email, string password) 
+        {
+            bool _return = false;
+           
+
+            using (SqlConnection connection = GetDBConnection())
+            {
+                try
+                {
+                    connection.Open();
+                    using (SqlCommand command = new SqlCommand("ValidateUserCredentials", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        // Agregar parámetros de entrada
+                        command.Parameters.Add(new SqlParameter("@Email", SqlDbType.VarChar, 50)).Value = email;
+                        command.Parameters.Add(new SqlParameter("@Password", SqlDbType.VarChar, 50)).Value = password;
+
+                        // Agregar parámetro de salida
+                        SqlParameter outputParam = new SqlParameter("@IsValid", SqlDbType.Bit)
+                        {
+                            Direction = ParameterDirection.Output
+                        };
+                        command.Parameters.Add(outputParam);
+
+                        command.ExecuteNonQuery();
+
+                        bool isValid = (bool)outputParam.Value;
+                        if (isValid)
+                        {
+                            Console.WriteLine("Las credenciales son correctas.");
+                            _return = true;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Las credenciales son incorrectas.");
+                            _return = false;
+                        }
+                    }
+
+                    
+                }
+                catch (SqlException ex)
+                {
+                    Console.WriteLine("Error:"+ex.Message);
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }            
+
+
+            return _return;
+        }
+
         #region SYNC_PROCESS
         /*
         * Call the API Rest 
@@ -274,4 +344,7 @@ namespace GInterface.Core
         }
         #endregion SYNC_PROCESS
     }
+
+
+
 }

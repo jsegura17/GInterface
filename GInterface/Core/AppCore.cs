@@ -257,22 +257,23 @@ namespace GInterface.Core
                         command.Parameters.Add(new SqlParameter("@Password", SqlDbType.VarChar, 50)).Value = password;
 
                         // Agregar parámetro de salida
-                        SqlParameter outputParam = new SqlParameter("@IsValid", SqlDbType.Bit)
+                        SqlParameter isValidUser = new SqlParameter("@IsValid", SqlDbType.Bit)
                         {
                             Direction = ParameterDirection.Output
                         };
-                        SqlParameter outputAdmin = new SqlParameter("@IsAdmin", SqlDbType.Bit)
+                        SqlParameter isAdminParam = new SqlParameter("@IsAdmin", SqlDbType.Bit)
                         {
                             Direction = ParameterDirection.Output
                         };
-                        command.Parameters.Add(outputParam);
-                        command.Parameters.Add(outputAdmin);
+                        command.Parameters.Add(isValidUser);
+                        command.Parameters.Add(isAdminParam);
 
                         command.ExecuteNonQuery();
 
-                        instance.IsLoginUser = (bool)outputParam.Value;
-                        instance.IsAdmin= (bool)outputParam.Value;
-                       _return = IsLoginUser;
+                        instance.IsLoginUser = (bool)isValidUser.Value;
+                        instance.IsAdmin= (bool)isAdminParam.Value;
+
+                        _return = IsLoginUser;
                     }
                 }
                 catch (SqlException ex)

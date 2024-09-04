@@ -8,13 +8,17 @@
 <RadzenLayout>
     <RadzenHeader>
         <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Style="width: 100%; display: flex; justify-content: space-between;">
-            <RadzenButton Click=@(args => OnClick(EnumTypes.TransactionTask.GET_LOGOUT)) Text="Log Out" Icon="refresh" ButtonStyle="ButtonStyle.Base" Visible=@_appCore.IsLoginUser />
+            <RadzenButton Click=@(args => OnClick(EnumTypes.TransactionTask.GET_LOGOUT)) Text="Log Out" Icon="refresh" ButtonStyle="ButtonStyle.Base" Visible=@_appCore.IsOnline />
         </RadzenStack>
     </RadzenHeader>
     <RadzenSidebar @bind-Expanded="@sidebar1Expanded">
         <RadzenPanelMenu>
-            <RadzenPanelMenuItem Text="Home" Icon="home"
-                                 Click=@(args => OnClick(EnumTypes.TransactionTask.GET_HOME)) />
+            @if (_appCore.IsOnline)
+            {
+                <RadzenPanelMenuItem Text="Home" Icon="home"
+                                     Click=@(args => OnClick(EnumTypes.TransactionTask.GET_HOME)) />
+            }
+          
             @if (_appCore.IsAdmin)
             {
                 <RadzenPanelMenuItem Text="Config" Icon="assessment"

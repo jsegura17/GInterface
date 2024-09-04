@@ -45,7 +45,7 @@ namespace GInterface.Core
         public bool PushProcessTime { get; set; } = false;
         public bool Global_App_Started { get; set; } = false;
         public bool Global_ScanInfo_Running { get; set; } = false;
-        public bool IsOnline { get; set; }
+        public bool IsOnline { get; set; } = false;
         public bool IsInEmulator { get; set; } = false;
         public bool IsLoginUser { get; set; } = false;
         public bool IsAdmin { get; set; } = false;
@@ -275,6 +275,7 @@ namespace GInterface.Core
 
                         instance.IsLoginUser = (bool)isValidUser.Value;
                         instance.IsAdmin= (bool)isAdminParam.Value;
+                        instance.IsOnline= (bool)isValidUser.Value;
 
                         _return = IsLoginUser;
                     }
@@ -295,6 +296,7 @@ namespace GInterface.Core
         {
             instance.IsLoginUser = false;
             instance.IsAdmin = false;
+            instance.IsOnline = false;
         }
 
         #region SYNC_PROCESS

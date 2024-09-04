@@ -1,6 +1,5 @@
 ﻿using System;
 using Microsoft.JSInterop;
-using System;
 using System.Text;
 using System.Net;
 using RestSharp;
@@ -8,6 +7,12 @@ using GInterface.Models;
 using Newtonsoft.Json;
 using GInterface.Core.Utils;
 using static GInterface.Models.EnumTypes;
+using System.Data;
+using System.Data.SqlClient;
+using System.Configuration;
+using GInterface.Properties;
+using GInterface.Shared;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 
 namespace GInterface.Core
 {
@@ -40,9 +45,10 @@ namespace GInterface.Core
         public bool PushProcessTime { get; set; } = false;
         public bool Global_App_Started { get; set; } = false;
         public bool Global_ScanInfo_Running { get; set; } = false;
-        public bool IsOnline { get; set; }
+        public bool IsOnline { get; set; } = false;
         public bool IsInEmulator { get; set; } = false;
         public bool IsLoginUser { get; set; } = false;
+        public bool IsAdmin { get; set; } = false;
         public EnumTypes.TransactionTask LastTransactionTask { get; set; }
         public HttpClient Global_HttpClient;
         JsonSerializerSettings settings;
@@ -117,6 +123,8 @@ namespace GInterface.Core
                 temp.LastSyncPushDateTime = DateTime.Now;
                 temp.PullProcessTime = true;
                 temp.PushProcessTime = true;
+                temp.IsLoginUser = false;
+                temp.IsAdmin = false;
 
                 temp.GlobalDocType = EnumHelpers<DocumentType>.GetValues().ToList();
                 
@@ -224,6 +232,73 @@ namespace GInterface.Core
             return _result;
         }
 
+        public SqlConnection GetDBConnection()
+        {
+            string connString = Resources.ConnectionString;
+
+            SqlConnection connection = new SqlConnection(connString);
+
+            return connection;
+        }
+
+        public bool SqlVerificationUser(string email, string password) 
+        {
+            bool _return = false;
+           
+
+            using (SqlConnection connection = GetDBConnection())
+            {
+                try
+                {
+                    connection.Open();
+                    using (SqlCommand command = new SqlCommand("sp_i_ValidateUserCredentials", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        // Agregar parámetros de entrada
+                        command.Parameters.Add(new SqlParameter("@Email", SqlDbType.VarChar, 50)).Value = email;
+                        command.Parameters.Add(new SqlParameter("@Password", SqlDbType.VarChar, 50)).Value = password;
+
+                        // Agregar parámetro de salida
+                        SqlParameter isValidUser = new SqlParameter("@IsValid", SqlDbType.Bit)
+                        {
+                            Direction = ParameterDirection.Output
+                        };
+                        SqlParameter isAdminParam = new SqlParameter("@IsAdmin", SqlDbType.Bit)
+                        {
+                            Direction = ParameterDirection.Output
+                        };
+                        command.Parameters.Add(isValidUser);
+                        command.Parameters.Add(isAdminParam);
+
+                        command.ExecuteNonQuery();
+
+                        instance.IsLoginUser = (bool)isValidUser.Value;
+                        instance.IsAdmin= (bool)isAdminParam.Value;
+                        instance.IsOnline= (bool)isValidUser.Value;
+
+                        _return = IsLoginUser;
+                    }
+                }
+                catch (SqlException ex)
+                {             
+                    instance.GlobalMsg = "Error:" + ex.Message;
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }            
+            return _return;
+        }
+
+        public void LogOut()
+        {
+            instance.IsLoginUser = false;
+            instance.IsAdmin = false;
+            instance.IsOnline = false;
+        }
+
         #region SYNC_PROCESS
         /*
         * Call the API Rest 
@@ -274,4 +349,7 @@ namespace GInterface.Core
         }
         #endregion SYNC_PROCESS
     }
+
+
+
 }

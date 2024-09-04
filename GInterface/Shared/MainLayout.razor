@@ -7,17 +7,26 @@
 
 <RadzenLayout>
     <RadzenHeader>
-        <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="0">
-            <RadzenSidebarToggle Click="@(() => sidebar1Expanded = !sidebar1Expanded)" />
-            <RadzenLabel Text="Header" />
+        <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween" AlignItems="AlignItems.Center" Style="height: 100%; width: 100%;">
+            <RadzenLabel Text="BLOCK" Style="margin-left: 20px;" />
+            <RadzenButton Click=@(args => OnClick(EnumTypes.TransactionTask.GET_LOGOUT)) Text="Log Out" Icon="refresh" ButtonStyle="ButtonStyle.Base" Visible=@_appCore.IsOnline Style="margin-right: 20px;" />
         </RadzenStack>
     </RadzenHeader>
+
+
     <RadzenSidebar @bind-Expanded="@sidebar1Expanded">
         <RadzenPanelMenu>
-            <RadzenPanelMenuItem Text="Home" Icon="home"
-                                 Click=@(args => OnClick(EnumTypes.TransactionTask.GET_HOME)) />
-            <RadzenPanelMenuItem Text="Config" Icon="assessment"
-                                 Click=@(args => OnClick(EnumTypes.TransactionTask.GET_CONFIG)) />
+            @if (_appCore.IsOnline)
+            {
+                <RadzenPanelMenuItem Text="Home" Icon="home"
+                                     Click=@(args => OnClick(EnumTypes.TransactionTask.GET_HOME)) />
+            }
+          
+            @if (_appCore.IsAdmin)
+            {
+                <RadzenPanelMenuItem Text="Config" Icon="assessment"
+                                     Click=@(args => OnClick(EnumTypes.TransactionTask.GET_CONFIG)) />
+            }            
         </RadzenPanelMenu>
         <div class="rz-p-4">
             Sidebar
@@ -40,7 +49,7 @@
     bool sidebar1Expanded = true;
 
     #region MainMenu
-    
+
     public async Task OnClick(EnumTypes.TransactionTask transactionItem)
     {
         _appCore.LastTransactionTask = transactionItem;
@@ -67,6 +76,11 @@
                 break;
             case EnumTypes.TransactionTask.GET_MAIN_MENU:
                 UriHelper.NavigateTo("/");
+                break;
+            case EnumTypes.TransactionTask.GET_LOGOUT:
+                _appCore.LogOut();
+                UriHelper.NavigateTo("/login");
+                await InvokeAsync(StateHasChanged);
                 break;
         }
     }

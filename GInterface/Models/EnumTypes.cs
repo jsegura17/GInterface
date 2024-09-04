@@ -109,6 +109,8 @@ namespace GInterface.Models
             GET_IMEI,
             /// <summary>Read Login from HH</summary>
             GET_LOGIN,
+            /// <summary>Read LogOUT from HH</summary>
+            GET_LOGOUT,
             /// <summary>Execute PUSH process</summary>
             GET_PUSH,
             /// <summary>Execute PULL process</summary>

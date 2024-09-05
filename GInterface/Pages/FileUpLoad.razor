@@ -1,6 +1,6 @@
 ﻿<h3>Cargar Archivo CSV</h3>
 
-<InputFile OnChange="HandleFileSelected" accept=".csv" />
+<InputFile OnChange="ProcessCsvFile" accept=".csv" />
 <br />
 @if (!string.IsNullOrEmpty(UploadedContent))
 {
@@ -65,5 +65,83 @@
     {
         var message = $"El archivo CSV contiene {fieldCount} campos.\n\nCampos:\n{string.Join("\n", fields)}";
         await DialogService.OpenAsync("Información de Campos", ds =>@<div>@message</div>  );
+    }
+    public async Task ProcessCsvFile(InputFileChangeEventArgs e)
+    {
+        var file = e.File;
+        if (file != null)
+        {
+            FileSizeInBytes = file.Size; 
+            try
+            {
+                using (var stream = file.OpenReadStream())
+                using (var reader = new StreamReader(stream))
+                {
+                    var uploadedContent = await reader.ReadToEndAsync();
+                    
+                    var csvFile = uploadedContent.Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+
+                    if (csvFile.Length > 0)
+                    {
+                        var processedData = new List<TempCSVGlobal>();
+                        var fieldNames = new List<string>();
+
+                        // Itera a través de las filas del archivo CSV (omitimos el encabezado)
+                        for (int i = 1; i < csvFile.Length; i++)
+                        {
+                            var row = csvFile[i].Split(',');
+
+                            if (row.Length > 0)
+                            {
+                                var item = new TempCSVGlobal();
+                                var assignedFields = new HashSet<string>();
+
+                           
+                                for (int j = 0; j < row.Length; j++)
+                                {
+                                    if (long.TryParse(row[j], out long number))
+                                    {
+                                        if (j < 10 && item.Campo1 == 0) item.Campo1 = number;
+                                        else if (j < 10 && item.Campo1 != 0) item.Campo2 = number;
+                                        else if (j < 10 && item.Campo2 != 0) item.Campo3 = number;
+                                        else if (j < 10 && item.Campo3 != 0) item.Campo4 = number;
+                                        else if (j < 10 && item.Campo4 != 0) item.Campo5 = number;
+                                        assignedFields.Add($"Campo{j + 1}");
+                                    }
+                                    else
+                                    {
+                                        if (j < 10 && item.Campo6 == null) item.Campo6 = row[j];
+                                        else if (j < 10 && item.Campo6 != null) item.Campo7 = row[j];
+                                        else if (j < 10 && item.Campo7 != null) item.Campo8 = row[j];
+                                        else if (j < 10 && item.Campo8 != null) item.Campo9 = row[j];
+                                        else if (j < 10 && item.Campo9 != null) item.Campo10 = row[j];
+                                        assignedFields.Add($"Campo{j + 1}"); // Se asume que los siguientes 5 son de texto
+                                    }
+
+                                }
+
+                               
+                                processedData.Add(item);
+
+              
+                                fieldNames.AddRange(assignedFields);
+                            }
+                        }
+
+             
+                        Console.WriteLine("Nombres de los campos:");
+                        foreach (var name in fieldNames.Distinct())
+                        {
+                            Console.WriteLine(name);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Manejo de errores
+                Console.WriteLine($"Error procesando el archivo: {ex.Message}");
+            }
+        }
     }
 }

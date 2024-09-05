@@ -13,6 +13,10 @@ using System.Configuration;
 using GInterface.Properties;
 using GInterface.Shared;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
+using System.Reflection.PortableExecutable;
+using System.Text.Json.Nodes;
+using System.Text.Json;
+using System.Collections.Generic;
 
 namespace GInterface.Core
 {
@@ -73,6 +77,7 @@ namespace GInterface.Core
         public DateTime LastSyncPullDateTime { get; set; }
         public DateTime LastSyncPushDateTime { get; set; }
         public List<TransactionEvent> lstTransactionEvents { get; set; }
+        string[] headers;
 
         //Lista de Tipos de Documentos
         public List<DocumentType> GlobalDocType { get; set; }
@@ -291,57 +296,101 @@ namespace GInterface.Core
             }            
             return _return;
         }
-        public bool sortData(List<string> hearer, List<string> sort)
+        public void sortData(string[] csvFile, string fileName)
         {
-            bool _return = false;
-
-
-            using (SqlConnection connection = GetDBConnection())
-            {
+  
                 try
                 {
-                    connection.Open();
-                    using (SqlCommand command = new SqlCommand("sp_i_ValidateUserCredentials", connection))
-                    {
-                        command.CommandType = CommandType.StoredProcedure;
+                        var Longer = 10;
 
-                        // Agregar parámetros de entrada
-                        command.Parameters.Add(new SqlParameter("@Email", SqlDbType.VarChar, 50)).Value = email;
-                        command.Parameters.Add(new SqlParameter("@Password", SqlDbType.VarChar, 50)).Value = password;
-
-                        // Agregar parámetro de salida
-                        SqlParameter isValidUser = new SqlParameter("@IsValid", SqlDbType.Bit)
+                        if (csvFile.Length > 0)
                         {
-                            Direction = ParameterDirection.Output
-                        };
-                        SqlParameter isAdminParam = new SqlParameter("@IsAdmin", SqlDbType.Bit)
-                        {
-                            Direction = ParameterDirection.Output
-                        };
-                        command.Parameters.Add(isValidUser);
-                        command.Parameters.Add(isAdminParam);
+                            var processedData = new List<TempCSVGlobal>();
+                            var fieldNames = new List<string>();
 
-                        command.ExecuteNonQuery();
+                            // Itera a través de las filas del archivo CSV (omitimos el encabezado)
+                            for (int i = 1; i < csvFile.Length; i++)
+                            {
+                                var row = csvFile[i].Split(',');
 
-                        instance.IsLoginUser = (bool)isValidUser.Value;
-                        instance.IsAdmin = (bool)isAdminParam.Value;
-                        instance.IsOnline = (bool)isValidUser.Value;
+                                if (row.Length > 0)
+                                {
+                                    var item = new TempCSVGlobal();
+                                    var assignedFields = new HashSet<string>();
 
-                        _return = IsLoginUser;
-                    }
+
+                                    for (int j = 0; j < row.Length; j++)
+                                    {
+                                        if (long.TryParse(row[j], out long number))
+                                        {
+                                            if (j < 10 && item.Campo1 == 0) { item.Campo1 = number; assignedFields.Add("Campo1"); }
+                                            else if (j < 10 && item.Campo2 == 0) { item.Campo2 = number; assignedFields.Add("Campo2"); }
+                                            else if (j < 10 && item.Campo3 == 0) { item.Campo3 = number; assignedFields.Add("Campo3"); }
+                                            else if (j < 10 && item.Campo4 == 0) { item.Campo4 = number; assignedFields.Add("Campo4"); }
+                                            else if (j < 10 && item.Campo5 == 0) { item.Campo5 = number; assignedFields.Add("Campo5"); }
+                                            
+                                        }
+                                        else
+                                        {
+                                            if (j < 10 && item.Campo6 == null) { item.Campo6 = row[j]; assignedFields.Add("Campo6"); }
+                                             else if (j < 10 && item.Campo7 == null) { item.Campo7 = row[j]; assignedFields.Add("Campo7"); }
+                                             else if (j < 10 && item.Campo8 == null) { item.Campo8 = row[j]; assignedFields.Add("Campo8"); }
+                                             else if (j < 10 && item.Campo9 == null) { item.Campo9 = row[j]; assignedFields.Add("Campo9"); }
+                                             else if (j < 10 && item.Campo10 == null) { item.Campo10 = row[j]; assignedFields.Add("Campo10"); }
+                                        }
+
+                                    }
+
+
+                                    processedData.Add(item);
+                                    headers = csvFile[0].Split(',');
+
+                            fieldNames.AddRange(assignedFields);
+                                }
+                        //processedData.Add(item); este va a tener todos los datos del csv en cuestion de datos
+                        //headers va a tener la cabeza del titulo de ese csv
+                        var objjson=convertJson(headers.ToList(),fieldNames);
+
+                       
+                            }
+
+
+                        }
+                    
                 }
-                catch (SqlException ex)
+                catch (Exception ex)
                 {
-                    instance.GlobalMsg = "Error:" + ex.Message;
+                    // Manejo de errores
+                    Console.WriteLine($"Error procesando el archivo: {ex.Message}");
                 }
-                finally
-                {
-                    connection.Close();
-                }
-            }
-            return _return;
+            
         }
+        public string convertJson(List<string> header, List<string> fieldNames)
+        {
+            var node = new JsonArray();
+            var colums = new JsonArray();
+            //foreach (var field in header) node.Add(field); 
+            //foreach (var field in fieldNames) colums.Add(field);
 
+            foreach (var item in header)
+            {
+                int index = header.IndexOf(item);
+                node.Add(item);
+                colums.Add(fieldNames[index]);
+            }
+
+
+
+            var jsonObject = new Dictionary<string, JsonArray>
+            {
+                { "FileColumName", node },
+                { "FileColumNamePosition", colums }
+            };
+
+            
+            string jsonString = System.Text.Json.JsonSerializer.Serialize(jsonObject, new JsonSerializerOptions { WriteIndented = true });
+            return jsonString;
+        }
         public void LogOut()
         {
             instance.IsLoginUser = false;

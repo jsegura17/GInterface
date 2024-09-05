@@ -98,6 +98,13 @@ namespace GInterface.Models
             Pending,
             Processing,
             Completed,
+            Canceled,
+            Rejected,
+            Reserved,
+            RejectedCollection,
+            Commited,
+            NotCommited,
+            Omit,
             Error
         }
 

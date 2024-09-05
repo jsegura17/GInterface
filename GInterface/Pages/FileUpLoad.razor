@@ -1,6 +1,6 @@
 ﻿<h3>Cargar Archivo CSV</h3>
 
-<InputFile OnChange="ProcessCsvFile" accept=".csv" />
+<InputFile OnChange="HandleFileSelected" accept=".csv" />
 <br />
 @if (!string.IsNullOrEmpty(UploadedContent))
 {
@@ -12,6 +12,7 @@
     private string UploadedContent { get; set; } = string.Empty;
     private long FileSizeInBytes { get; set; }
     private double FileSizeInKB => FileSizeInBytes / 1024.0;
+    private Core.AppCore _appCore = Core.AppCore.Instance;
 
     string[] csvFile;
     string[] headers;
@@ -24,6 +25,7 @@
     private async Task HandleFileSelected(InputFileChangeEventArgs e)
     {
         var file = e.File;
+        var fileName = file.Name;
         if (file != null)
         {
             FileSizeInBytes = file.Size; // Tamaño en bytes
@@ -36,7 +38,11 @@
                     // Read file into a string array
                     csvFile = UploadedContent.Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
                     // Get the header row of the CSV file and put it in an array
+
+                    
+                    _appCore.sortData(csvFile, fileName);
                     headers = csvFile[0].Split(',');
+                    
                 }
 
                 // Llamar al método para mostrar la información de los campos
@@ -66,82 +72,6 @@
         var message = $"El archivo CSV contiene {fieldCount} campos.\n\nCampos:\n{string.Join("\n", fields)}";
         await DialogService.OpenAsync("Información de Campos", ds =>@<div>@message</div>  );
     }
-    public async Task ProcessCsvFile(InputFileChangeEventArgs e)
-    {
-        var file = e.File;
-        if (file != null)
-        {
-            FileSizeInBytes = file.Size; 
-            try
-            {
-                using (var stream = file.OpenReadStream())
-                using (var reader = new StreamReader(stream))
-                {
-                    var uploadedContent = await reader.ReadToEndAsync();
-                    
-                    var csvFile = uploadedContent.Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-
-                    if (csvFile.Length > 0)
-                    {
-                        var processedData = new List<TempCSVGlobal>();
-                        var fieldNames = new List<string>();
-
-                        // Itera a través de las filas del archivo CSV (omitimos el encabezado)
-                        for (int i = 1; i < csvFile.Length; i++)
-                        {
-                            var row = csvFile[i].Split(',');
-
-                            if (row.Length > 0)
-                            {
-                                var item = new TempCSVGlobal();
-                                var assignedFields = new HashSet<string>();
-
-                           
-                                for (int j = 0; j < row.Length; j++)
-                                {
-                                    if (long.TryParse(row[j], out long number))
-                                    {
-                                        if (j < 10 && item.Campo1 == 0) { item.Campo1 = number; assignedFields.Add("Campo1"); }
-                                        else if (j < 10 && item.Campo2 == 0) { item.Campo2 = number; assignedFields.Add("Campo2"); }
-                                        else if (j < 10 && item.Campo3 == 0) { item.Campo3 = number; assignedFields.Add("Campo3"); }
-                                        else if (j < 10 && item.Campo4 == 0) { item.Campo4 = number; assignedFields.Add("Campo4"); }
-                                        else if (j < 10 && item.Campo5 == 0) { item.Campo5 = number; assignedFields.Add("Campo5"); }
-
-                                    }
-                                    else
-                                    {
-                                        if (j < 10 && item.Campo6 == null) { item.Campo6 = row[j]; assignedFields.Add("Campo6"); }
-                                        else if (j < 10 && item.Campo7 == null) { item.Campo7 = row[j]; assignedFields.Add("Campo7"); }
-                                        else if (j < 10 && item.Campo8 == null) { item.Campo8 = row[j]; assignedFields.Add("Campo8"); }
-                                        else if (j < 10 && item.Campo9 == null) { item.Campo9 = row[j]; assignedFields.Add("Campo9"); }
-                                        else if (j < 10 && item.Campo10 == null) { item.Campo10 = row[j]; assignedFields.Add("Campo10"); }
-                                        // Se asume que los siguientes 5 son de texto
-                                    }
-
-                                }
-
-                               var header= csvFile[0].Split(',');
-                                processedData.Add(item);
-
-                                   //Funcion para subir datos a la base de datos
-                                fieldNames.AddRange(assignedFields);
-                            }
-                        }
-
-             
-                        Console.WriteLine("Nombres de los campos:");
-                        foreach (var name in fieldNames.Distinct())
-                        {
-                            Console.WriteLine(name);
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                // Manejo de errores
-                Console.WriteLine($"Error procesando el archivo: {ex.Message}");
-            }
-        }
-    }
+    
+    
 }

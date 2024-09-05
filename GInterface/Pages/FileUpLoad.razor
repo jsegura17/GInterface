@@ -101,29 +101,29 @@
                                 {
                                     if (long.TryParse(row[j], out long number))
                                     {
-                                        if (j < 10 && item.Campo1 == 0) item.Campo1 = number;
-                                        else if (j < 10 && item.Campo1 != 0) item.Campo2 = number;
-                                        else if (j < 10 && item.Campo2 != 0) item.Campo3 = number;
-                                        else if (j < 10 && item.Campo3 != 0) item.Campo4 = number;
-                                        else if (j < 10 && item.Campo4 != 0) item.Campo5 = number;
-                                        assignedFields.Add($"Campo{j + 1}");
+                                        if (j < 10 && item.Campo1 == 0) { item.Campo1 = number; assignedFields.Add("Campo1"); }
+                                        else if (j < 10 && item.Campo2 == 0) { item.Campo2 = number; assignedFields.Add("Campo2"); }
+                                        else if (j < 10 && item.Campo3 == 0) { item.Campo3 = number; assignedFields.Add("Campo3"); }
+                                        else if (j < 10 && item.Campo4 == 0) { item.Campo4 = number; assignedFields.Add("Campo4"); }
+                                        else if (j < 10 && item.Campo5 == 0) { item.Campo5 = number; assignedFields.Add("Campo5"); }
+
                                     }
                                     else
                                     {
-                                        if (j < 10 && item.Campo6 == null) item.Campo6 = row[j];
-                                        else if (j < 10 && item.Campo6 != null) item.Campo7 = row[j];
-                                        else if (j < 10 && item.Campo7 != null) item.Campo8 = row[j];
-                                        else if (j < 10 && item.Campo8 != null) item.Campo9 = row[j];
-                                        else if (j < 10 && item.Campo9 != null) item.Campo10 = row[j];
-                                        assignedFields.Add($"Campo{j + 1}"); // Se asume que los siguientes 5 son de texto
+                                        if (j < 10 && item.Campo6 == null) { item.Campo6 = row[j]; assignedFields.Add("Campo6"); }
+                                        else if (j < 10 && item.Campo7 == null) { item.Campo7 = row[j]; assignedFields.Add("Campo7"); }
+                                        else if (j < 10 && item.Campo8 == null) { item.Campo8 = row[j]; assignedFields.Add("Campo8"); }
+                                        else if (j < 10 && item.Campo9 == null) { item.Campo9 = row[j]; assignedFields.Add("Campo9"); }
+                                        else if (j < 10 && item.Campo10 == null) { item.Campo10 = row[j]; assignedFields.Add("Campo10"); }
+                                        // Se asume que los siguientes 5 son de texto
                                     }
 
                                 }
 
-                               
+                               var header= csvFile[0].Split(',');
                                 processedData.Add(item);
 
-              
+                                   //Funcion para subir datos a la base de datos
                                 fieldNames.AddRange(assignedFields);
                             }
                         }

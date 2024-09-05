@@ -291,6 +291,56 @@ namespace GInterface.Core
             }            
             return _return;
         }
+        public bool sortData(List<string> hearer, List<string> sort)
+        {
+            bool _return = false;
+
+
+            using (SqlConnection connection = GetDBConnection())
+            {
+                try
+                {
+                    connection.Open();
+                    using (SqlCommand command = new SqlCommand("sp_i_ValidateUserCredentials", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        // Agregar parámetros de entrada
+                        command.Parameters.Add(new SqlParameter("@Email", SqlDbType.VarChar, 50)).Value = email;
+                        command.Parameters.Add(new SqlParameter("@Password", SqlDbType.VarChar, 50)).Value = password;
+
+                        // Agregar parámetro de salida
+                        SqlParameter isValidUser = new SqlParameter("@IsValid", SqlDbType.Bit)
+                        {
+                            Direction = ParameterDirection.Output
+                        };
+                        SqlParameter isAdminParam = new SqlParameter("@IsAdmin", SqlDbType.Bit)
+                        {
+                            Direction = ParameterDirection.Output
+                        };
+                        command.Parameters.Add(isValidUser);
+                        command.Parameters.Add(isAdminParam);
+
+                        command.ExecuteNonQuery();
+
+                        instance.IsLoginUser = (bool)isValidUser.Value;
+                        instance.IsAdmin = (bool)isAdminParam.Value;
+                        instance.IsOnline = (bool)isValidUser.Value;
+
+                        _return = IsLoginUser;
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    instance.GlobalMsg = "Error:" + ex.Message;
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
+            return _return;
+        }
 
         public void LogOut()
         {

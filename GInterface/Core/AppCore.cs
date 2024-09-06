@@ -17,6 +17,7 @@ using System.Reflection.PortableExecutable;
 using System.Text.Json.Nodes;
 using System.Text.Json;
 using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
 
 namespace GInterface.Core
 {
@@ -298,64 +299,68 @@ namespace GInterface.Core
         }
         public void sortData(string[] csvFile, string fileName)
         {
-  
+            var response = 0;
+
+
                 try
                 {
                         var Longer = 10;
 
-                        if (csvFile.Length > 0)
+                if (csvFile.Length > 0)
+                {
+                    var processedData = new List<TempCSVGlobal>();
+                    var fieldNames = new List<string>();
+
+                    // Itera a través de las filas del archivo CSV (omitimos el encabezado)
+                    for (int i = 1; i < csvFile.Length; i++)
+                    {
+                        var row = csvFile[i].Split(',');
+
+                        if (row.Length > 0)
                         {
-                            var processedData = new List<TempCSVGlobal>();
-                            var fieldNames = new List<string>();
+                            var item = new TempCSVGlobal();
+                            var assignedFields = new HashSet<string>();
 
-                            // Itera a través de las filas del archivo CSV (omitimos el encabezado)
-                            for (int i = 1; i < csvFile.Length; i++)
+
+                            for (int j = 0; j < row.Length; j++)
                             {
-                                var row = csvFile[i].Split(',');
-
-                                if (row.Length > 0)
+                                if (long.TryParse(row[j], out long number))
                                 {
-                                    var item = new TempCSVGlobal();
-                                    var assignedFields = new HashSet<string>();
+                                    if (j < 10 && item.Campo1 == 0) { item.Campo1 = number; assignedFields.Add("Campo1"); }
+                                    else if (j < 10 && item.Campo2 == 0) { item.Campo2 = number; assignedFields.Add("Campo2"); }
+                                    else if (j < 10 && item.Campo3 == 0) { item.Campo3 = number; assignedFields.Add("Campo3"); }
+                                    else if (j < 10 && item.Campo4 == 0) { item.Campo4 = number; assignedFields.Add("Campo4"); }
+                                    else if (j < 10 && item.Campo5 == 0) { item.Campo5 = number; assignedFields.Add("Campo5"); }
 
-
-                                    for (int j = 0; j < row.Length; j++)
-                                    {
-                                        if (long.TryParse(row[j], out long number))
-                                        {
-                                            if (j < 10 && item.Campo1 == 0) { item.Campo1 = number; assignedFields.Add("Campo1"); }
-                                            else if (j < 10 && item.Campo2 == 0) { item.Campo2 = number; assignedFields.Add("Campo2"); }
-                                            else if (j < 10 && item.Campo3 == 0) { item.Campo3 = number; assignedFields.Add("Campo3"); }
-                                            else if (j < 10 && item.Campo4 == 0) { item.Campo4 = number; assignedFields.Add("Campo4"); }
-                                            else if (j < 10 && item.Campo5 == 0) { item.Campo5 = number; assignedFields.Add("Campo5"); }
-                                            
-                                        }
-                                        else
-                                        {
-                                            if (j < 10 && item.Campo6 == null) { item.Campo6 = row[j]; assignedFields.Add("Campo6"); }
-                                             else if (j < 10 && item.Campo7 == null) { item.Campo7 = row[j]; assignedFields.Add("Campo7"); }
-                                             else if (j < 10 && item.Campo8 == null) { item.Campo8 = row[j]; assignedFields.Add("Campo8"); }
-                                             else if (j < 10 && item.Campo9 == null) { item.Campo9 = row[j]; assignedFields.Add("Campo9"); }
-                                             else if (j < 10 && item.Campo10 == null) { item.Campo10 = row[j]; assignedFields.Add("Campo10"); }
-                                        }
-
-                                    }
-
-
-                                    processedData.Add(item);
-                                    headers = csvFile[0].Split(',');
-
-                            fieldNames.AddRange(assignedFields);
                                 }
-                        //processedData.Add(item); este va a tener todos los datos del csv en cuestion de datos
-                        //headers va a tener la cabeza del titulo de ese csv
-                        var objjson=convertJson(headers.ToList(),fieldNames);
+                                else
+                                {
+                                    if (j < 10 && item.Campo6 == null) { item.Campo6 = row[j]; assignedFields.Add("Campo6"); }
+                                    else if (j < 10 && item.Campo7 == null) { item.Campo7 = row[j]; assignedFields.Add("Campo7"); }
+                                    else if (j < 10 && item.Campo8 == null) { item.Campo8 = row[j]; assignedFields.Add("Campo8"); }
+                                    else if (j < 10 && item.Campo9 == null) { item.Campo9 = row[j]; assignedFields.Add("Campo9"); }
+                                    else if (j < 10 && item.Campo10 == null) { item.Campo10 = row[j]; assignedFields.Add("Campo10"); }
+                                }
 
-                       
                             }
 
 
+                            processedData.Add(item);
+                            headers = csvFile[0].Split(',');
+
+                            fieldNames.AddRange(assignedFields);
                         }
+                        //processedData.Add(item); este va a tener todos los datos del csv en cuestion de datos
+                        //headers va a tener la cabeza del titulo de ese csv
+                        var objjson = convertJson(headers.ToList(), fieldNames);
+                        var fileFields = headers.Length;
+                        ///objson va hacer uno de los elementos para contruir filecsv
+                        //// file name tambien se tiene que va hacer el nombre del archivo
+                        ///fileDate se rellena automaticamente en la base de datos
+                        ///hacer headers.lenght para ver los campos
+                        response = InsertFileCsv(fileName, TransactionStatus.Pending, fileFields, objjson);
+                    }
+                }
                     
                 }
                 catch (Exception ex)
@@ -365,6 +370,72 @@ namespace GInterface.Core
                 }
             
         }
+        public void CombinationFileCsVTempGlobal(string fileNames, TransactionStatus fileStatus, int fileFields, string fileJsonObj, TempCSVGlobal objetct)
+        {
+            InsertFileCsv(fileNames, 0, fileFields, fileJsonObj);
+            // aqui van a ir los demas procedimientos para subir los campos y además hacer la conexion del cross
+        }
+        public int InsertFileCsv(string fileNames, TransactionStatus fileStatus, int fileFields, string fileJsonObj)
+        {
+            int newId = 0;
+
+            using (SqlConnection connection = GetDBConnection())
+            {
+                try
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand("SP_InsertFileCSV", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        // Agregar parámetros de entrada
+                        command.Parameters.Add(new SqlParameter("@FileNames", SqlDbType.NVarChar, -1)
+                        {
+                            Value = fileNames
+                        });
+                        command.Parameters.Add(new SqlParameter("@FileStatus", SqlDbType.Int)
+                        {
+                            Value = fileStatus
+                        });
+                        command.Parameters.Add(new SqlParameter("@FileFields", SqlDbType.Int)
+                        {
+                            Value = fileFields
+                        });
+                        command.Parameters.Add(new SqlParameter("@FileJsonObj", SqlDbType.NVarChar, -1)
+                        {
+                            Value = fileJsonObj
+                        });
+
+                        // Agregar parámetro de salida
+                        SqlParameter outputIdParam = new SqlParameter("@NewID", SqlDbType.Int)
+                        {
+                            Direction = ParameterDirection.Output
+                        };
+                        command.Parameters.Add(outputIdParam);
+
+                        command.ExecuteNonQuery();
+
+                        // Obtener el ID del nuevo registro
+                        newId = (int)outputIdParam.Value;
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    // Manejar excepciones, por ejemplo:
+                    Console.WriteLine("SQL Error: " + ex.Message);
+                }
+                catch (Exception ex)
+                {
+                    // Manejar otras excepciones
+                    Console.WriteLine("Error: " + ex.Message);
+                }
+            }
+
+            return newId;
+        }
+
+
         public string convertJson(List<string> header, List<string> fieldNames)
         {
             var node = new JsonArray();

@@ -18,6 +18,7 @@ using System.Text.Json.Nodes;
 using System.Text.Json;
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace GInterface.Core
 {
@@ -297,9 +298,16 @@ namespace GInterface.Core
             }            
             return _return;
         }
+        public static string AppendDateTimeToName(string baseName)
+        {
+            DateTime now = DateTime.Now;
+            string dateTimeSuffix = now.ToString("dd/MM/yyyy-HHmm");
+            string newName = $"{baseName}_{dateTimeSuffix}";
+            return newName;
+        }
         public void sortData(string[] csvFile, string fileName)
         {
-            var k = 0;
+           fileName = AppendDateTimeToName(fileName);
 
 
             try
@@ -310,10 +318,17 @@ namespace GInterface.Core
                 {
                     var processedData = new List<TempCSVGlobal>();
                     var fieldNames = new List<string>();
+                    var count= 0;
 
+                    ///Datos a subir
+                    var fileFields= 0;
+                    var objjson= string.Empty;
+                    var items = string.Empty;
+                    List<TempCSVGlobal> itemTemp = new List<TempCSVGlobal>();
                     // Itera a través de las filas del archivo CSV (omitimos el encabezado)
                     for (int i = 1; i < csvFile.Length; i++)
                     {
+                        
                         var row = csvFile[i].Split(',');
 
                         if (row.Length > 0)
@@ -326,20 +341,20 @@ namespace GInterface.Core
                             {
                                 if (long.TryParse(row[j], out long number))
                                 {
-                                    if (j < 10 && item.Campo1 == 0) { item.Campo1 = number; assignedFields.Add("Campo1"); }
-                                    else if (j < 10 && item.Campo2 == 0) { item.Campo2 = number; assignedFields.Add("Campo2"); }
-                                    else if (j < 10 && item.Campo3 == 0) { item.Campo3 = number; assignedFields.Add("Campo3"); }
-                                    else if (j < 10 && item.Campo4 == 0) { item.Campo4 = number; assignedFields.Add("Campo4"); }
-                                    else if (j < 10 && item.Campo5 == 0) { item.Campo5 = number; assignedFields.Add("Campo5"); }
+                                    if (j < Longer && item.Campo1 == 0) { item.Campo1 = number; assignedFields.Add("Campo1"); }
+                                    else if (j < Longer && item.Campo2 == 0) { item.Campo2 = number; assignedFields.Add("Campo2"); }
+                                    else if (j < Longer && item.Campo3 == 0) { item.Campo3 = number; assignedFields.Add("Campo3"); }
+                                    else if (j < Longer && item.Campo4 == 0) { item.Campo4 = number; assignedFields.Add("Campo4"); }
+                                    else if (j < Longer && item.Campo5 == 0) { item.Campo5 = number; assignedFields.Add("Campo5"); }
 
                                 }
                                 else
                                 {
-                                    if (j < 10 && item.Campo6 == null) { item.Campo6 = row[j]; assignedFields.Add("Campo6"); }
-                                    else if (j < 10 && item.Campo7 == null) { item.Campo7 = row[j]; assignedFields.Add("Campo7"); }
-                                    else if (j < 10 && item.Campo8 == null) { item.Campo8 = row[j]; assignedFields.Add("Campo8"); }
-                                    else if (j < 10 && item.Campo9 == null) { item.Campo9 = row[j]; assignedFields.Add("Campo9"); }
-                                    else if (j < 10 && item.Campo10 == null) { item.Campo10 = row[j]; assignedFields.Add("Campo10"); }
+                                    if (j < Longer && item.Campo6 == null) { item.Campo6 = row[j]; assignedFields.Add("Campo6"); }
+                                    else if (j < Longer && item.Campo7 == null) { item.Campo7 = row[j]; assignedFields.Add("Campo7"); }
+                                    else if (j < Longer && item.Campo8 == null) { item.Campo8 = row[j]; assignedFields.Add("Campo8"); }
+                                    else if (j < Longer && item.Campo9 == null) { item.Campo9 = row[j]; assignedFields.Add("Campo9"); }
+                                    else if (j < Longer && item.Campo10 == null) { item.Campo10 = row[j]; assignedFields.Add("Campo10"); }
                                 }
 
                             }
@@ -349,19 +364,25 @@ namespace GInterface.Core
                             headers = csvFile[0].Split(',');
 
                             fieldNames.AddRange(assignedFields);
-                            k++;
+                            
                         }
                         //processedData.Add(item); este va a tener todos los datos del csv en cuestion de datos
                         //headers va a tener la cabeza del titulo de ese csv
-                        var objjson = convertJson(headers.ToList(), fieldNames);
-                        var fileFields = headers.Length;
+                        objjson = convertJson(headers.ToList(), fieldNames);
+                        fileFields = headers.Length;
                         ///objson va hacer uno de los elementos para contruir filecsv
                         //// file name tambien se tiene que va hacer el nombre del archivo
                         ///fileDate se rellena automaticamente en la base de datos
                         ///hacer headers.lenght para ver los campos
-                        InsertFileCsv(fileName, TransactionStatus.Pending, fileFields, objjson);
-                        InsertTempCsvGlobal(processedData[0]);
+
+                        //InsertFileCsv(fileName, TransactionStatus.Pending, fileFields, objjson);
+                        //InsertTempCsvGlobal(processedData[count]);
+                        itemTemp.Add(processedData[count]);
+
+                        count++;
                     }
+                    DataTable dataTable = LoadCsvData(itemTemp);
+                    InsertFileCsv(fileName, TransactionStatus.Pending, fileFields, objjson, dataTable);
 
                 }
                     
@@ -373,17 +394,11 @@ namespace GInterface.Core
                 }
             
         }
-        public void CombinationFileCsVTempGlobal(string fileNames, TransactionStatus fileStatus, int fileFields, string fileJsonObj, TempCSVGlobal item)
+        public void InsertFileCsv(string fileNames, TransactionStatus fileStatus, int fileFields, string fileJsonObj, DataTable csvData)
         {
-            var responseF = 0; /// InsertFileCsv es de esta api
-            var responseT = 0;/// InsertTempCsvGlobal es de esta api
-            
-           
-            // aqui van a ir los demas procedimientos para subir los campos y además hacer la conexion del cross
-        }
-        public int InsertFileCsv(string fileNames, TransactionStatus fileStatus, int fileFields, string fileJsonObj)
-        {
-            int newId = 0;
+
+            string message = string.Empty;
+            bool status = false;
 
             using (SqlConnection connection = GetDBConnection())
             {
@@ -412,18 +427,41 @@ namespace GInterface.Core
                         {
                             Value = fileJsonObj
                         });
+                        command.Parameters.Add(new SqlParameter("@testMode", SqlDbType.Int)
+                        {
+                            Value = 0
+                        });
+
+                        // Tabla Temp
+
+                        SqlParameter tvpParam = new SqlParameter("@CsvData", SqlDbType.Structured)
+                        {
+                            TypeName = "dbo.CsvDataType", // Tipo de datos de tabla definido en SQL Server
+                            Value = csvData
+                        };
+                        command.Parameters.Add(tvpParam);
+
+
 
                         // Agregar parámetro de salida
-                        SqlParameter outputIdParam = new SqlParameter("@NewID", SqlDbType.Int)
+
+                        SqlParameter messageParam = new SqlParameter("@MSG", SqlDbType.NVarChar, -1)
                         {
                             Direction = ParameterDirection.Output
                         };
-                        command.Parameters.Add(outputIdParam);
+                        command.Parameters.Add(messageParam);
+
+                        SqlParameter statusParam = new SqlParameter("@Status", SqlDbType.Bit)
+                        {
+                            Direction = ParameterDirection.Output
+                        };
+                        command.Parameters.Add(statusParam);
 
                         command.ExecuteNonQuery();
 
-                        // Obtener el ID del nuevo registro
-                        newId = (int)outputIdParam.Value;
+                        // Obtener el mensaje y status del nuevo registro
+                        message = (string)messageParam.Value;
+                        status = (bool)statusParam.Value;
                     }
                 }
                 catch (SqlException ex)
@@ -438,92 +476,47 @@ namespace GInterface.Core
                 }
             }
 
-            return newId;
+
         }
-        public int InsertTempCsvGlobal(TempCSVGlobal obj)
+
+
+        private static DataTable LoadCsvData(List<TempCSVGlobal> temp)
         {
-            int newId = 0;
+            // Cargar datos del CSV en una DataTable
+            DataTable table = new DataTable();
+            table.Columns.Add("Campo1", typeof(int));
+            table.Columns.Add("Campo2", typeof(int));
+            table.Columns.Add("Campo3", typeof(int));
+            table.Columns.Add("Campo4", typeof(int));
+            table.Columns.Add("Campo5", typeof(int));
+            table.Columns.Add("Campo6", typeof(string));
+            table.Columns.Add("Campo7", typeof(string));
+            table.Columns.Add("Campo8", typeof(string));
+            table.Columns.Add("Campo9", typeof(string));
+            table.Columns.Add("Campo10", typeof(string));
 
-            using (SqlConnection connection = GetDBConnection())
+
+            // Aquí deberías cargar datos desde tu archivo CSV a la DataTable
+            // Ejemplo de adición de filas
+            foreach (var item in temp)
             {
-                try
-                {
-                    connection.Open();
-
-                    using (SqlCommand command = new SqlCommand("SP_Temp_CSV_GLOBAL", connection))
-                    {
-                        command.CommandType = CommandType.StoredProcedure;
-
-                        // Agregar parámetros de entrada con nombres @Campo
-                        command.Parameters.Add(new SqlParameter("@Campo1", SqlDbType.BigInt)
-                        {
-                            Value = obj.Campo1
-                        });
-                        command.Parameters.Add(new SqlParameter("@Campo2", SqlDbType.BigInt)
-                        {
-                            Value = obj.Campo2
-                        });
-                        command.Parameters.Add(new SqlParameter("@Campo3", SqlDbType.BigInt)
-                        {
-                            Value = obj.Campo3
-                        });
-                        command.Parameters.Add(new SqlParameter("@Campo4", SqlDbType.BigInt)
-                        {
-                            Value = obj.Campo4 
-                        });
-                        command.Parameters.Add(new SqlParameter("@Campo5", SqlDbType.BigInt)
-                        {
-                            Value = obj.Campo5
-                        });
-                        command.Parameters.Add(new SqlParameter("@Campo6", SqlDbType.VarChar, -1)
-                        {
-                            Value = obj.Campo6 ?? (object)DBNull.Value
-                        });
-                        command.Parameters.Add(new SqlParameter("@Campo7", SqlDbType.VarChar, -1)
-                        {
-                            Value = obj.Campo7 ?? (object)DBNull.Value
-                        });
-                        command.Parameters.Add(new SqlParameter("@Campo8", SqlDbType.VarChar, -1)
-                        {
-                            Value = obj.Campo8 ?? (object)DBNull.Value
-                        });
-                        command.Parameters.Add(new SqlParameter("@Campo9", SqlDbType.VarChar, -1)
-                        {
-                            Value = obj.Campo9 ?? (object)DBNull.Value
-                        });
-                        command.Parameters.Add(new SqlParameter("@Campo10", SqlDbType.VarChar, -1)
-                        {
-                            Value = obj.Campo10 ?? (object)DBNull.Value
-                        });
-
-                        // Agregar parámetro de salida para obtener el nuevo ID
-                        SqlParameter outputIdParam = new SqlParameter("@NewID", SqlDbType.BigInt)
-                        {
-                            Direction = ParameterDirection.Output
-                        };
-                        command.Parameters.Add(outputIdParam);
-
-                        command.ExecuteNonQuery();
-
-                        // Obtener el ID del nuevo registro
-                        newId = Convert.ToInt32(outputIdParam.Value);
-                    }
-                }
-                catch (SqlException ex)
-                {
-                    // Manejar excepciones SQL
-                    Console.WriteLine("SQL Error: " + ex.Message);
-                }
-                catch (Exception ex)
-                {
-                    // Manejar otras excepciones
-                    Console.WriteLine("Error: " + ex.Message);
-                }
+             table.Rows.Add(
+                 item.Campo1,
+                 item.Campo2,
+                 item.Campo3,
+                 item.Campo4,
+                 item.Campo5,
+                 item.Campo6 ?? (object)DBNull.Value,
+                 item.Campo7 ?? (object)DBNull.Value,
+                 item.Campo8 ?? (object)DBNull.Value,
+                 item.Campo9 ?? (object)DBNull.Value,
+                 item.Campo10 ?? (object)DBNull.Value
+                 );
             }
+            
 
-            return newId;
+            return table;
         }
-
 
 
 

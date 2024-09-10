@@ -14,7 +14,7 @@ namespace GInterface.Models
         public enum DocumentType
         {
             Generico = 0,
-            TipoDocumento_01 = 1,
+            Picklist = 1,
             TipoDocumento_02 = 2,
             TipoDocumento_03 = 3,
         }

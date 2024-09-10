@@ -299,10 +299,10 @@ namespace GInterface.Core
         }
         public void sortData(string[] csvFile, string fileName)
         {
-            var response = 0;
+            var k = 0;
 
 
-                try
+            try
                 {
                         var Longer = 10;
 
@@ -349,6 +349,7 @@ namespace GInterface.Core
                             headers = csvFile[0].Split(',');
 
                             fieldNames.AddRange(assignedFields);
+                            k++;
                         }
                         //processedData.Add(item); este va a tener todos los datos del csv en cuestion de datos
                         //headers va a tener la cabeza del titulo de ese csv
@@ -358,8 +359,10 @@ namespace GInterface.Core
                         //// file name tambien se tiene que va hacer el nombre del archivo
                         ///fileDate se rellena automaticamente en la base de datos
                         ///hacer headers.lenght para ver los campos
-                        response = InsertFileCsv(fileName, TransactionStatus.Pending, fileFields, objjson);
+                        InsertFileCsv(fileName, TransactionStatus.Pending, fileFields, objjson);
+                        InsertTempCsvGlobal(processedData[0]);
                     }
+
                 }
                     
                 }
@@ -370,9 +373,12 @@ namespace GInterface.Core
                 }
             
         }
-        public void CombinationFileCsVTempGlobal(string fileNames, TransactionStatus fileStatus, int fileFields, string fileJsonObj, TempCSVGlobal objetct)
+        public void CombinationFileCsVTempGlobal(string fileNames, TransactionStatus fileStatus, int fileFields, string fileJsonObj, TempCSVGlobal item)
         {
-            InsertFileCsv(fileNames, 0, fileFields, fileJsonObj);
+            var responseF = 0; /// InsertFileCsv es de esta api
+            var responseT = 0;/// InsertTempCsvGlobal es de esta api
+            
+           
             // aqui van a ir los demas procedimientos para subir los campos y además hacer la conexion del cross
         }
         public int InsertFileCsv(string fileNames, TransactionStatus fileStatus, int fileFields, string fileJsonObj)
@@ -434,6 +440,91 @@ namespace GInterface.Core
 
             return newId;
         }
+        public int InsertTempCsvGlobal(TempCSVGlobal obj)
+        {
+            int newId = 0;
+
+            using (SqlConnection connection = GetDBConnection())
+            {
+                try
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand("SP_Temp_CSV_GLOBAL", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        // Agregar parámetros de entrada con nombres @Campo
+                        command.Parameters.Add(new SqlParameter("@Campo1", SqlDbType.BigInt)
+                        {
+                            Value = obj.Campo1
+                        });
+                        command.Parameters.Add(new SqlParameter("@Campo2", SqlDbType.BigInt)
+                        {
+                            Value = obj.Campo2
+                        });
+                        command.Parameters.Add(new SqlParameter("@Campo3", SqlDbType.BigInt)
+                        {
+                            Value = obj.Campo3
+                        });
+                        command.Parameters.Add(new SqlParameter("@Campo4", SqlDbType.BigInt)
+                        {
+                            Value = obj.Campo4 
+                        });
+                        command.Parameters.Add(new SqlParameter("@Campo5", SqlDbType.BigInt)
+                        {
+                            Value = obj.Campo5
+                        });
+                        command.Parameters.Add(new SqlParameter("@Campo6", SqlDbType.VarChar, -1)
+                        {
+                            Value = obj.Campo6 ?? (object)DBNull.Value
+                        });
+                        command.Parameters.Add(new SqlParameter("@Campo7", SqlDbType.VarChar, -1)
+                        {
+                            Value = obj.Campo7 ?? (object)DBNull.Value
+                        });
+                        command.Parameters.Add(new SqlParameter("@Campo8", SqlDbType.VarChar, -1)
+                        {
+                            Value = obj.Campo8 ?? (object)DBNull.Value
+                        });
+                        command.Parameters.Add(new SqlParameter("@Campo9", SqlDbType.VarChar, -1)
+                        {
+                            Value = obj.Campo9 ?? (object)DBNull.Value
+                        });
+                        command.Parameters.Add(new SqlParameter("@Campo10", SqlDbType.VarChar, -1)
+                        {
+                            Value = obj.Campo10 ?? (object)DBNull.Value
+                        });
+
+                        // Agregar parámetro de salida para obtener el nuevo ID
+                        SqlParameter outputIdParam = new SqlParameter("@NewID", SqlDbType.BigInt)
+                        {
+                            Direction = ParameterDirection.Output
+                        };
+                        command.Parameters.Add(outputIdParam);
+
+                        command.ExecuteNonQuery();
+
+                        // Obtener el ID del nuevo registro
+                        newId = Convert.ToInt32(outputIdParam.Value);
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    // Manejar excepciones SQL
+                    Console.WriteLine("SQL Error: " + ex.Message);
+                }
+                catch (Exception ex)
+                {
+                    // Manejar otras excepciones
+                    Console.WriteLine("Error: " + ex.Message);
+                }
+            }
+
+            return newId;
+        }
+
+
 
 
         public string convertJson(List<string> header, List<string> fieldNames)

@@ -8,7 +8,7 @@
 <RadzenLayout>
     <RadzenHeader>
         <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween" AlignItems="AlignItems.Center" Style="height: 100%; width: 100%;">
-            <RadzenLabel Text="BLOCK" Style="margin-left: 20px;" />
+            <RadzenLabel Text="HEADER" Style="margin-left: 20px;" />
             <RadzenButton Click=@(args => OnClick(EnumTypes.TransactionTask.GET_LOGOUT)) Text="Log Out" Icon="refresh" ButtonStyle="ButtonStyle.Base" Visible=@_appCore.IsOnline Style="margin-right: 20px;" />
         </RadzenStack>
     </RadzenHeader>

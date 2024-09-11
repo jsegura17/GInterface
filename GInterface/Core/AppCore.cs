@@ -79,6 +79,15 @@ namespace GInterface.Core
         public DateTime LastSyncPullDateTime { get; set; }
         public DateTime LastSyncPushDateTime { get; set; }
         public List<TransactionEvent> lstTransactionEvents { get; set; }
+
+        /// <summary>
+        /// Para esta parte va hacer para compartir los datos generados para guardar el csv
+        /// </summary>
+        public string CFileName="";
+        public TransactionStatus fileStatus;
+        public string ObjJason ="";
+        public DataTable InfotTempo;
+        public int head;
         string[] headers;
 
         //Lista de Tipos de Documentos
@@ -330,6 +339,7 @@ namespace GInterface.Core
                     {
                         
                         var row = csvFile[i].Split(',');
+                        
 
                         if (row.Length > 0)
                         {
@@ -346,17 +356,50 @@ namespace GInterface.Core
                                     else if (j < Longer && item.Campo3 == 0) { item.Campo3 = number; assignedFields.Add("Campo3"); }
                                     else if (j < Longer && item.Campo4 == 0) { item.Campo4 = number; assignedFields.Add("Campo4"); }
                                     else if (j < Longer && item.Campo5 == 0) { item.Campo5 = number; assignedFields.Add("Campo5"); }
-
+                                    else if (j < Longer && item.Campo6 == 0) { item.Campo6 = number; assignedFields.Add("Campo6"); }
+                                    else if (j < Longer && item.Campo7 == 0) { item.Campo7 = number; assignedFields.Add("Campo7"); }
+                                    else if (j < Longer && item.Campo8 == 0) { item.Campo8 = number; assignedFields.Add("Campo8"); }
+                                    else if (j < Longer && item.Campo9 == 0) { item.Campo9 = number; assignedFields.Add("Campo9"); }
+                                    else if (j < Longer && item.Campo10 == 0) { item.Campo10 = number; assignedFields.Add("Campo10"); }
+                                    else if (j < Longer && item.Campo11 == 0) { item.Campo11 = number; assignedFields.Add("Campo11"); }
+                                    else if (j < Longer && item.Campo12 == 0) { item.Campo12 = number; assignedFields.Add("Campo12"); }
+                                    else if (j < Longer && item.Campo13 == 0) { item.Campo13 = number; assignedFields.Add("Campo13"); }
+                                    else if (j < Longer && item.Campo14 == 0) { item.Campo14 = number; assignedFields.Add("Campo14"); }
+                                    else if (j < Longer && item.Campo15 == 0) { item.Campo15 = number; assignedFields.Add("Campo15"); }
                                 }
                                 else
                                 {
-                                    if (j < Longer && item.Campo6 == null) { item.Campo6 = row[j]; assignedFields.Add("Campo6"); }
-                                    else if (j < Longer && item.Campo7 == null) { item.Campo7 = row[j]; assignedFields.Add("Campo7"); }
-                                    else if (j < Longer && item.Campo8 == null) { item.Campo8 = row[j]; assignedFields.Add("Campo8"); }
-                                    else if (j < Longer && item.Campo9 == null) { item.Campo9 = row[j]; assignedFields.Add("Campo9"); }
-                                    else if (j < Longer && item.Campo10 == null) { item.Campo10 = row[j]; assignedFields.Add("Campo10"); }
+                                    if (j < Longer && item.Campo16 == null) { item.Campo16 = row[j]; assignedFields.Add("Campo16"); }
+                                    else if (j < Longer && item.Campo17 == null) { item.Campo17 = row[j]; assignedFields.Add("Campo17"); }
+                                    else if (j < Longer && item.Campo18 == null) { item.Campo18 = row[j]; assignedFields.Add("Campo18"); }
+                                    else if (j < Longer && item.Campo19 == null) { item.Campo19 = row[j]; assignedFields.Add("Campo19"); }
+                                    else if (j < Longer && item.Campo20 == null) { item.Campo20 = row[j]; assignedFields.Add("Campo20"); }
+                                    else if (j < Longer && item.Campo21 == null) { item.Campo21 = row[j]; assignedFields.Add("Campo21"); }
+                                    else if (j < Longer && item.Campo22 == null) { item.Campo22 = row[j]; assignedFields.Add("Campo22"); }
+                                    else if (j < Longer && item.Campo23 == null) { item.Campo23 = row[j]; assignedFields.Add("Campo23"); }
+                                    else if (j < Longer && item.Campo24 == null) { item.Campo24 = row[j]; assignedFields.Add("Campo24"); }
+                                    else if (j < Longer && item.Campo25 == null) { item.Campo25 = row[j]; assignedFields.Add("Campo25"); }
+                                    else if (j < Longer && item.Campo26 == null) { item.Campo26 = row[j]; assignedFields.Add("Campo26"); }
+                                    else if (j < Longer && item.Campo27 == null) { item.Campo27 = row[j]; assignedFields.Add("Campo27"); }
+                                    else if (j < Longer && item.Campo28 == null) { item.Campo28 = row[j]; assignedFields.Add("Campo28"); }
+                                    else if (j < Longer && item.Campo29 == null) { item.Campo29 = row[j]; assignedFields.Add("Campo29"); }
+                                    else if (j < Longer && item.Campo30 == null) { item.Campo30 = row[j]; assignedFields.Add("Campo30"); }
+                                    else if (j < Longer && item.Campo31 == null) { item.Campo31 = row[j]; assignedFields.Add("Campo31"); }
+                                    else if (j < Longer && item.Campo32 == null) { item.Campo32 = row[j]; assignedFields.Add("Campo32"); }
+                                    else if (j < Longer && item.Campo33 == null) { item.Campo33 = row[j]; assignedFields.Add("Campo33"); }
+                                    else if (j < Longer && item.Campo34 == null) { item.Campo34 = row[j]; assignedFields.Add("Campo34"); }
+                                    else if (j < Longer && item.Campo35 == null) { item.Campo35 = row[j]; assignedFields.Add("Campo35"); }
+                                    else if (j < Longer && item.Campo36 == null) { item.Campo36 = row[j]; assignedFields.Add("Campo36"); }
+                                    else if (j < Longer && item.Campo37 == null) { item.Campo37 = row[j]; assignedFields.Add("Campo37"); }
+                                    else if (j < Longer && item.Campo38 == null) { item.Campo38 = row[j]; assignedFields.Add("Campo38"); }
+                                    else if (j < Longer && item.Campo39 == null) { item.Campo39 = row[j]; assignedFields.Add("Campo39"); }
+                                    else if (j < Longer && item.Campo40 == null) { item.Campo40 = row[j]; assignedFields.Add("Campo40"); }
+                                    else if (j < Longer && item.Campo41 == null) { item.Campo41 = row[j]; assignedFields.Add("Campo41"); }
+                                    else if (j < Longer && item.Campo42 == null) { item.Campo42 = row[j]; assignedFields.Add("Campo42"); }
+                                    else if (j < Longer && item.Campo43 == null) { item.Campo43 = row[j]; assignedFields.Add("Campo43"); }
+                                    else if (j < Longer && item.Campo44 == null) { item.Campo44 = row[j]; assignedFields.Add("Campo44"); }
+                                    else if (j < Longer && item.Campo45 == null) { item.Campo45 = row[j]; assignedFields.Add("Campo45"); }
                                 }
-
                             }
 
 
@@ -382,7 +425,11 @@ namespace GInterface.Core
                         count++;
                     }
                     DataTable dataTable = LoadCsvData(itemTemp);
-                    InsertFileCsv(fileName, TransactionStatus.Pending, fileFields, objjson, dataTable);
+                    instance.CFileName =  fileName;
+                    instance.fileStatus = TransactionStatus.Pending;
+                    instance.ObjJason = objjson;
+                    instance.InfotTempo = dataTable;
+                    instance.head = headers.Length;
 
                 }
                     
@@ -436,7 +483,7 @@ namespace GInterface.Core
 
                         SqlParameter tvpParam = new SqlParameter("@CsvData", SqlDbType.Structured)
                         {
-                            TypeName = "dbo.CsvDataType", // Tipo de datos de tabla definido en SQL Server
+                            TypeName = "dbo.TempGlobalType", // Tipo de datos de tabla definido en SQL Server
                             Value = csvData
                         };
                         command.Parameters.Add(tvpParam);
@@ -484,36 +531,108 @@ namespace GInterface.Core
         {
             // Cargar datos del CSV en una DataTable
             DataTable table = new DataTable();
-            table.Columns.Add("Campo1", typeof(int));
-            table.Columns.Add("Campo2", typeof(int));
-            table.Columns.Add("Campo3", typeof(int));
-            table.Columns.Add("Campo4", typeof(int));
-            table.Columns.Add("Campo5", typeof(int));
-            table.Columns.Add("Campo6", typeof(string));
-            table.Columns.Add("Campo7", typeof(string));
-            table.Columns.Add("Campo8", typeof(string));
-            table.Columns.Add("Campo9", typeof(string));
-            table.Columns.Add("Campo10", typeof(string));
+            table.Columns.Add("Campo1", typeof(long));
+            table.Columns.Add("Campo2", typeof(long));
+            table.Columns.Add("Campo3", typeof(long));
+            table.Columns.Add("Campo4", typeof(long));
+            table.Columns.Add("Campo5", typeof(long));
+            table.Columns.Add("Campo6", typeof(long));
+            table.Columns.Add("Campo7", typeof(long));
+            table.Columns.Add("Campo8", typeof(long));
+            table.Columns.Add("Campo9", typeof(long));
+            table.Columns.Add("Campo10", typeof(long));
+            table.Columns.Add("Campo11", typeof(long));
+            table.Columns.Add("Campo12", typeof(long));
+            table.Columns.Add("Campo13", typeof(long));
+            table.Columns.Add("Campo14", typeof(long));
+            table.Columns.Add("Campo15", typeof(long));
+            //Text
+            table.Columns.Add("Campo16", typeof(string));
+            table.Columns.Add("Campo17", typeof(string));
+            table.Columns.Add("Campo18", typeof(string));
+            table.Columns.Add("Campo19", typeof(string));
+            table.Columns.Add("Campo20", typeof(string));
+            table.Columns.Add("Campo21", typeof(string));
+            table.Columns.Add("Campo22", typeof(string));
+            table.Columns.Add("Campo23", typeof(string));
+            table.Columns.Add("Campo24", typeof(string));
+            table.Columns.Add("Campo25", typeof(string));
+            table.Columns.Add("Campo26", typeof(string));
+            table.Columns.Add("Campo27", typeof(string));
+            table.Columns.Add("Campo28", typeof(string));
+            table.Columns.Add("Campo29", typeof(string));
+            table.Columns.Add("Campo30", typeof(string));
+            table.Columns.Add("Campo31", typeof(string));
+            table.Columns.Add("Campo32", typeof(string));
+            table.Columns.Add("Campo33", typeof(string));
+            table.Columns.Add("Campo34", typeof(string));
+            table.Columns.Add("Campo35", typeof(string));
+            table.Columns.Add("Campo36", typeof(string));
+            table.Columns.Add("Campo37", typeof(string));
+            table.Columns.Add("Campo38", typeof(string));
+            table.Columns.Add("Campo39", typeof(string));
+            table.Columns.Add("Campo40", typeof(string));
+            table.Columns.Add("Campo41", typeof(string));
+            table.Columns.Add("Campo42", typeof(string));
+            table.Columns.Add("Campo43", typeof(string));
+            table.Columns.Add("Campo44", typeof(string));
+            table.Columns.Add("Campo45", typeof(string));
+
 
 
             // Aquí deberías cargar datos desde tu archivo CSV a la DataTable
             // Ejemplo de adición de filas
             foreach (var item in temp)
             {
-             table.Rows.Add(
-                 item.Campo1,
-                 item.Campo2,
-                 item.Campo3,
-                 item.Campo4,
-                 item.Campo5,
-                 item.Campo6 ?? (object)DBNull.Value,
-                 item.Campo7 ?? (object)DBNull.Value,
-                 item.Campo8 ?? (object)DBNull.Value,
-                 item.Campo9 ?? (object)DBNull.Value,
-                 item.Campo10 ?? (object)DBNull.Value
-                 );
+                table.Rows.Add(
+                    item.Campo1,
+                    item.Campo2,
+                    item.Campo3,
+                    item.Campo4,
+                    item.Campo5,
+                    item.Campo6,
+                    item.Campo7,
+                    item.Campo8,
+                    item.Campo9,
+                    item.Campo10,
+                    item.Campo11,
+                    item.Campo12,
+                    item.Campo13,
+                    item.Campo14,
+                    item.Campo15,
+                    item.Campo16 ?? (object)DBNull.Value,
+                    item.Campo17 ?? (object)DBNull.Value,
+                    item.Campo18 ?? (object)DBNull.Value,
+                    item.Campo19 ?? (object)DBNull.Value,
+                    item.Campo20 ?? (object)DBNull.Value,
+                    item.Campo21 ?? (object)DBNull.Value,
+                    item.Campo22 ?? (object)DBNull.Value,
+                    item.Campo23 ?? (object)DBNull.Value,
+                    item.Campo24 ?? (object)DBNull.Value,
+                    item.Campo25 ?? (object)DBNull.Value,
+                    item.Campo26 ?? (object)DBNull.Value,
+                    item.Campo27 ?? (object)DBNull.Value,
+                    item.Campo28 ?? (object)DBNull.Value,
+                    item.Campo29 ?? (object)DBNull.Value,
+                    item.Campo30 ?? (object)DBNull.Value,
+                    item.Campo31 ?? (object)DBNull.Value,
+                    item.Campo32 ?? (object)DBNull.Value,
+                    item.Campo33 ?? (object)DBNull.Value,
+                    item.Campo34 ?? (object)DBNull.Value,
+                    item.Campo35 ?? (object)DBNull.Value,
+                    item.Campo36 ?? (object)DBNull.Value,
+                    item.Campo37 ?? (object)DBNull.Value,
+                    item.Campo38 ?? (object)DBNull.Value,
+                    item.Campo39 ?? (object)DBNull.Value,
+                    item.Campo40 ?? (object)DBNull.Value,
+                    item.Campo41 ?? (object)DBNull.Value,
+                    item.Campo42 ?? (object)DBNull.Value,
+                    item.Campo43 ?? (object)DBNull.Value,
+                    item.Campo44 ?? (object)DBNull.Value,
+                    item.Campo45 ?? (object)DBNull.Value
+                );
             }
-            
+
 
             return table;
         }

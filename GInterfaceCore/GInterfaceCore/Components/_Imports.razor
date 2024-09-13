@@ -1,5 +1,6 @@
 ﻿@using System.Net.Http
 @using System.Net.Http.Json
+@using GInterfaceCore.Interfaces
 @using Microsoft.AspNetCore.Components.Forms
 @using Microsoft.AspNetCore.Components.Routing
 @using Microsoft.AspNetCore.Components.Web
@@ -11,3 +12,13 @@
 @using GInterfaceCore.Components
 @using Radzen
 @using Radzen.Blazor
+
+@using static GInterfaceCore.Models.EnumTypes
+
+@inject NavigationManager UriHelper
+@inject DialogService DialogService
+@inject NotificationService NotificationService
+@inject IJSRuntime JS
+@inherits LayoutComponentBase
+
+@inject IAuthenticationService AuthenticationService

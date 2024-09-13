@@ -1,16 +1,42 @@
-﻿<h3>Cargar Archivo CSV</h3>
+﻿@rendermode InteractiveServer
 
-<InputFile OnChange="HandleFileSelected" accept=".csv" />
+<h3>Cargar Archivo CSV</h3>
+
+<InputFile OnChange="HandleFileSelected" accept=".csv, .xlsx, .xls" />
 <br />
+@if (!string.IsNullOrEmpty(UploadedContent))
+{
+    <h4>Tamaño del archivo: @FileSizeInKB KB</h4>
+    <RadzenButton Click=@(args => OnClick("Primary button")) Text="Ok" ButtonStyle="ButtonStyle.Primary" />
+    //Tengo que hacer que el boton on con la funcion Onclick cierre el boton y
+    //ejecute la carga de datos en la base
+}
 
 
 @code {
     private string UploadedContent { get; set; } = string.Empty;
     private long FileSizeInBytes { get; set; }
     private double FileSizeInKB => FileSizeInBytes / 1024.0;
-
+    private Core.AppCore _appCore = Core.AppCore.Instance;
     string[] csvFile;
     string[] headers;
+
+    private void OnClick(string text)
+    {
+        _appCore.InsertFileCsv(_appCore.CFileName, _appCore.fileStatus, _appCore.head, _appCore.ObjJason, _appCore.InfotTempo);
+
+        NotificationService.Notify(new NotificationMessage { Severity = NotificationSeverity.Info, Summary = "Button Clicked", Detail = text });
+    }
+
+    private async Task UploadFile(InputFileChangeEventArgs e)
+    {
+        var saveFolder = Path.Combine("C:\\Temp\\Files");
+        var filePath = Path.Combine(saveFolder, e.File.Name);
+        Directory.CreateDirectory(saveFolder);
+
+        await using FileStream fs = new(filePath, FileMode.Create);
+        await e.File.OpenReadStream().CopyToAsync(fs);
+    }
 
     private async Task HandleFileSelected(InputFileChangeEventArgs e)
     {
@@ -29,11 +55,24 @@
                     UploadedContent = await reader.ReadToEndAsync();
                     // Read file into a string array
                     csvFile = UploadedContent.Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                    // Get the header row of the CSV file and put it in an array
+
+
+                    _appCore.sortData(csvFile, fileName);
+                    headers = csvFile[0].Split(',');
 
                 }
 
                 // Llamar al método para mostrar la información de los campos
                 await ShowFieldInfoDialog(headers.Length, headers);
+
+                NotificationService.Notify(new NotificationMessage
+                    {
+                        Severity = NotificationSeverity.Info,
+                        Summary = $"{file.Name}",
+                        Detail = $"{FileSizeInKB} KB",
+                        Duration = 4000
+                    });
             }
             catch (Exception ex)
             {
@@ -48,8 +87,8 @@
 
     private async Task ShowFieldInfoDialog(int fieldCount, string[] fields)
     {
-        var message = $"El archivo CSV contiene {fieldCount} campos.\n\nCampos:\n{string.Join("\n", fields)}";
+        var message = $"El archivo CSV contiene {fieldCount} campos.\n\nCampos:\n{string.Join("\n", fields)}";        
     }
-
-
+    
+    
 }

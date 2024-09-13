@@ -5,8 +5,8 @@
 @if (!string.IsNullOrEmpty(UploadedContent))
 {
     <h4>Tamaño del archivo: @FileSizeInKB KB</h4>
-    <RadzenButton Click=@(args => OnClick("Primary button")) Text="Ok" ButtonStyle="ButtonStyle.Primary" /> //Tengo que hacer que el boton on con la funcion Onclick cierre el boton y 
-                                                                                                            //ejecute la carga de datos en la base
+    <RadzenButton Click=@(args => OnClick("Primary button")) Text="Ok" ButtonStyle="ButtonStyle.Primary" /> 
+                                                                                                          
 }
 
 @code {

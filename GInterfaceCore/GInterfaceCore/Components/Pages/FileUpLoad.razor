@@ -1,0 +1,55 @@
+﻿<h3>Cargar Archivo CSV</h3>
+
+<InputFile OnChange="HandleFileSelected" accept=".csv" />
+<br />
+
+
+@code {
+    private string UploadedContent { get; set; } = string.Empty;
+    private long FileSizeInBytes { get; set; }
+    private double FileSizeInKB => FileSizeInBytes / 1024.0;
+
+    string[] csvFile;
+    string[] headers;
+
+    private async Task HandleFileSelected(InputFileChangeEventArgs e)
+    {
+        var file = e.File;
+        var fileName = file.Name;
+        if (file != null)
+        {
+            FileSizeInBytes = file.Size; // Tamaño en bytes
+            try
+            {
+
+
+                using (var stream = file.OpenReadStream(104857600))
+                using (var reader = new StreamReader(stream))
+                {
+                    UploadedContent = await reader.ReadToEndAsync();
+                    // Read file into a string array
+                    csvFile = UploadedContent.Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+
+                }
+
+                // Llamar al método para mostrar la información de los campos
+                await ShowFieldInfoDialog(headers.Length, headers);
+            }
+            catch (Exception ex)
+            {
+                UploadedContent = $"Error al leer el archivo: {ex.Message}";
+            }
+        }
+        else
+        {
+            UploadedContent = "No se seleccionó ningún archivo.";
+        }
+    }
+
+    private async Task ShowFieldInfoDialog(int fieldCount, string[] fields)
+    {
+        var message = $"El archivo CSV contiene {fieldCount} campos.\n\nCampos:\n{string.Join("\n", fields)}";
+    }
+
+
+}

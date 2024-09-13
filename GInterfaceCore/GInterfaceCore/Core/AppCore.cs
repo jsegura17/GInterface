@@ -1,33 +1,24 @@
-﻿using System;
-using Microsoft.JSInterop;
-using System.Text;
-using System.Net;
-using RestSharp;
-using GInterface.Models;
-using Newtonsoft.Json;
-using GInterface.Core.Utils;
-using static GInterface.Models.EnumTypes;
+﻿using Microsoft.JSInterop;
 using System.Data;
-using System.Data.SqlClient;
-using System.Configuration;
-using GInterface.Properties;
-using GInterface.Shared;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
-using System.Reflection.PortableExecutable;
+using System.Net;
 using System.Text.Json.Nodes;
 using System.Text.Json;
-using System.Collections.Generic;
-using Newtonsoft.Json.Linq;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+using System.Text;
+using GInterfaceCore.Models;
+using Newtonsoft.Json;
+using GInterfaceCore.Core.Utils;
+using static GInterfaceCore.Models.EnumTypes;
+using System.Data.SqlClient;
+using GInterfaceCore.Properties;
 
-namespace GInterface.Core
+namespace GInterfaceCore.Core
 {
     public class AppCore
     {
         //Singleton Variables
         private static readonly Object s_lock = new Object();
-        private static AppCore instance = null;                       
-        
+        private static AppCore instance = null;
+
         //Format DateTime
         public string GLOBAL_DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
 #if WINDOWS
@@ -62,21 +53,21 @@ namespace GInterface.Core
         //Global EventManager for Class
         public EventManager<TransactionEvent> Global_EventManager { get; set; }
         //public NavigationManager _navigationManager { get; set; }
-        
+
         //Global for Blazor Components
-        public Shared.MainLayout MainLayoutCore { get; set; }
+        //public Shared.MainLayout MainLayoutCore { get; set; }
 
         //Global Variables
         public string GlobalMsg { get; set; } = string.Empty;
 
         public ExcelParse _excelParse = new ExcelParse();
-       
+
         public int SecondsPullSync { get; set; } = 15;
         public int SecondsPushSync { get; set; } = 10;
         public TimeSpan timePull { get; set; }
         public TimeSpan timePush { get; set; }
         public System.Timers.Timer SyncPullTimeObj { get; set; }
-        public System.Timers.Timer SyncPushTimeObj { get; set; }        
+        public System.Timers.Timer SyncPushTimeObj { get; set; }
         public DateTime LastSyncPullDateTime { get; set; }
         public DateTime LastSyncPushDateTime { get; set; }
         public List<TransactionEvent> lstTransactionEvents { get; set; }
@@ -84,16 +75,16 @@ namespace GInterface.Core
         /// <summary>
         /// Para esta parte va hacer para compartir los datos generados para guardar el csv
         /// </summary>
-        public string CFileName="";
+        public string CFileName = "";
         public TransactionStatus fileStatus;
-        public string ObjJason ="";
+        public string ObjJason = "";
         public DataTable InfotTempo;
         public int head;
         string[] headers;
 
         //Lista de Tipos de Documentos
         public List<DocumentType> GlobalDocType { get; set; }
-                
+
         /*
         * Set initial Data for Singleton Pattern Class
         * How used:
@@ -123,7 +114,7 @@ namespace GInterface.Core
         public static void setDataInit(AppCore temp)
         {
             try
-            {                             
+            {
                 HttpClientHandler clientHandler = new HttpClientHandler();
                 clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
 
@@ -144,7 +135,7 @@ namespace GInterface.Core
                 temp.IsAdmin = false;
 
                 temp.GlobalDocType = EnumHelpers<DocumentType>.GetValues().ToList();
-                
+
             }
             catch (Exception ex)
             {
@@ -196,7 +187,7 @@ namespace GInterface.Core
 
             return true;
         }
-                
+
         public async Task Focus(string elementId, IJSRuntime _js)
         {
             await _js.InvokeVoidAsync("invokeTabKey");
@@ -258,10 +249,10 @@ namespace GInterface.Core
             return connection;
         }
 
-        public bool SqlVerificationUser(string email, string password) 
+        public bool SqlVerificationUser(string email, string password)
         {
             bool _return = false;
-           
+
 
             using (SqlConnection connection = GetDBConnection())
             {
@@ -291,21 +282,21 @@ namespace GInterface.Core
                         command.ExecuteNonQuery();
 
                         instance.IsLoginUser = (bool)isValidUser.Value;
-                        instance.IsAdmin= (bool)isAdminParam.Value;
-                        instance.IsOnline= (bool)isValidUser.Value;
+                        instance.IsAdmin = (bool)isAdminParam.Value;
+                        instance.IsOnline = (bool)isValidUser.Value;
 
                         _return = IsLoginUser;
                     }
                 }
                 catch (SqlException ex)
-                {             
+                {
                     instance.GlobalMsg = "Error:" + ex.Message;
                 }
                 finally
                 {
                     connection.Close();
                 }
-            }            
+            }
             return _return;
         }
         public static string AppendDateTimeToName(string baseName)
@@ -317,30 +308,30 @@ namespace GInterface.Core
         }
         public void sortData(string[] csvFile, string fileName)
         {
-           fileName = AppendDateTimeToName(fileName);
+            fileName = AppendDateTimeToName(fileName);
 
 
             try
-                {
-                        var Longer = 45;
+            {
+                var Longer = 45;
 
                 if (csvFile.Length > 0)
                 {
                     var processedData = new List<TempCSVGlobal>();
                     var fieldNames = new List<string>();
-                    var count= 0;
+                    var count = 0;
 
                     ///Datos a subir
-                    var fileFields= 0;
-                    var objjson= string.Empty;
+                    var fileFields = 0;
+                    var objjson = string.Empty;
                     var items = string.Empty;
                     List<TempCSVGlobal> itemTemp = new List<TempCSVGlobal>();
                     // Itera a través de las filas del archivo CSV (omitimos el encabezado)
                     for (int i = 1; i < csvFile.Length; i++)
                     {
-                        
+
                         var row = csvFile[i].Split(',');
-                        
+
 
                         if (row.Length > 0)
                         {
@@ -408,7 +399,7 @@ namespace GInterface.Core
                             headers = csvFile[0].Split(',');
 
                             fieldNames.AddRange(assignedFields);
-                            
+
                         }
                         //processedData.Add(item); este va a tener todos los datos del csv en cuestion de datos
                         //headers va a tener la cabeza del titulo de ese csv
@@ -426,21 +417,21 @@ namespace GInterface.Core
                         count++;
                     }
                     DataTable dataTable = LoadCsvData(itemTemp);
-                    instance.CFileName =  fileName;
+                    instance.CFileName = fileName;
                     instance.fileStatus = TransactionStatus.Pending;
                     instance.ObjJason = objjson;
                     instance.InfotTempo = dataTable;
                     instance.head = headers.Length;
 
                 }
-                    
-                }
-                catch (Exception ex)
-                {
-                    // Manejo de errores
-                    Console.WriteLine($"Error procesando el archivo: {ex.Message}");
-                }
-            
+
+            }
+            catch (Exception ex)
+            {
+                // Manejo de errores
+                Console.WriteLine($"Error procesando el archivo: {ex.Message}");
+            }
+
         }
         public void InsertFileCsv(string fileNames, TransactionStatus fileStatus, int fileFields, string fileJsonObj, DataTable csvData)
         {
@@ -662,7 +653,7 @@ namespace GInterface.Core
                 { "FileColumNamePosition", colums }
             };
 
-            
+
             string jsonString = System.Text.Json.JsonSerializer.Serialize(jsonObject, new JsonSerializerOptions { WriteIndented = true });
             return jsonString;
         }
@@ -723,7 +714,5 @@ namespace GInterface.Core
         }
         #endregion SYNC_PROCESS
     }
-
-
 
 }

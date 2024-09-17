@@ -18,6 +18,8 @@
     private long FileSizeInBytes { get; set; }
     private double FileSizeInKB => FileSizeInBytes / 1024.0;
     private Core.AppCore _appCore = Core.AppCore.Instance;
+    private Core.Utils.ExcelParse _excel= new Core.Utils.ExcelParse();
+    // private Core.Utils.ExcelParse _excel= Core.Utils.ExcelParse.;
     string[] csvFile;
     string[] headers;
 
@@ -42,29 +44,69 @@
     {
         var file = e.File;
         var fileName = file.Name;
+
         if (file != null)
         {
-            FileSizeInBytes = file.Size; // Tamaño en bytes
+            FileSizeInBytes = file.Size;
+
             try
             {
-
-
+                // Abre el stream del archivo (límite de 100 MB)
                 using (var stream = file.OpenReadStream(104857600))
-                using (var reader = new StreamReader(stream))
                 {
-                    UploadedContent = await reader.ReadToEndAsync();
-                    // Read file into a string array
-                    csvFile = UploadedContent.Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-                    // Get the header row of the CSV file and put it in an array
+                    // Verifica si es un archivo de Excel
+                    if (fileName.Contains(".xls", StringComparison.OrdinalIgnoreCase) ||
+                        fileName.Contains(".xlsx", StringComparison.OrdinalIgnoreCase))
+                    {
+                        // Mostrar modal para pedir el tamaño del header
+                        var result = await DialogService.OpenAsync<HeaderSizeDialog>("Tamaño del Encabezado",
+                            new Dictionary<string, object>() { { "FileName", fileName } },
+                            new DialogOptions() { Width = "500px", Height = "300px" });
 
+                        if (result != null)
+                        {
+                            int headerSize;
+                            if (int.TryParse(result.HeaderSize, out headerSize))
+                            {
+                                await _excel.SimulateFileUpload(stream, fileName, headerSize, result.StartRow, result.EndRow);
+                            }
+                            else
+                            {
+                                NotificationService.Notify(new NotificationMessage
+                                    {
+                                        Severity = NotificationSeverity.Error,
+                                        Summary = "Error en el Tamaño del Encabezado",
+                                        Detail = "El tamaño del encabezado ingresado no es válido. Por favor, ingrese un número entero."
+                                    });
+                                return;
+                            }
+                        }
+                        else
+                        {
+                            // Si el resultado es null, se asumirá que el usuario canceló
+                            return;
+                        }
 
-                    _appCore.sortData(csvFile, fileName);
-                    headers = csvFile[0].Split(',');
+                    }
+                    else
+                    {
+                        // Solo leer el archivo si no es Excel
+                        using (var reader = new StreamReader(stream))
+                        {
+                            UploadedContent = await reader.ReadToEndAsync();
 
+                            // Procesar el archivo CSV
+                            csvFile = UploadedContent.Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                            _appCore.sortData(csvFile, fileName);
+                            headers = csvFile[0].Split(',');
+                        }
+                    }
                 }
 
-                // Llamar al método para mostrar la información de los campos
-                await ShowFieldInfoDialog(headers.Length, headers);
+                if (headers != null)
+                {
+                    await ShowFieldInfoDialog(headers.Length, headers);
+                }
 
                 NotificationService.Notify(new NotificationMessage
                     {
@@ -84,6 +126,8 @@
             UploadedContent = "No se seleccionó ningún archivo.";
         }
     }
+
+
 
     private async Task ShowFieldInfoDialog(int fieldCount, string[] fields)
     {

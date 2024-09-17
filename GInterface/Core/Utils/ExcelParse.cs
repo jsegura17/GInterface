@@ -8,6 +8,7 @@ namespace GInterface.Core.Utils
 {
     public class ExcelParse
     {
+        
         public static void ProcessExcelFile(Stream excelFileStream, string nameFile)
         {
             // Guardar el archivo temporalmente en el disco

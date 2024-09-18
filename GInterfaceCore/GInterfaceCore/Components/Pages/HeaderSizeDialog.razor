@@ -1,0 +1,45 @@
+﻿@page "/headersizedialog"
+@inject DialogService DialogService
+
+@code {
+    [Parameter] public string FileName { get; set; } // Recibe el nombre del archivo
+    public string HeaderSize { get; set; } // Almacena el tamaño del encabezado ingresado por el usuario
+    public string StartRow { get; set; } // Almacena la fila de inicio del reporte
+    public string EndRow { get; set; } // Almacena la fila final del reporte
+
+  
+    private void Confirm()
+    {
+  
+        DialogService.Close(new { HeaderSize, StartRow, EndRow });
+    }
+
+
+    private void Cancel()
+    {
+        
+        DialogService.Close(null);
+    }
+}
+
+<div>
+    <h3>Configurar Encabezado y Rango de Datos</h3>
+    <p>El archivo <strong>@FileName</strong> requiere que especifiques el tamaño del encabezado y el rango de datos.</p>
+
+    <div style="margin-bottom: 20px;">
+        <RadzenNumeric @bind-Value="HeaderSize" Placeholder="Tamaño del encabezado" Min="1" Max="100" Style="width:100%;" />
+    </div>
+
+    <div style="margin-bottom: 20px;">
+        <RadzenTextBox @bind-Value="StartRow" Placeholder="Fila de Inicio" Style="width:100%;" />
+    </div>
+
+    <div style="margin-bottom: 20px;">
+        <RadzenTextBox @bind-Value="EndRow" Placeholder="Fila Final" Style="width:100%;" />
+    </div>
+
+    <div style="margin-top:20px;">
+        <RadzenButton Text="Confirmar" Click="Confirm" ButtonStyle="ButtonStyle.Primary" />
+        <RadzenButton Text="Cancelar" Click="Cancel" ButtonStyle="ButtonStyle.Secondary" />
+    </div>
+</div>

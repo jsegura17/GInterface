@@ -6,18 +6,16 @@
     public string HeaderSize { get; set; } // Almacena el tamaño del encabezado ingresado por el usuario
     public string StartRow { get; set; } // Almacena la fila de inicio del reporte
     public string EndRow { get; set; } // Almacena la fila final del reporte
+    public bool IsAdditionalFieldChecked { get; set; } // Almacena el estado del checkbox
+    public string AdditionalFieldText { get; set; } // Almacena el texto adicional ingresado
 
-  
     private void Confirm()
     {
-  
-        DialogService.Close(new { HeaderSize, StartRow, EndRow });
+        DialogService.Close(new { HeaderSize, StartRow, EndRow, AdditionalFieldText });
     }
-
 
     private void Cancel()
     {
-        
         DialogService.Close(null);
     }
 }
@@ -37,6 +35,18 @@
     <div style="margin-bottom: 20px;">
         <RadzenTextBox @bind-Value="EndRow" Placeholder="Fila Final" Style="width:100%;" />
     </div>
+
+    <div style="margin-bottom: 20px;">
+        <RadzenCheckBox @bind-Value="IsAdditionalFieldChecked" />
+        <label style="margin-left: 10px;">¿Agregar campo adicional?</label>
+    </div>
+
+    @if (IsAdditionalFieldChecked)
+    {
+        <div style="margin-bottom: 20px;">
+            <RadzenTextBox @bind-Value="AdditionalFieldText" Placeholder="Texto adicional" Style="width:100%;" />
+        </div>
+    }
 
     <div style="margin-top:20px;">
         <RadzenButton Text="Confirmar" Click="Confirm" ButtonStyle="ButtonStyle.Primary" />

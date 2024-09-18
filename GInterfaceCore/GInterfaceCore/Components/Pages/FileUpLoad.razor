@@ -68,7 +68,7 @@
                             int headerSize;
                             if (int.TryParse(result.HeaderSize, out headerSize))
                             {
-                                await _excel.SimulateFileUpload(stream, fileName, headerSize, result.StartRow, result.EndRow);
+                                await _excel.SimulateFileUpload(stream, fileName, headerSize, result.StartRow, result.EndRow, result.AdditionalFieldText);
                             }
                             else
                             {

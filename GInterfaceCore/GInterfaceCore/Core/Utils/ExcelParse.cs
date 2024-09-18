@@ -9,7 +9,7 @@ namespace GInterfaceCore.Core.Utils
 {
     public class ExcelParse
     {
-        public static async Task ProcessExcelFileAsync(Stream excelFileStream, string nameFile, int headers, string startKeyword, string endKeyword)
+        public static async Task ProcessExcelFileAsync(Stream excelFileStream, string nameFile, int headers, string startKeyword, string endKeyword, string headerBase)
         {
             string customDirectory = @"C:\Apps\Genesis\Ginterface\Data";
             string tempFilePath = Path.Combine(customDirectory, nameFile);
@@ -24,19 +24,16 @@ namespace GInterfaceCore.Core.Utils
             }
             catch (IOException ioEx)
             {
-                // Manejar excepciones relacionadas con E/S (entrada/salida)
                 Console.WriteLine($"Error al escribir el archivo: {ioEx.Message}");
                 return;
             }
             catch (UnauthorizedAccessException uaEx)
             {
-                // Manejar excepciones relacionadas con permisos de acceso
                 Console.WriteLine($"Acceso denegado al archivo: {uaEx.Message}");
                 return;
             }
             catch (Exception ex)
             {
-                // Manejar cualquier otra excepción
                 Console.WriteLine($"Error inesperado: {ex.Message}");
                 return;
             }
@@ -49,9 +46,15 @@ namespace GInterfaceCore.Core.Utils
 
             List<string> AllValues = new List<string>();
             List<string> DataAfterEnd = new List<string>();
+            List<List<string>> HeaderBaseData = new List<List<string>>(); // Lista para almacenar las filas de cada valor de headerBase
 
             int rowCount = xlRange.Rows.Count;
             int colCount = xlRange.Columns.Count;
+
+            // Dividir los valores de headerBase en caso de que vengan separados por comas
+            string[] headerBaseKeywords = headerBase.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                                                    .Select(hb => hb.Trim()) // Quitar espacios en blanco
+                                                    .ToArray();
 
             // Recorre todas las celdas y almacena los valores en la lista AllValues
             for (int i = 1; i <= rowCount; i++)
@@ -62,6 +65,24 @@ namespace GInterfaceCore.Core.Utils
                     {
                         string cellValue = xlRange.Cells[i, j].Value2.ToString();
                         AllValues.Add(cellValue);
+
+                        // Buscar las filas que contengan algún valor de headerBase
+                        foreach (var headerKeyword in headerBaseKeywords)
+                        {
+                            if (cellValue.Equals(headerKeyword, StringComparison.OrdinalIgnoreCase))
+                            {
+                                // Recolectar toda la fila de datos para ese valor de headerBase
+                                List<string> rowData = new List<string>();
+                                for (int k = 1; k <= colCount; k++)
+                                {
+                                    if (xlRange.Cells[i, k] != null && xlRange.Cells[i, k].Value2 != null)
+                                    {
+                                        rowData.Add(xlRange.Cells[i, k].Value2.ToString());
+                                    }
+                                }
+                                HeaderBaseData.Add(rowData); // Agregar la fila completa a la lista
+                            }
+                        }
                     }
                 }
             }
@@ -85,7 +106,13 @@ namespace GInterfaceCore.Core.Utils
                 .Select((value, index) => new { value, index })
                 .GroupBy(x => x.index / headers)
                 .Select(g => g.Select(x => x.value).ToArray())
-                .ToArray();
+                .ToList(); // Cambiar a List para poder modificar más fácilmente
+
+            // Agregar los datos de headerBase al principio de la lista
+            foreach (var headerRow in HeaderBaseData)
+            {
+                result.Insert(0, headerRow.ToArray());
+            }
 
             // Imprimir los sub-arrays
             foreach (var array in result)
@@ -116,11 +143,12 @@ namespace GInterfaceCore.Core.Utils
         }
 
 
+
         // Simulación de la llamada desde otro contexto (API, servicio, etc.)
-        public async Task SimulateFileUpload(Stream uploadedFileStream, string nameFile, int headers, string startKeyword, string endKeyword)
+        public async Task SimulateFileUpload(Stream uploadedFileStream, string nameFile, int headers, string startKeyword, string endKeyword, string headerBase)
         {
             // Procesar el archivo directamente desde el Stream sin ruta de archivo local
-           await ProcessExcelFileAsync(uploadedFileStream, nameFile, headers, startKeyword, endKeyword);
+           await ProcessExcelFileAsync(uploadedFileStream, nameFile, headers, startKeyword, endKeyword, headerBase);
         }
     }
 }

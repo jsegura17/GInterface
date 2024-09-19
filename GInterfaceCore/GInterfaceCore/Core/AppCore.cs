@@ -80,7 +80,7 @@ namespace GInterfaceCore.Core
         public string ObjJason = "";
         public DataTable InfotTempo;
         public int head;
-        string[] headers;
+        public string[] headers;
 
         //Lista de Tipos de Documentos
         public List<DocumentType> GlobalDocType { get; set; }
@@ -624,10 +624,110 @@ namespace GInterfaceCore.Core
                     item.Campo45 ?? (object)DBNull.Value
                 );
             }
-
-
             return table;
         }
+        public void sortDataExcel(List<List<string>> excel, string fileName, string dataArray)
+        {
+            fileName = AppendDateTimeToName(fileName);
+            var requireCount = 0;
+            var requireData = dataArray.Split(new string[] { "," }, StringSplitOptions.None);
+            requireCount = requireData.Length;
+
+            try
+            {
+                var Longer = 45;
+
+                if (excel.Count > 0)
+                {
+                    var processedData = new List<TempCSVGlobal>();
+                    var fieldNames = new List<string>();
+                    var count = 0;
+
+                    // Datos a subir
+                    var fileFields = 0;
+                    var objjson = string.Empty;
+                    var items = string.Empty;
+                    List<TempCSVGlobal> itemTemp = new List<TempCSVGlobal>();
+
+                    // Asignamos la fila de headers
+                    var headers = excel[requireCount + 1];
+
+                    // Iteramos a través de las filas del archivo EXCEL (omitimos el encabezado)
+                    for (int i = requireCount + 2; i < excel.Count; i++)
+                    {
+                        var row = excel[i]; // Ya es una lista de strings, no necesitas Split
+
+                        if (row.Count > 0)
+                        {
+                            var item = new TempCSVGlobal();
+                            var assignedFields = new HashSet<string>();
+
+                            for (int j = 0; j < row.Count; j++)
+                            {
+                                if (long.TryParse(row[j], out long number))
+                                {
+                                    if (j < Longer && item.Campo1 == 0) { item.Campo1 = number; assignedFields.Add("Campo1"); }
+                                    else if (j < Longer && item.Campo2 == 0) { item.Campo2 = number; assignedFields.Add("Campo2"); }
+                                    else if (j < Longer && item.Campo3 == 0) { item.Campo3 = number; assignedFields.Add("Campo3"); }
+                                    else if (j < Longer && item.Campo4 == 0) { item.Campo4 = number; assignedFields.Add("Campo4"); }
+                                    else if (j < Longer && item.Campo5 == 0) { item.Campo5 = number; assignedFields.Add("Campo5"); }
+                                    else if (j < Longer && item.Campo6 == 0) { item.Campo6 = number; assignedFields.Add("Campo6"); }
+                                    else if (j < Longer && item.Campo7 == 0) { item.Campo7 = number; assignedFields.Add("Campo7"); }
+                                    else if (j < Longer && item.Campo8 == 0) { item.Campo8 = number; assignedFields.Add("Campo8"); }
+                                    else if (j < Longer && item.Campo9 == 0) { item.Campo9 = number; assignedFields.Add("Campo9"); }
+                                    else if (j < Longer && item.Campo10 == 0) { item.Campo10 = number; assignedFields.Add("Campo10"); }
+                                    else if (j < Longer && item.Campo11 == 0) { item.Campo11 = number; assignedFields.Add("Campo11"); }
+                                    else if (j < Longer && item.Campo12 == 0) { item.Campo12 = number; assignedFields.Add("Campo12"); }
+                                    else if (j < Longer && item.Campo13 == 0) { item.Campo13 = number; assignedFields.Add("Campo13"); }
+                                    else if (j < Longer && item.Campo14 == 0) { item.Campo14 = number; assignedFields.Add("Campo14"); }
+                                    else if (j < Longer && item.Campo15 == 0) { item.Campo15 = number; assignedFields.Add("Campo15"); }
+                                }
+                                else
+                                {
+                                    if (j < Longer && item.Campo16 == null) { item.Campo16 = row[j]; assignedFields.Add("Campo16"); }
+                                    else if (j < Longer && item.Campo17 == null) { item.Campo17 = row[j]; assignedFields.Add("Campo17"); }
+                                    else if (j < Longer && item.Campo18 == null) { item.Campo18 = row[j]; assignedFields.Add("Campo18"); }
+                                    else if (j < Longer && item.Campo19 == null) { item.Campo19 = row[j]; assignedFields.Add("Campo19"); }
+                                    else if (j < Longer && item.Campo20 == null) { item.Campo20 = row[j]; assignedFields.Add("Campo20"); }
+                                    else if (j < Longer && item.Campo21 == null) { item.Campo21 = row[j]; assignedFields.Add("Campo21"); }
+                                    else if (j < Longer && item.Campo22 == null) { item.Campo22 = row[j]; assignedFields.Add("Campo22"); }
+                                    else if (j < Longer && item.Campo23 == null) { item.Campo23 = row[j]; assignedFields.Add("Campo23"); }
+                                    else if (j < Longer && item.Campo24 == null) { item.Campo24 = row[j]; assignedFields.Add("Campo24"); }
+                                    else if (j < Longer && item.Campo25 == null) { item.Campo25 = row[j]; assignedFields.Add("Campo25"); }
+                                    else if (j < Longer && item.Campo26 == null) { item.Campo26 = row[j]; assignedFields.Add("Campo26"); }
+                                    else if (j < Longer && item.Campo27 == null) { item.Campo27 = row[j]; assignedFields.Add("Campo27"); }
+                                    else if (j < Longer && item.Campo28 == null) { item.Campo28 = row[j]; assignedFields.Add("Campo28"); }
+                                    else if (j < Longer && item.Campo29 == null) { item.Campo29 = row[j]; assignedFields.Add("Campo29"); }
+                                    else if (j < Longer && item.Campo30 == null) { item.Campo30 = row[j]; assignedFields.Add("Campo30"); }
+                                }
+                            }
+
+                            processedData.Add(item);
+                            fieldNames.AddRange(assignedFields);
+                            instance.headers = excel[requireCount + 1].ToArray();
+
+                        }
+                    }
+
+                    // Procesar datos CSV
+                    objjson = convertJsonExcel(headers, fieldNames, requireData);
+                    fileFields = headers.Count;
+
+                    // Insertar en base de datos
+                    DataTable dataTable = LoadCsvData(processedData);
+                    instance.CFileName = fileName;
+                    instance.fileStatus = TransactionStatus.Pending;
+                    instance.ObjJason = objjson;
+                    instance.InfotTempo = dataTable;
+                    instance.head = headers.Count;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error procesando el archivo: {ex.Message}");
+            }
+        }
+
 
 
 
@@ -635,25 +735,41 @@ namespace GInterfaceCore.Core
         {
             var node = new JsonArray();
             var colums = new JsonArray();
-            //foreach (var field in header) node.Add(field); 
-            //foreach (var field in fieldNames) colums.Add(field);
-
             foreach (var item in header)
             {
                 int index = header.IndexOf(item);
                 node.Add(item);
                 colums.Add(fieldNames[index]);
             }
-
-
-
             var jsonObject = new Dictionary<string, JsonArray>
             {
                 { "FileColumName", node },
                 { "FileColumNamePosition", colums }
             };
-
-
+            string jsonString = System.Text.Json.JsonSerializer.Serialize(jsonObject, new JsonSerializerOptions { WriteIndented = true });
+            return jsonString;
+        }
+        public string convertJsonExcel(List<string> header, List<string> fieldNames, string[] require)
+        {
+            var node = new JsonArray();
+            var columns = new JsonArray();
+            var requireNode = new JsonArray(); 
+            foreach (var item in header)
+            {
+                int index = header.IndexOf(item);
+                node.Add(item);
+                columns.Add(fieldNames[index]);
+            }
+            foreach (var req in require)
+            {
+                requireNode.Add(req);
+            }
+            var jsonObject = new Dictionary<string, JsonArray>
+    {
+        { "FileColumName", node },
+        { "FileColumNamePosition", columns },
+        { "RequireFields", requireNode } 
+    };
             string jsonString = System.Text.Json.JsonSerializer.Serialize(jsonObject, new JsonSerializerOptions { WriteIndented = true });
             return jsonString;
         }

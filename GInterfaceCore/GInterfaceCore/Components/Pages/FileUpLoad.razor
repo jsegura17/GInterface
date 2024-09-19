@@ -66,9 +66,12 @@
                         if (result != null)
                         {
                             int headerSize;
-                            if (int.TryParse(result.HeaderSize, out headerSize))
+                            if (int.TryParse(result.HeaderSize.ToString(), out headerSize))
                             {
-                                await _excel.SimulateFileUpload(stream, fileName, headerSize, result.StartRow, result.EndRow, result.AdditionalFieldText);
+                                List<List<string>> informationExcel = await _excel.SimulateFileUpload(stream, fileName, headerSize, result.StartRow, result.EndRow, result.AdditionalFieldText);
+                                _appCore.sortDataExcel(informationExcel, fileName, result.AdditionalFieldText);
+                                headers = _appCore.headers;
+                                UploadedContent = "a";
                             }
                             else
                             {

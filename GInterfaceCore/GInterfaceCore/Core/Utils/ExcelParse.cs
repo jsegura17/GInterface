@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using Excel = Microsoft.Office.Interop.Excel;
 
 namespace GInterfaceCore.Core.Utils
 {
     public class ExcelParse
     {
-        public static async Task ProcessExcelFileAsync(Stream excelFileStream, string nameFile, int headers, string startKeyword, string endKeyword, string headerBase)
+        public static async Task<List<List<string>>> ProcessExcelFileAsync(Stream excelFileStream, string nameFile, int headers, string startKeyword, string endKeyword, string headerBase)
         {
             string customDirectory = @"C:\Apps\Genesis\Ginterface\Data";
             string tempFilePath = Path.Combine(customDirectory, nameFile);
@@ -25,17 +26,17 @@ namespace GInterfaceCore.Core.Utils
             catch (IOException ioEx)
             {
                 Console.WriteLine($"Error al escribir el archivo: {ioEx.Message}");
-                return;
+                return null;
             }
             catch (UnauthorizedAccessException uaEx)
             {
                 Console.WriteLine($"Acceso denegado al archivo: {uaEx.Message}");
-                return;
+                return null;
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error inesperado: {ex.Message}");
-                return;
+                return null;
             }
 
             // Procesar el archivo Excel usando Interop (sincrónico)
@@ -105,24 +106,13 @@ namespace GInterfaceCore.Core.Utils
             var result = DataAfterEnd
                 .Select((value, index) => new { value, index })
                 .GroupBy(x => x.index / headers)
-                .Select(g => g.Select(x => x.value).ToArray())
-                .ToList(); // Cambiar a List para poder modificar más fácilmente
+                .Select(g => g.Select(x => x.value).ToList()) // Convertir a List<string>
+                .ToList(); // Cambiar a List<List<string>> para facilitar su manejo
 
             // Agregar los datos de headerBase al principio de la lista
             foreach (var headerRow in HeaderBaseData)
             {
-                result.Insert(0, headerRow.ToArray());
-            }
-
-            // Imprimir los sub-arrays
-            foreach (var array in result)
-            {
-                Console.WriteLine($"Array de tamaño {headers}:");
-                foreach (var item in array)
-                {
-                    Console.WriteLine(item);
-                }
-                Console.WriteLine();
+                result.Insert(0, headerRow);
             }
 
             // Limpiar recursos
@@ -140,15 +130,16 @@ namespace GInterfaceCore.Core.Utils
 
             // Eliminar el archivo temporal
             File.Delete(tempFilePath);
+
+            // Retornar la lista de listas de strings
+            return result;
         }
 
-
-
         // Simulación de la llamada desde otro contexto (API, servicio, etc.)
-        public async Task SimulateFileUpload(Stream uploadedFileStream, string nameFile, int headers, string startKeyword, string endKeyword, string headerBase)
+        public async Task<List<List<string>>> SimulateFileUpload(Stream uploadedFileStream, string nameFile, int headers, string startKeyword, string endKeyword, string headerBase)
         {
             // Procesar el archivo directamente desde el Stream sin ruta de archivo local
-           await ProcessExcelFileAsync(uploadedFileStream, nameFile, headers, startKeyword, endKeyword, headerBase);
+            return await ProcessExcelFileAsync(uploadedFileStream, nameFile, headers, startKeyword, endKeyword, headerBase);
         }
     }
 }

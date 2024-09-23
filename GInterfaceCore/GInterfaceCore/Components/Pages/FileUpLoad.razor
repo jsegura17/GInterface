@@ -30,6 +30,7 @@
         NotificationService.Notify(new NotificationMessage { Severity = NotificationSeverity.Info, Summary = "Button Clicked", Detail = text });
     }
 
+   
     private async Task UploadFile(InputFileChangeEventArgs e)
     {
         var saveFolder = Path.Combine("C:\\Temp\\Files");
@@ -58,20 +59,31 @@
                     if (fileName.Contains(".xls", StringComparison.OrdinalIgnoreCase) ||
                         fileName.Contains(".xlsx", StringComparison.OrdinalIgnoreCase))
                     {
+                        var parameters = new Dictionary<string, object>() { { "FileName", fileName } };
+                        
                         // Mostrar modal para pedir el tamaño del header
-                        var result = await DialogService.OpenAsync<HeaderSizeDialog>("Tamaño del Encabezado",
-                            new Dictionary<string, object>() { { "FileName", fileName } },
-                            new DialogOptions() { Width = "500px", Height = "300px" });
+                        //var result = await DialogService.OpenAsync<HeaderSizeDialog>("Tamaño del Encabezado",
+                            //new Dictionary<string, object>() { { "FileName", fileName } },
+                            //new DialogOptions() { Width = "500px", Height = "300px" });
+                        var result = await DialogService.OpenComponentExtension<HeaderSizeDialog>("Título del Diálogo", parameters);
 
                         if (result != null)
                         {
                             int headerSize;
                             if (int.TryParse(result.HeaderSize.ToString(), out headerSize))
                             {
-                                List<List<string>> informationExcel = await _excel.SimulateFileUpload(stream, fileName, headerSize, result.StartRow, result.EndRow, result.AdditionalFieldText);
-                                _appCore.sortDataExcel(informationExcel, fileName, result.AdditionalFieldText);
-                                headers = _appCore.headers;
-                                UploadedContent = "a";
+                                InvokeAsync(async () =>
+                                       {
+                                            // Simulate background task
+                                            List<List<string>> informationExcel = await _excel.SimulateFileUpload(stream, fileName, headerSize, result.StartRow, result.EndRow, result.AdditionalFieldText);
+
+                                            _appCore.sortDataExcel(informationExcel, fileName, result.AdditionalFieldText);
+                                            headers = _appCore.headers;
+                                            UploadedContent = "a";
+                                            // Close the dialog
+                                            DialogService.Close();
+                                       });
+                                await BusyDialog();
                             }
                             else
                             {
@@ -130,7 +142,15 @@
         }
     }
 
-
+    // Busy dialog from markup
+    async Task BusyDialog()
+    {
+        await DialogService.OpenAsync("", ds =>
+    @<RadzenStack AlignItems="AlignItems.Center" Gap="2rem" class="rz-p-12">
+        <RadzenImage Path="images/loading.gif" Style="width: 200px;" AlternateText="community" />
+        <RadzenText TextStyle="TextStyle.H6">Cargando meta informacion...</RadzenText>
+    </RadzenStack>, new DialogOptions() { ShowTitle = false, Style = "min-height:auto;min-width:auto;width:auto", CloseDialogOnEsc = false });
+    }
 
     private async Task ShowFieldInfoDialog(int fieldCount, string[] fields)
     {

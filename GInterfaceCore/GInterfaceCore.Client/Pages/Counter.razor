@@ -1,21 +1,20 @@
 ﻿@page "/counter"
 @rendermode InteractiveAuto
 
-<PageTitle>Counter</PageTitle>
+<PageTitle>Area de trabajo</PageTitle>
 
-<FileUpLoad></FileUpLoad>
+    <RadzenButton Click=@(args => OnClick("Primary button")) Text="Ok" ButtonStyle="ButtonStyle.Primary" />
 
 <h1>Counter</h1>
 
-<p role="status">Current count: @currentCount</p>
 
-<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
 
 @code {
-    private int currentCount = 0;
-
-    private void IncrementCount()
+ 
+    private void OnClick(string text)
     {
-        currentCount++;
+        
+        NotificationService.Notify(new NotificationMessage { Severity = NotificationSeverity.Info, Summary = "Button Clicked", Detail = text });
+      
     }
 }

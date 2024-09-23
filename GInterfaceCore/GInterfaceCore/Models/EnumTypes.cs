@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -137,6 +138,12 @@ namespace GInterfaceCore.Models
             Open,
             Closed,
             All
+        }
+
+        public enum MenuItems
+        {
+            [Description("PickList")]
+            Picklist = 1
         }
     }
 }

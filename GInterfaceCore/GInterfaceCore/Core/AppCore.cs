@@ -710,7 +710,7 @@ namespace GInterfaceCore.Core
                     }
 
                     // Procesar datos CSV
-                    objjson = convertJsonExcel(headers, fieldNames, requireData);
+                    objjson = convertJsonExcel(headers, fieldNames, requireData, excel);
                     fileFields = headers.Count;
 
                     // Insertar en base de datos
@@ -749,26 +749,34 @@ namespace GInterfaceCore.Core
             string jsonString = System.Text.Json.JsonSerializer.Serialize(jsonObject, new JsonSerializerOptions { WriteIndented = true });
             return jsonString;
         }
-        public string convertJsonExcel(List<string> header, List<string> fieldNames, string[] require)
+        public string convertJsonExcel(List<string> header, List<string> fieldNames, string[] require, List<List<string>>excel )
         {
             var node = new JsonArray();
             var columns = new JsonArray();
-            var requireNode = new JsonArray(); 
+            var requireNode = new JsonArray();
+            var dataRequireNode = new JsonArray();
             foreach (var item in header)
             {
                 int index = header.IndexOf(item);
                 node.Add(item);
                 columns.Add(fieldNames[index]);
             }
+            List<string> onlySeconds = excel.Select(sublista => sublista[1])
+                                       .Take(require.Length)
+                                       .ToList();
             foreach (var req in require)
-            {
-                requireNode.Add(req);
-            }
+            {  requireNode.Add(req);}
+            foreach (var dataReq in onlySeconds)
+            { dataRequireNode.Add(dataReq); }
+
+
+
             var jsonObject = new Dictionary<string, JsonArray>
     {
         { "FileColumName", node },
         { "FileColumNamePosition", columns },
-        { "RequireFields", requireNode } 
+        { "RequireFields", requireNode },
+        { "DataRequireFields", dataRequireNode }
     };
             string jsonString = System.Text.Json.JsonSerializer.Serialize(jsonObject, new JsonSerializerOptions { WriteIndented = true });
             return jsonString;

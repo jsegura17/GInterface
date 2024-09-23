@@ -1,0 +1,34 @@
+﻿@page "/workspace"
+@rendermode InteractiveAuto
+
+<h3>Documentos Configurados</h3>
+
+<table style="width:80%">
+    <tr>
+        <td hidden="@hideMenu1">
+            <!-- Botón con imagen de fondo -->
+            <button @onclick="() => OnClick(GInterfaceCore.Models.EnumTypes.MenuItems.Picklist)"
+                    class="btn"
+                    style="background-image: url('/images/integra.png'); width: 100px; height: 100px; background-size: cover; border: none;">
+                
+            </button>
+            <!-- Texto debajo del botón -->
+            <p class="size_12 text_center">@GInterfaceCore.Models.EnumTypes.MenuItems.Picklist.GetDisplayDescription()</p>
+        </td>
+    </tr>
+</table>
+
+
+
+
+@code {
+    //By Menu Btns
+    bool hideMenu1 = false;
+
+    private void OnClick(GInterfaceCore.Models.EnumTypes.MenuItems globalMenuItems)
+    {
+
+        NotificationService.Notify(new NotificationMessage { Severity = NotificationSeverity.Info, Summary = "Button Clicked", Detail = globalMenuItems.GetDisplayDescription() });
+
+    }
+}

@@ -1,24 +1,98 @@
-﻿@inherits LayoutComponentBase
+﻿<RadzenDialog />
+<RadzenNotification />
+<RadzenContextMenu />
+<RadzenTooltip />
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
+<PageTitle>GInterface - Manejo de Interfaces</PageTitle>
 
-    <main>
-        <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
-            <RadzenComponents @rendermode="InteractiveAuto" />
+<RadzenLayout>
+    <RadzenHeader>
+        <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween" AlignItems="AlignItems.Center" Style="height: 100%; width: 100%;">
+            <RadzenLabel Text="HEADER" Style="margin-left: 20px;" />
+            <RadzenButton Click=@(args => OnClick(EnumTypes.TransactionTask.GET_LOGOUT)) Text="Log Out" Icon="refresh" ButtonStyle="ButtonStyle.Base" Visible=@_appCore.IsOnline Style="margin-right: 20px;" />
+        </RadzenStack>
+    </RadzenHeader>
+
+
+    <RadzenSidebar @bind-Expanded="@sidebar1Expanded">
+        <RadzenPanelMenu>
+            @if (_appCore.IsOnline)
+            {
+                <RadzenPanelMenuItem Text="Home" Icon="home"
+                                     Click=@(args => OnClick(EnumTypes.TransactionTask.GET_HOME)) />
+            }
+          
+            @if (_appCore.IsAdmin)
+            {
+                <RadzenPanelMenuItem Text="Config" Icon="assessment"
+                                     Click=@(args => OnClick(EnumTypes.TransactionTask.GET_CONFIG)) />
+            }            
+        </RadzenPanelMenu>
+        <div class="rz-p-4">
+            Sidebar
         </div>
-
-        <article class="content px-4">
+    </RadzenSidebar>
+    <RadzenBody>
+        <div class="rz-p-4">
             @Body
-        </article>
-    </main>
-</div>
+        </div>
+    </RadzenBody>
+    <RadzenFooter>
+        Footer
+    </RadzenFooter>
+</RadzenLayout>
 
-<div id="blazor-error-ui">
-    An unhandled error has occurred.
-    <a href="" class="reload">Reload</a>
-    <a class="dismiss">🗙</a>
-</div>
+@code {
+    //Get Global Core Settings
+    private Core.AppCore _appCore = Core.AppCore.Instance;
+
+    bool sidebar1Expanded = true;
+
+    protected override void OnInitialized()
+    {
+        _appCore.MainLayoutCore = this;
+    }
+
+    #region MainMenu
+
+    public async Task OnClick(EnumTypes.TransactionTask transactionItem)
+    {
+        _appCore.LastTransactionTask = transactionItem;
+        switch (transactionItem)
+        {
+            case EnumTypes.TransactionTask.GET_HOME:
+                //TODO: We need implement a CURRENT_HOME because if you are in other Page, this approach don't work it
+                //sidebar1Expanded = !sidebar1Expanded;
+                if (_appCore.IsLoginUser)
+                {
+                    GoToUri("/");
+                }
+                else
+                {
+                    UriHelper.NavigateTo("/login");
+                }
+                break;
+            case EnumTypes.TransactionTask.GET_CONFIG:
+                //sidebar1Expanded = !sidebar1Expanded;
+                UriHelper.NavigateTo("/config");
+                break;
+            case EnumTypes.TransactionTask.GET_LOGIN:
+                UriHelper.NavigateTo("/login");
+                break;
+            case EnumTypes.TransactionTask.GET_MAIN_MENU:
+                UriHelper.NavigateTo("/");
+                break;
+            case EnumTypes.TransactionTask.GET_LOGOUT:
+                _appCore.LogOut();
+                UriHelper.NavigateTo("/login");
+                await InvokeAsync(StateHasChanged);
+                break;
+        }
+    }
+
+    public void GoToUri(string _uri = "/")
+    {
+        UriHelper.NavigateTo(_uri);
+    }
+    #endregion MainMenu
+}

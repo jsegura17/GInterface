@@ -10,6 +10,9 @@ using GInterfaceCore.Core.Utils;
 using static GInterfaceCore.Models.EnumTypes;
 using System.Data.SqlClient;
 using GInterfaceCore.Properties;
+using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.AspNetCore.Components;
+using GInterfaceCore.Components.Layout;
 
 namespace GInterfaceCore.Core
 {
@@ -52,10 +55,10 @@ namespace GInterfaceCore.Core
 
         //Global EventManager for Class
         public EventManager<TransactionEvent> Global_EventManager { get; set; }
-        //public NavigationManager _navigationManager { get; set; }
+        public NavigationManager _navigationManager { get; set; }
 
         //Global for Blazor Components
-        //public Shared.MainLayout MainLayoutCore { get; set; }
+        public MainLayout MainLayoutCore { get; set; }
 
         //Global Variables
         public string GlobalMsg { get; set; } = string.Empty;
@@ -786,6 +789,11 @@ namespace GInterfaceCore.Core
             instance.IsLoginUser = false;
             instance.IsAdmin = false;
             instance.IsOnline = false;
+        }
+
+        public void GoToUrl(string _uri)
+        {
+            
         }
 
         #region SYNC_PROCESS

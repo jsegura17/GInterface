@@ -1,26 +1,16 @@
 ﻿@page "/"
+@using GInterfaceCore.Core
+
+
+<FileUpLoad></FileUpLoad>
+
+
 
 @code {
-    //Get Global Core Settings
-    private Core.AppCore _appCore = Core.AppCore.Instance;
+   
 
-    protected override void OnInitialized()
-    {
-        base.OnInitialized();
-        try
-        {
-            if (_appCore.IsLoginUser)
-            {
-                UriHelper.NavigateTo("/");
-            }
-            else
-            {
-                UriHelper.NavigateTo("/login");
-            }
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.Message);
-        }   
-    }
+    
+
+
 }
+

@@ -47,8 +47,8 @@ namespace GInterfaceCore.Core
         public bool Global_ScanInfo_Running { get; set; } = false;
         public bool IsOnline { get; set; } = false;
         public bool IsInEmulator { get; set; } = false;
-        public bool IsLoginUser { get; set; } = false;
-        public bool IsAdmin { get; set; } = false;
+        public bool IsLoginUser { get; set; } = true;
+        public bool IsAdmin { get; set; } = true;
         public EnumTypes.TransactionTask LastTransactionTask { get; set; }
         public HttpClient Global_HttpClient;
         JsonSerializerSettings settings;
@@ -485,6 +485,81 @@ namespace GInterfaceCore.Core
 
 
 
+                        // Agregar parámetro de salida
+
+                        SqlParameter messageParam = new SqlParameter("@MSG", SqlDbType.NVarChar, -1)
+                        {
+                            Direction = ParameterDirection.Output
+                        };
+                        command.Parameters.Add(messageParam);
+
+                        SqlParameter statusParam = new SqlParameter("@Status", SqlDbType.Bit)
+                        {
+                            Direction = ParameterDirection.Output
+                        };
+                        command.Parameters.Add(statusParam);
+
+                        command.ExecuteNonQuery();
+
+                        // Obtener el mensaje y status del nuevo registro
+                        message = (string)messageParam.Value;
+                        status = (bool)statusParam.Value;
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    // Manejar excepciones, por ejemplo:
+                    Console.WriteLine("SQL Error: " + ex.Message);
+                }
+                catch (Exception ex)
+                {
+                    // Manejar otras excepciones
+                    Console.WriteLine("Error: " + ex.Message);
+                }
+            }
+
+
+        }
+
+        public void InsertBaseFileCsv(string fileNames, TransactionStatus fileStatus, int fileFields, string fileJsonObj)
+        {
+
+            string message = string.Empty;
+            bool status = false;
+
+            using (SqlConnection connection = GetDBConnection())
+            {
+                try
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand("SP_InsertFileCSVBase", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        // Agregar parámetros de entrada
+                        command.Parameters.Add(new SqlParameter("@FileNames", SqlDbType.NVarChar, -1)
+                        {
+                            Value = fileNames
+                        });
+                        command.Parameters.Add(new SqlParameter("@FileStatus", SqlDbType.Int)
+                        {
+                            Value = fileStatus
+                        });
+                        command.Parameters.Add(new SqlParameter("@FileFields", SqlDbType.Int)
+                        {
+                            Value = fileFields
+                        });
+                        command.Parameters.Add(new SqlParameter("@FileJsonObj", SqlDbType.NVarChar, -1)
+                        {
+                            Value = fileJsonObj
+                        });
+                        command.Parameters.Add(new SqlParameter("@testMode", SqlDbType.Int)
+                        {
+                            Value = 0
+                        });
+
+                        // Tabla Temp
                         // Agregar parámetro de salida
 
                         SqlParameter messageParam = new SqlParameter("@MSG", SqlDbType.NVarChar, -1)

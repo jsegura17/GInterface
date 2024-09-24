@@ -1,5 +1,6 @@
 ﻿@page "/workspace"
-@rendermode InteractiveAuto
+
+<TempFileUpload></TempFileUpload> 
 
 <h3>Documentos Configurados</h3>
 
@@ -25,10 +26,57 @@
     //By Menu Btns
     bool hideMenu1 = false;
 
-    private void OnClick(GInterfaceCore.Models.EnumTypes.MenuItems globalMenuItems)
+    private async Task OnClick(GInterfaceCore.Models.EnumTypes.MenuItems globalMenuItems)
     {
 
-        NotificationService.Notify(new NotificationMessage { Severity = NotificationSeverity.Info, Summary = "Button Clicked", Detail = globalMenuItems.GetDisplayDescription() });
+       
+
+        var parameters = "globalMenuItems";
+
+        // Mostrar modal para pedir el tamaño del header
+        //var result = await DialogService.OpenAsync<HeaderSizeDialog>("Tamaño del Encabezado",
+        //new Dictionary<string, object>() { { "FileName", fileName } },
+        //new DialogOptions() { Width = "500px", Height = "300px" });
+        var result = await DialogService.OpenComponentExtension<HeaderSizeDialog>("Espera");  
+
+        if (result != null)
+        {
+            int headerSize;
+            if (int.TryParse(result.HeaderSize.ToString(), out headerSize))
+            {
+                InvokeAsync(async () =>
+                       {
+                           // Simulate background task
+                       NotificationService.Notify(new NotificationMessage { Severity = NotificationSeverity.Info, Summary = "Button Clicked", Detail = globalMenuItems.GetDisplayDescription() });
+                           DialogService.Close();
+                       });
+                await BusyDialog();
+            }
+            else
+            {
+                NotificationService.Notify(new NotificationMessage
+                    {
+                        Severity = NotificationSeverity.Error,
+                        Summary = "Error en el Tamaño del Encabezado",
+                        Detail = "El tamaño del encabezado ingresado no es válido. Por favor, ingrese un número entero."
+                    });
+                return;
+            }
+        }
 
     }
+
+    async Task BusyDialog()
+    {
+        await DialogService.OpenAsync("", ds =>
+    @<RadzenStack AlignItems="AlignItems.Center" Gap="2rem" class="rz-p-12">
+        <RadzenImage Path="images/loading.gif" Style="width: 200px;" AlternateText="community" />
+        <RadzenText TextStyle="TextStyle.H6">Cargando meta informacion...</RadzenText>
+    </RadzenStack>, new DialogOptions() { ShowTitle = false, Style = "min-height:auto;min-width:auto;width:auto", CloseDialogOnEsc = false });
+    }
+
+
+
+
+
 }

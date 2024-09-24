@@ -1,6 +1,6 @@
 ﻿
 
-<h3>Cargar Archivo CSV</h3>
+<h3>Cargar Archivo temp CSV</h3>
 
 <InputFile OnChange="HandleFileSelected" accept=".csv, .xlsx, .xls" />
 <br />
@@ -18,19 +18,19 @@
     private long FileSizeInBytes { get; set; }
     private double FileSizeInKB => FileSizeInBytes / 1024.0;
     private Core.AppCore _appCore = Core.AppCore.Instance;
-    private Core.Utils.ExcelParse _excel= new Core.Utils.ExcelParse();
+    private Core.Utils.ExcelParse _excel = new Core.Utils.ExcelParse();
     // private Core.Utils.ExcelParse _excel= Core.Utils.ExcelParse.;
     string[] csvFile;
     string[] headers;
 
     private void OnClick(string text)
     {
-        _appCore.InsertFileCsv(_appCore.CFileName, _appCore.fileStatus, _appCore.head, _appCore.ObjJason, _appCore.InfotTempo);
+        _appCore.InsertBaseFileCsv(_appCore.CFileName, _appCore.fileStatus, _appCore.head, _appCore.ObjJason);
         DialogService.Close();
         NotificationService.Notify(new NotificationMessage { Severity = NotificationSeverity.Info, Summary = "Button Clicked", Detail = text });
     }
 
-   
+
     private async Task UploadFile(InputFileChangeEventArgs e)
     {
         var saveFolder = Path.Combine("C:\\Temp\\Files");
@@ -57,14 +57,14 @@
                 {
                     // Verifica si es un archivo de Excel
                     if (fileName.Contains(".xls", StringComparison.OrdinalIgnoreCase) ||
-                        fileName.Contains(".xlsx", StringComparison.OrdinalIgnoreCase))
+                    fileName.Contains(".xlsx", StringComparison.OrdinalIgnoreCase))
                     {
                         var parameters = new Dictionary<string, object>() { { "FileName", fileName } };
-                        
+
                         // Mostrar modal para pedir el tamaño del header
                         //var result = await DialogService.OpenAsync<HeaderSizeDialog>("Tamaño del Encabezado",
-                            //new Dictionary<string, object>() { { "FileName", fileName } },
-                            //new DialogOptions() { Width = "500px", Height = "300px" });
+                        //new Dictionary<string, object>() { { "FileName", fileName } },
+                        //new DialogOptions() { Width = "500px", Height = "300px" });
                         var result = await DialogService.OpenComponentExtension<HeaderSizeDialog>("Título del Diálogo", parameters);
 
                         if (result != null)
@@ -72,25 +72,25 @@
                             int headerSize;
                             if (int.TryParse(result.HeaderSize.ToString(), out headerSize))
                             {
-                               
-                                    // Simulate background task
-                                     List<List<string>> informationExcel = await _excel.SimulateFileUpload(stream, fileName, headerSize, result.StartRow, result.EndRow, result.AdditionalFieldText);
 
-                                    _appCore.sortDataExcel(informationExcel, fileName, result.AdditionalFieldText);
-                                    headers = _appCore.headers;
-                                     UploadedContent = "a";
-                                      // Close the dialog
-                                     
-                                      
+                                // Simulate background task
+                                List<List<string>> informationExcel = await _excel.SimulateFileUpload(stream, fileName, headerSize, result.StartRow, result.EndRow, result.AdditionalFieldText);
+
+                                _appCore.sortDataExcel(informationExcel, fileName, result.AdditionalFieldText);
+                                headers = _appCore.headers;
+                                UploadedContent = "a";
+                                // Close the dialog
+
+
                             }
                             else
                             {
                                 NotificationService.Notify(new NotificationMessage
-                                    {
-                                        Severity = NotificationSeverity.Error,
-                                        Summary = "Error en el Tamaño del Encabezado",
-                                        Detail = "El tamaño del encabezado ingresado no es válido. Por favor, ingrese un número entero."
-                                    });
+                                        {
+                                            Severity = NotificationSeverity.Error,
+                                            Summary = "Error en el Tamaño del Encabezado",
+                                            Detail = "El tamaño del encabezado ingresado no es válido. Por favor, ingrese un número entero."
+                                        });
                                 return;
                             }
                         }
@@ -122,14 +122,14 @@
                 }
 
                 NotificationService.Notify(new NotificationMessage
-                    {
-                        Severity = NotificationSeverity.Info,
-                        Summary = $"{file.Name}",
-                        Detail = $"{FileSizeInKB} KB",
-                        Duration = 4000,
+                        {
+                            Severity = NotificationSeverity.Info,
+                            Summary = $"{file.Name}",
+                            Detail = $"{FileSizeInKB} KB",
+                            Duration = 4000,
 
 
-                    });
+                        });
             }
             catch (Exception ex)
             {
@@ -166,8 +166,8 @@
 
     private async Task ShowFieldInfoDialog(int fieldCount, string[] fields)
     {
-        var message = $"El archivo CSV contiene {fieldCount} campos.\n\nCampos:\n{string.Join("\n", fields)}";        
+        var message = $"El archivo CSV contiene {fieldCount} campos.\n\nCampos:\n{string.Join("\n", fields)}";
     }
-    
-    
+
+
 }

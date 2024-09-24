@@ -1,0 +1,896 @@
+2024-09-24 11:44:00.677 -06:00 [INF] User profile is available. Using 'C:\Users\Josue\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2024-09-24 11:44:00.993 -06:00 [INF] Iniciando la aplicación web
+2024-09-24 11:44:01.994 -06:00 [INF] Now listening on: https://localhost:7068
+2024-09-24 11:44:01.994 -06:00 [INF] Now listening on: http://localhost:5078
+2024-09-24 11:44:02.354 -06:00 [INF] No action descriptors found. This may indicate an incorrectly configured application or missing application parts. To learn more, visit https://aka.ms/aspnet/mvc/app-parts
+2024-09-24 11:44:02.440 -06:00 [INF] Application started. Press Ctrl+C to shut down.
+2024-09-24 11:44:02.441 -06:00 [INF] Hosting environment: Development
+2024-09-24 11:44:02.442 -06:00 [INF] Content root path: C:\Desarrollo\BrayanCarranza\Repos\GInterfaceCore\GInterfaceCore
+2024-09-24 11:44:04.973 -06:00 [INF] Request starting HTTP/1.1 GET https://localhost/_framework/debug/ws-proxy?browser=ws%3A%2F%2F127.0.0.1%3A55843%2Fdevtools%2Fbrowser%2Fa0d7d47f-adc1-4a63-9a45-c15380920954 - null null
+2024-09-24 11:44:05.530 -06:00 [INF] Request finished HTTP/1.1 GET https://localhost/_framework/debug/ws-proxy?browser=ws%3A%2F%2F127.0.0.1%3A55843%2Fdevtools%2Fbrowser%2Fa0d7d47f-adc1-4a63-9a45-c15380920954 - 302 0 null 596.0379ms
+2024-09-24 11:44:06.085 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/ - null null
+2024-09-24 11:44:06.340 -06:00 [INF] Executing endpoint '/ (/)'
+2024-09-24 11:44:06.915 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/aspnetcore-browser-refresh.js - null null
+2024-09-24 11:44:06.916 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/GInterfaceCore.styles.css - null null
+2024-09-24 11:44:06.922 -06:00 [INF] Executed endpoint '/ (/)'
+2024-09-24 11:44:06.922 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/blazor.web.js - null null
+2024-09-24 11:44:06.924 -06:00 [INF] Executing endpoint 'Blazor web static files'
+2024-09-24 11:44:06.930 -06:00 [INF] The file /_framework/blazor.web.js was not modified
+2024-09-24 11:44:06.930 -06:00 [INF] The file /GInterfaceCore.styles.css was not modified
+2024-09-24 11:44:06.931 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/GInterfaceCore.styles.css - 304 null text/css 15.8796ms
+2024-09-24 11:44:06.931 -06:00 [INF] Executed endpoint 'Blazor web static files'
+2024-09-24 11:44:06.932 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/blazor.web.js - 304 null text/javascript 10.2421ms
+2024-09-24 11:44:06.935 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/aspnetcore-browser-refresh.js - 200 13764 application/javascript; charset=utf-8 19.4498ms
+2024-09-24 11:44:06.937 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/ - 200 null text/html; charset=utf-8 852.0494ms
+2024-09-24 11:44:07.042 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_vs/browserLink - null null
+2024-09-24 11:44:07.194 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/dotnet.js - null null
+2024-09-24 11:44:07.195 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:44:07.216 -06:00 [INF] The file /_framework/dotnet.js.gz was not modified
+2024-09-24 11:44:07.217 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:44:07.217 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/dotnet.js.gz - 304 null text/javascript 22.9761ms
+2024-09-24 11:44:07.307 -06:00 [INF] Request starting HTTP/1.1 GET https://localhost:7068/_framework/dotnet.js.map - null null
+2024-09-24 11:44:07.307 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:44:07.394 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_vs/browserLink - 200 null text/javascript; charset=UTF-8 352.0926ms
+2024-09-24 11:44:07.395 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/blazor.boot.json - null null
+2024-09-24 11:44:07.395 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:44:07.396 -06:00 [INF] The file /_framework/blazor.boot.json.gz was not modified
+2024-09-24 11:44:07.396 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:44:07.396 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/blazor.boot.json.gz - 304 null application/json 1.7523ms
+2024-09-24 11:44:07.399 -06:00 [INF] Sending file. Request path: '/_framework/dotnet.js.map.gz'. Physical path: 'C:\Desarrollo\BrayanCarranza\Repos\GInterfaceCore\GInterfaceCore.Client\bin\Debug\net8.0\wwwroot\_framework\dotnet.js.map.gz'
+2024-09-24 11:44:07.400 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:44:07.401 -06:00 [INF] Request finished HTTP/1.1 GET https://localhost:7068/_framework/dotnet.js.map.gz - 200 18741 text/plain 93.9184ms
+2024-09-24 11:44:07.426 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/dotnet.runtime.8.0.8.29rooc9szm.js - null null
+2024-09-24 11:44:07.426 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/dotnet.native.8.0.8.e0zg01041f.js - null null
+2024-09-24 11:44:07.426 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:44:07.426 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:44:07.427 -06:00 [INF] The file /_framework/dotnet.native.8.0.8.e0zg01041f.js.gz was not modified
+2024-09-24 11:44:07.427 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:44:07.427 -06:00 [INF] The file /_framework/dotnet.runtime.8.0.8.29rooc9szm.js.gz was not modified
+2024-09-24 11:44:07.427 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:44:07.427 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/dotnet.native.8.0.8.e0zg01041f.js.gz - 304 null text/javascript 1.6259ms
+2024-09-24 11:44:07.427 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/dotnet.runtime.8.0.8.29rooc9szm.js.gz - 304 null text/javascript 1.7477ms
+2024-09-24 11:44:07.563 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/appsettings.Development.json - null null
+2024-09-24 11:44:07.564 -06:00 [INF] The file /appsettings.Development.json was not modified
+2024-09-24 11:44:07.565 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/appsettings.Development.json - 304 null application/json 1.8793ms
+2024-09-24 11:44:07.575 -06:00 [INF] Request starting HTTP/1.1 GET https://localhost:7068/_framework/dotnet.runtime.js.map - null null
+2024-09-24 11:44:07.575 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:44:07.581 -06:00 [INF] Sending file. Request path: '/_framework/dotnet.runtime.js.map.gz'. Physical path: 'C:\Desarrollo\BrayanCarranza\Repos\GInterfaceCore\GInterfaceCore.Client\bin\Debug\net8.0\wwwroot\_framework\dotnet.runtime.js.map.gz'
+2024-09-24 11:44:07.581 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:44:07.582 -06:00 [INF] Request finished HTTP/1.1 GET https://localhost:7068/_framework/dotnet.runtime.js.map.gz - 200 100233 text/plain 6.6272ms
+2024-09-24 11:44:07.738 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/appsettings.json - null null
+2024-09-24 11:44:07.774 -06:00 [INF] The file /appsettings.json was not modified
+2024-09-24 11:44:07.774 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/appsettings.json - 304 null application/json 36.3251ms
+2024-09-24 11:44:14.098 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/blazor-hotreload.js - null null
+2024-09-24 11:44:14.098 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/blazor-hotreload.js - 200 574 application/javascript; charset=utf-8 2.1184ms
+2024-09-24 11:44:14.118 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/blazor-hotreload - null null
+2024-09-24 11:44:14.122 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/blazor-hotreload - 204 null null 4.8945ms
+2024-09-24 11:46:35.951 -06:00 [INF] User profile is available. Using 'C:\Users\Josue\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2024-09-24 11:46:36.257 -06:00 [INF] Iniciando la aplicación web
+2024-09-24 11:46:36.871 -06:00 [INF] Now listening on: https://localhost:7068
+2024-09-24 11:46:36.871 -06:00 [INF] Now listening on: http://localhost:5078
+2024-09-24 11:46:36.887 -06:00 [INF] No action descriptors found. This may indicate an incorrectly configured application or missing application parts. To learn more, visit https://aka.ms/aspnet/mvc/app-parts
+2024-09-24 11:46:37.239 -06:00 [INF] Application started. Press Ctrl+C to shut down.
+2024-09-24 11:46:37.240 -06:00 [INF] Hosting environment: Development
+2024-09-24 11:46:37.240 -06:00 [INF] Content root path: C:\Desarrollo\BrayanCarranza\Repos\GInterfaceCore\GInterfaceCore
+2024-09-24 11:46:39.260 -06:00 [INF] Request starting HTTP/1.1 GET https://localhost/_framework/debug/ws-proxy?browser=ws%3A%2F%2F127.0.0.1%3A55892%2Fdevtools%2Fbrowser%2Ffe47469c-a844-4599-b257-96258dcbfbae - null null
+2024-09-24 11:46:40.048 -06:00 [INF] Request finished HTTP/1.1 GET https://localhost/_framework/debug/ws-proxy?browser=ws%3A%2F%2F127.0.0.1%3A55892%2Fdevtools%2Fbrowser%2Ffe47469c-a844-4599-b257-96258dcbfbae - 302 0 null 796.0738ms
+2024-09-24 11:46:40.918 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/ - null null
+2024-09-24 11:46:41.203 -06:00 [INF] Executing endpoint '/ (/)'
+2024-09-24 11:46:41.808 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/aspnetcore-browser-refresh.js - null null
+2024-09-24 11:46:41.816 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/blazor.web.js - null null
+2024-09-24 11:46:41.820 -06:00 [INF] Executed endpoint '/ (/)'
+2024-09-24 11:46:41.821 -06:00 [INF] Executing endpoint 'Blazor web static files'
+2024-09-24 11:46:41.830 -06:00 [INF] The file /_framework/blazor.web.js was not modified
+2024-09-24 11:46:41.832 -06:00 [INF] Executed endpoint 'Blazor web static files'
+2024-09-24 11:46:41.833 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/blazor.web.js - 304 null text/javascript 16.3029ms
+2024-09-24 11:46:41.834 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/ - 200 null text/html; charset=utf-8 917.7585ms
+2024-09-24 11:46:41.835 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/aspnetcore-browser-refresh.js - 200 13764 application/javascript; charset=utf-8 27.4114ms
+2024-09-24 11:46:41.908 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_vs/browserLink - null null
+2024-09-24 11:46:42.046 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/dotnet.js - null null
+2024-09-24 11:46:42.046 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:46:42.070 -06:00 [INF] The file /_framework/dotnet.js.gz was not modified
+2024-09-24 11:46:42.071 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:46:42.071 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/dotnet.js.gz - 304 null text/javascript 25.4408ms
+2024-09-24 11:46:42.176 -06:00 [INF] Request starting HTTP/1.1 GET https://localhost:7068/_framework/dotnet.js.map - null null
+2024-09-24 11:46:42.178 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:46:42.181 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_vs/browserLink - 200 null text/javascript; charset=UTF-8 273.2656ms
+2024-09-24 11:46:42.209 -06:00 [INF] Sending file. Request path: '/_framework/dotnet.js.map.gz'. Physical path: 'C:\Desarrollo\BrayanCarranza\Repos\GInterfaceCore\GInterfaceCore.Client\bin\Debug\net8.0\wwwroot\_framework\dotnet.js.map.gz'
+2024-09-24 11:46:42.210 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:46:42.210 -06:00 [INF] Request finished HTTP/1.1 GET https://localhost:7068/_framework/dotnet.js.map.gz - 200 18741 text/plain 34.3293ms
+2024-09-24 11:46:42.286 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/blazor.boot.json - null null
+2024-09-24 11:46:42.286 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:46:42.287 -06:00 [INF] The file /_framework/blazor.boot.json.gz was not modified
+2024-09-24 11:46:42.288 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:46:42.288 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/blazor.boot.json.gz - 304 null application/json 1.9143ms
+2024-09-24 11:46:42.341 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/dotnet.runtime.8.0.8.29rooc9szm.js - null null
+2024-09-24 11:46:42.341 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:46:42.343 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/dotnet.native.8.0.8.e0zg01041f.js - null null
+2024-09-24 11:46:42.344 -06:00 [INF] The file /_framework/dotnet.runtime.8.0.8.29rooc9szm.js.gz was not modified
+2024-09-24 11:46:42.344 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:46:42.344 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:46:42.344 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/dotnet.runtime.8.0.8.29rooc9szm.js.gz - 304 null text/javascript 3.8004ms
+2024-09-24 11:46:42.345 -06:00 [INF] The file /_framework/dotnet.native.8.0.8.e0zg01041f.js.gz was not modified
+2024-09-24 11:46:42.345 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:46:42.345 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/dotnet.native.8.0.8.e0zg01041f.js.gz - 304 null text/javascript 1.6857ms
+2024-09-24 11:46:42.428 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/appsettings.Development.json - null null
+2024-09-24 11:46:42.430 -06:00 [INF] The file /appsettings.Development.json was not modified
+2024-09-24 11:46:42.431 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/appsettings.Development.json - 304 null application/json 3.1113ms
+2024-09-24 11:46:42.444 -06:00 [INF] Request starting HTTP/1.1 GET https://localhost:7068/_framework/dotnet.runtime.js.map - null null
+2024-09-24 11:46:42.445 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:46:42.454 -06:00 [INF] Sending file. Request path: '/_framework/dotnet.runtime.js.map.gz'. Physical path: 'C:\Desarrollo\BrayanCarranza\Repos\GInterfaceCore\GInterfaceCore.Client\bin\Debug\net8.0\wwwroot\_framework\dotnet.runtime.js.map.gz'
+2024-09-24 11:46:42.454 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:46:42.455 -06:00 [INF] Request finished HTTP/1.1 GET https://localhost:7068/_framework/dotnet.runtime.js.map.gz - 200 100233 text/plain 10.2437ms
+2024-09-24 11:46:42.636 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/appsettings.json - null null
+2024-09-24 11:46:42.637 -06:00 [INF] The file /appsettings.json was not modified
+2024-09-24 11:46:42.637 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/appsettings.json - 304 null application/json 1.3525ms
+2024-09-24 11:46:48.558 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/blazor-hotreload.js - null null
+2024-09-24 11:46:48.559 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/blazor-hotreload.js - 200 574 application/javascript; charset=utf-8 0.957ms
+2024-09-24 11:46:48.581 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/blazor-hotreload - null null
+2024-09-24 11:46:48.585 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/blazor-hotreload - 204 null null 4.5574ms
+2024-09-24 11:46:55.833 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/config - null null
+2024-09-24 11:46:55.858 -06:00 [INF] Executing endpoint '/config (/config)'
+2024-09-24 11:46:55.892 -06:00 [INF] Executed endpoint '/config (/config)'
+2024-09-24 11:46:55.894 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/config - 200 null text/html; charset=utf-8 62.0654ms
+2024-09-24 11:46:55.919 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_blazor/initializers - null null
+2024-09-24 11:46:55.919 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:46:55.921 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:46:55.922 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_blazor/initializers - 200 null application/json; charset=utf-8 3.7258ms
+2024-09-24 11:46:55.936 -06:00 [INF] Request starting HTTP/2 POST https://localhost:7068/_blazor/negotiate?negotiateVersion=1 - null 0
+2024-09-24 11:46:55.938 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:46:55.953 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:46:55.954 -06:00 [INF] Request finished HTTP/2 POST https://localhost:7068/_blazor/negotiate?negotiateVersion=1 - 200 316 application/json 17.4969ms
+2024-09-24 11:46:55.961 -06:00 [INF] Request starting HTTP/2 CONNECT https://localhost:7068/_blazor?id=gc7ebp3C1vQDbcYGnqfD5g - null null
+2024-09-24 11:46:55.962 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:46:59.874 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/config - null null
+2024-09-24 11:46:59.907 -06:00 [INF] Executing endpoint '/config (/config)'
+2024-09-24 11:46:59.933 -06:00 [INF] Executed endpoint '/config (/config)'
+2024-09-24 11:46:59.934 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/config - 200 null text/html; charset=utf-8 60.493ms
+2024-09-24 11:47:00.038 -06:00 [INF] Request starting HTTP/2 POST https://localhost:7068/_blazor/disconnect - multipart/form-data; boundary=----WebKitFormBoundaryjICYGq6Y3A3StmYD 359
+2024-09-24 11:47:00.041 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:47:00.093 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/aspnetcore-browser-refresh.js - null null
+2024-09-24 11:47:00.106 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/blazor.web.js - null null
+2024-09-24 11:47:00.106 -06:00 [INF] Executing endpoint 'Blazor web static files'
+2024-09-24 11:47:00.107 -06:00 [INF] The file /_framework/blazor.web.js was not modified
+2024-09-24 11:47:00.107 -06:00 [INF] Executed endpoint 'Blazor web static files'
+2024-09-24 11:47:00.107 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/blazor.web.js - 304 null text/javascript 1.9669ms
+2024-09-24 11:47:00.112 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_vs/browserLink - null null
+2024-09-24 11:47:00.165 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/aspnetcore-browser-refresh.js - 200 13764 application/javascript; charset=utf-8 73.2895ms
+2024-09-24 11:47:00.248 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/dotnet.js - null null
+2024-09-24 11:47:00.251 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:47:00.264 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_blazor/initializers - null null
+2024-09-24 11:47:00.264 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:47:00.264 -06:00 [INF] The file /_framework/dotnet.js.gz was not modified
+2024-09-24 11:47:00.264 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:47:00.265 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:47:00.265 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_blazor/initializers - 200 null application/json; charset=utf-8 0.7758ms
+2024-09-24 11:47:00.272 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/dotnet.js.gz - 304 null text/javascript 23.6409ms
+2024-09-24 11:47:00.788 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:47:00.788 -06:00 [INF] Request finished HTTP/2 POST https://localhost:7068/_blazor/disconnect - 200 0 null 749.8844ms
+2024-09-24 11:47:00.789 -06:00 [INF] Request starting HTTP/2 POST https://localhost:7068/_blazor/negotiate?negotiateVersion=1 - null 0
+2024-09-24 11:47:00.789 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:47:00.790 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:47:00.790 -06:00 [INF] Request finished HTTP/2 POST https://localhost:7068/_blazor/negotiate?negotiateVersion=1 - 200 316 application/json 1.1045ms
+2024-09-24 11:47:00.790 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/blazor.boot.json - null null
+2024-09-24 11:47:00.790 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:47:00.791 -06:00 [INF] The file /_framework/blazor.boot.json.gz was not modified
+2024-09-24 11:47:00.791 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:47:00.791 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/blazor.boot.json.gz - 304 null application/json 1.2593ms
+2024-09-24 11:47:00.814 -06:00 [INF] Request starting HTTP/2 CONNECT https://localhost:7068/_blazor?id=JjdeLsFItGGmzae2vjRheg - null null
+2024-09-24 11:47:00.814 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:47:00.824 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/dotnet.runtime.8.0.8.29rooc9szm.js - null null
+2024-09-24 11:47:00.824 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:47:00.825 -06:00 [INF] The file /_framework/dotnet.runtime.8.0.8.29rooc9szm.js.gz was not modified
+2024-09-24 11:47:00.828 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:47:00.829 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/dotnet.runtime.8.0.8.29rooc9szm.js.gz - 304 null text/javascript 4.9876ms
+2024-09-24 11:47:00.829 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/dotnet.native.8.0.8.e0zg01041f.js - null null
+2024-09-24 11:47:00.830 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:47:00.830 -06:00 [INF] The file /_framework/dotnet.native.8.0.8.e0zg01041f.js.gz was not modified
+2024-09-24 11:47:00.831 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:47:00.831 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/dotnet.native.8.0.8.e0zg01041f.js.gz - 304 null text/javascript 1.6351ms
+2024-09-24 11:47:00.865 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/appsettings.Development.json - null null
+2024-09-24 11:47:00.866 -06:00 [INF] The file /appsettings.Development.json was not modified
+2024-09-24 11:47:00.866 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/appsettings.Development.json - 304 null application/json 9.2381ms
+2024-09-24 11:47:00.888 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_vs/browserLink - 200 null text/javascript; charset=UTF-8 779.5042ms
+2024-09-24 11:47:00.895 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:47:00.895 -06:00 [INF] Request finished HTTP/2 CONNECT https://localhost:7068/_blazor?id=gc7ebp3C1vQDbcYGnqfD5g - 200 null null 4933.8038ms
+2024-09-24 11:47:01.078 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/appsettings.json - null null
+2024-09-24 11:47:01.079 -06:00 [INF] The file /appsettings.json was not modified
+2024-09-24 11:47:01.080 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/appsettings.json - 304 null application/json 1.7671ms
+2024-09-24 11:47:40.432 -06:00 [INF] DATA:System.Collections.Generic.List`1[System.String]
+2024-09-24 11:49:17.494 -06:00 [INF] User profile is available. Using 'C:\Users\Josue\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2024-09-24 11:49:17.737 -06:00 [INF] Iniciando la aplicación web
+2024-09-24 11:49:18.454 -06:00 [INF] Now listening on: https://localhost:7068
+2024-09-24 11:49:18.455 -06:00 [INF] Now listening on: http://localhost:5078
+2024-09-24 11:49:18.485 -06:00 [INF] No action descriptors found. This may indicate an incorrectly configured application or missing application parts. To learn more, visit https://aka.ms/aspnet/mvc/app-parts
+2024-09-24 11:49:18.539 -06:00 [INF] Application started. Press Ctrl+C to shut down.
+2024-09-24 11:49:18.540 -06:00 [INF] Hosting environment: Development
+2024-09-24 11:49:18.540 -06:00 [INF] Content root path: C:\Desarrollo\BrayanCarranza\Repos\GInterfaceCore\GInterfaceCore
+2024-09-24 11:49:21.116 -06:00 [INF] Request starting HTTP/1.1 GET https://localhost/_framework/debug/ws-proxy?browser=ws%3A%2F%2F127.0.0.1%3A55943%2Fdevtools%2Fbrowser%2Fbe652ac9-a28d-4f39-8e96-2cbb68ff76cd - null null
+2024-09-24 11:49:21.804 -06:00 [INF] Request finished HTTP/1.1 GET https://localhost/_framework/debug/ws-proxy?browser=ws%3A%2F%2F127.0.0.1%3A55943%2Fdevtools%2Fbrowser%2Fbe652ac9-a28d-4f39-8e96-2cbb68ff76cd - 302 0 null 700.5723ms
+2024-09-24 11:49:22.392 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/ - null null
+2024-09-24 11:49:22.585 -06:00 [INF] Executing endpoint '/ (/)'
+2024-09-24 11:49:23.138 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/aspnetcore-browser-refresh.js - null null
+2024-09-24 11:49:23.143 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/blazor.web.js - null null
+2024-09-24 11:49:23.143 -06:00 [INF] Executed endpoint '/ (/)'
+2024-09-24 11:49:23.147 -06:00 [INF] Executing endpoint 'Blazor web static files'
+2024-09-24 11:49:23.158 -06:00 [INF] The file /_framework/blazor.web.js was not modified
+2024-09-24 11:49:23.160 -06:00 [INF] Executed endpoint 'Blazor web static files'
+2024-09-24 11:49:23.160 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/ - 200 null text/html; charset=utf-8 768.6145ms
+2024-09-24 11:49:23.160 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/blazor.web.js - 304 null text/javascript 17.5102ms
+2024-09-24 11:49:23.167 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/aspnetcore-browser-refresh.js - 200 13764 application/javascript; charset=utf-8 29.2212ms
+2024-09-24 11:49:23.251 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_vs/browserLink - null null
+2024-09-24 11:49:23.385 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/dotnet.js - null null
+2024-09-24 11:49:23.385 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:49:23.411 -06:00 [INF] The file /_framework/dotnet.js.gz was not modified
+2024-09-24 11:49:23.411 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:49:23.412 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/dotnet.js.gz - 304 null text/javascript 27.1565ms
+2024-09-24 11:49:23.486 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_vs/browserLink - 200 null text/javascript; charset=UTF-8 234.8193ms
+2024-09-24 11:49:23.494 -06:00 [INF] Request starting HTTP/1.1 GET https://localhost:7068/_framework/dotnet.js.map - null null
+2024-09-24 11:49:23.494 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:49:23.538 -06:00 [INF] Sending file. Request path: '/_framework/dotnet.js.map.gz'. Physical path: 'C:\Desarrollo\BrayanCarranza\Repos\GInterfaceCore\GInterfaceCore.Client\bin\Debug\net8.0\wwwroot\_framework\dotnet.js.map.gz'
+2024-09-24 11:49:23.539 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:49:23.539 -06:00 [INF] Request finished HTTP/1.1 GET https://localhost:7068/_framework/dotnet.js.map.gz - 200 18741 text/plain 45.3689ms
+2024-09-24 11:49:23.588 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/blazor.boot.json - null null
+2024-09-24 11:49:23.588 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:49:23.592 -06:00 [INF] The file /_framework/blazor.boot.json.gz was not modified
+2024-09-24 11:49:23.592 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:49:23.592 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/blazor.boot.json.gz - 304 null application/json 4.6072ms
+2024-09-24 11:49:23.670 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/dotnet.runtime.8.0.8.29rooc9szm.js - null null
+2024-09-24 11:49:23.670 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/dotnet.native.8.0.8.e0zg01041f.js - null null
+2024-09-24 11:49:23.671 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:49:23.671 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:49:23.671 -06:00 [INF] The file /_framework/dotnet.runtime.8.0.8.29rooc9szm.js.gz was not modified
+2024-09-24 11:49:23.672 -06:00 [INF] The file /_framework/dotnet.native.8.0.8.e0zg01041f.js.gz was not modified
+2024-09-24 11:49:23.672 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:49:23.672 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:49:23.672 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/dotnet.runtime.8.0.8.29rooc9szm.js.gz - 304 null text/javascript 1.8823ms
+2024-09-24 11:49:23.672 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/dotnet.native.8.0.8.e0zg01041f.js.gz - 304 null text/javascript 1.5046ms
+2024-09-24 11:49:23.725 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/appsettings.Development.json - null null
+2024-09-24 11:49:23.728 -06:00 [INF] The file /appsettings.Development.json was not modified
+2024-09-24 11:49:23.728 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/appsettings.Development.json - 304 null application/json 3.0377ms
+2024-09-24 11:49:23.756 -06:00 [INF] Request starting HTTP/1.1 GET https://localhost:7068/_framework/dotnet.runtime.js.map - null null
+2024-09-24 11:49:23.756 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:49:23.777 -06:00 [INF] Sending file. Request path: '/_framework/dotnet.runtime.js.map.gz'. Physical path: 'C:\Desarrollo\BrayanCarranza\Repos\GInterfaceCore\GInterfaceCore.Client\bin\Debug\net8.0\wwwroot\_framework\dotnet.runtime.js.map.gz'
+2024-09-24 11:49:23.777 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:49:23.778 -06:00 [INF] Request finished HTTP/1.1 GET https://localhost:7068/_framework/dotnet.runtime.js.map.gz - 200 100233 text/plain 21.6242ms
+2024-09-24 11:49:23.925 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/appsettings.json - null null
+2024-09-24 11:49:23.934 -06:00 [INF] The file /appsettings.json was not modified
+2024-09-24 11:49:23.935 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/appsettings.json - 304 null application/json 9.5318ms
+2024-09-24 11:49:24.459 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/config - null null
+2024-09-24 11:49:24.472 -06:00 [INF] Executing endpoint '/config (/config)'
+2024-09-24 11:49:24.528 -06:00 [INF] Executed endpoint '/config (/config)'
+2024-09-24 11:49:24.531 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/config - 200 null text/html; charset=utf-8 73.852ms
+2024-09-24 11:49:24.554 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_blazor/initializers - null null
+2024-09-24 11:49:24.555 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:49:24.563 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:49:24.564 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_blazor/initializers - 200 null application/json; charset=utf-8 10.9904ms
+2024-09-24 11:49:24.605 -06:00 [INF] Request starting HTTP/2 POST https://localhost:7068/_blazor/negotiate?negotiateVersion=1 - null 0
+2024-09-24 11:49:24.608 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:49:24.664 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:49:24.668 -06:00 [INF] Request finished HTTP/2 POST https://localhost:7068/_blazor/negotiate?negotiateVersion=1 - 200 316 application/json 63.0794ms
+2024-09-24 11:49:24.676 -06:00 [INF] Request starting HTTP/2 CONNECT https://localhost:7068/_blazor?id=1eo0WiLyq3q7m2ePsmDtbg - null null
+2024-09-24 11:49:24.677 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:49:29.588 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/config - null null
+2024-09-24 11:49:29.594 -06:00 [INF] Executing endpoint '/config (/config)'
+2024-09-24 11:49:29.609 -06:00 [INF] Executed endpoint '/config (/config)'
+2024-09-24 11:49:29.610 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/config - 200 null text/html; charset=utf-8 22.6632ms
+2024-09-24 11:49:29.699 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/aspnetcore-browser-refresh.js - null null
+2024-09-24 11:49:29.699 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/blazor.web.js - null null
+2024-09-24 11:49:29.700 -06:00 [INF] Executing endpoint 'Blazor web static files'
+2024-09-24 11:49:29.700 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_vs/browserLink - null null
+2024-09-24 11:49:29.701 -06:00 [INF] The file /_framework/blazor.web.js was not modified
+2024-09-24 11:49:29.708 -06:00 [INF] Executed endpoint 'Blazor web static files'
+2024-09-24 11:49:29.775 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/blazor.web.js - 304 null text/javascript 47.3146ms
+2024-09-24 11:49:29.776 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/aspnetcore-browser-refresh.js - 200 13764 application/javascript; charset=utf-8 77.4468ms
+2024-09-24 11:49:29.878 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/dotnet.js - null null
+2024-09-24 11:49:29.878 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:49:29.879 -06:00 [INF] The file /_framework/dotnet.js.gz was not modified
+2024-09-24 11:49:29.880 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:49:29.880 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/dotnet.js.gz - 304 null text/javascript 2.0956ms
+2024-09-24 11:49:29.880 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_blazor/initializers - null null
+2024-09-24 11:49:29.880 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:49:29.881 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:49:29.881 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_blazor/initializers - 200 null application/json; charset=utf-8 0.8452ms
+2024-09-24 11:49:30.075 -06:00 [INF] Request starting HTTP/2 POST https://localhost:7068/_blazor/negotiate?negotiateVersion=1 - null 0
+2024-09-24 11:49:30.076 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:49:30.080 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:49:30.080 -06:00 [INF] Request finished HTTP/2 POST https://localhost:7068/_blazor/negotiate?negotiateVersion=1 - 200 316 application/json 5.1145ms
+2024-09-24 11:49:30.083 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/blazor.boot.json - null null
+2024-09-24 11:49:30.083 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:49:30.096 -06:00 [INF] Request starting HTTP/2 CONNECT https://localhost:7068/_blazor?id=uacelUCWQW9yLCrsyLg6Ew - null null
+2024-09-24 11:49:30.096 -06:00 [INF] The file /_framework/blazor.boot.json.gz was not modified
+2024-09-24 11:49:30.097 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:49:30.097 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:49:30.097 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/blazor.boot.json.gz - 304 null application/json 14.4548ms
+2024-09-24 11:49:30.148 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/dotnet.runtime.8.0.8.29rooc9szm.js - null null
+2024-09-24 11:49:30.149 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:49:30.149 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/dotnet.native.8.0.8.e0zg01041f.js - null null
+2024-09-24 11:49:30.150 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/appsettings.Development.json - null null
+2024-09-24 11:49:30.150 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:49:30.150 -06:00 [INF] The file /_framework/dotnet.runtime.8.0.8.29rooc9szm.js.gz was not modified
+2024-09-24 11:49:30.150 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:49:30.150 -06:00 [INF] The file /appsettings.Development.json was not modified
+2024-09-24 11:49:30.150 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/dotnet.runtime.8.0.8.29rooc9szm.js.gz - 304 null text/javascript 7.1056ms
+2024-09-24 11:49:30.150 -06:00 [INF] The file /_framework/dotnet.native.8.0.8.e0zg01041f.js.gz was not modified
+2024-09-24 11:49:30.150 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/appsettings.Development.json - 304 null application/json 0.8988ms
+2024-09-24 11:49:30.151 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:49:30.151 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/dotnet.native.8.0.8.e0zg01041f.js.gz - 304 null text/javascript 2.0706ms
+2024-09-24 11:49:30.302 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_vs/browserLink - 200 null text/javascript; charset=UTF-8 601.804ms
+2024-09-24 11:49:30.303 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:49:30.303 -06:00 [INF] Request finished HTTP/2 CONNECT https://localhost:7068/_blazor?id=1eo0WiLyq3q7m2ePsmDtbg - 200 null null 5627.2021ms
+2024-09-24 11:49:30.332 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/appsettings.json - null null
+2024-09-24 11:49:30.333 -06:00 [INF] The file /appsettings.json was not modified
+2024-09-24 11:49:30.333 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/appsettings.json - 304 null application/json 1.28ms
+2024-09-24 11:49:52.625 -06:00 [INF] DATA:System.Collections.Generic.List`1[System.String]
+2024-09-24 11:50:25.597 -06:00 [INF] DATA:System.Collections.Generic.List`1[System.String]
+2024-09-24 11:50:32.857 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:50:32.858 -06:00 [INF] Request finished HTTP/2 CONNECT https://localhost:7068/_blazor?id=uacelUCWQW9yLCrsyLg6Ew - 200 null null 62761.8059ms
+2024-09-24 11:50:52.212 -06:00 [INF] User profile is available. Using 'C:\Users\Josue\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2024-09-24 11:50:52.399 -06:00 [INF] Iniciando la aplicación web
+2024-09-24 11:50:53.088 -06:00 [INF] Now listening on: https://localhost:7068
+2024-09-24 11:50:53.089 -06:00 [INF] Now listening on: http://localhost:5078
+2024-09-24 11:50:53.121 -06:00 [INF] No action descriptors found. This may indicate an incorrectly configured application or missing application parts. To learn more, visit https://aka.ms/aspnet/mvc/app-parts
+2024-09-24 11:50:53.231 -06:00 [INF] Application started. Press Ctrl+C to shut down.
+2024-09-24 11:50:53.232 -06:00 [INF] Hosting environment: Development
+2024-09-24 11:50:53.232 -06:00 [INF] Content root path: C:\Desarrollo\BrayanCarranza\Repos\GInterfaceCore\GInterfaceCore
+2024-09-24 11:50:55.812 -06:00 [INF] Request starting HTTP/1.1 GET https://localhost/_framework/debug/ws-proxy?browser=ws%3A%2F%2F127.0.0.1%3A55986%2Fdevtools%2Fbrowser%2Fe8227c4f-74e7-4c1d-9262-fd37f10775e1 - null null
+2024-09-24 11:50:56.557 -06:00 [INF] Request finished HTTP/1.1 GET https://localhost/_framework/debug/ws-proxy?browser=ws%3A%2F%2F127.0.0.1%3A55986%2Fdevtools%2Fbrowser%2Fe8227c4f-74e7-4c1d-9262-fd37f10775e1 - 302 0 null 759.01ms
+2024-09-24 11:50:57.234 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/ - null null
+2024-09-24 11:50:57.447 -06:00 [INF] Executing endpoint '/ (/)'
+2024-09-24 11:50:58.094 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/aspnetcore-browser-refresh.js - null null
+2024-09-24 11:50:58.102 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/blazor.web.js - null null
+2024-09-24 11:50:58.106 -06:00 [INF] Executing endpoint 'Blazor web static files'
+2024-09-24 11:50:58.121 -06:00 [INF] Executed endpoint '/ (/)'
+2024-09-24 11:50:58.121 -06:00 [INF] The file /_framework/blazor.web.js was not modified
+2024-09-24 11:50:58.123 -06:00 [INF] Executed endpoint 'Blazor web static files'
+2024-09-24 11:50:58.124 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/blazor.web.js - 304 null text/javascript 22.0386ms
+2024-09-24 11:50:58.135 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/aspnetcore-browser-refresh.js - 200 13764 application/javascript; charset=utf-8 41.9512ms
+2024-09-24 11:50:58.136 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/ - 200 null text/html; charset=utf-8 902.5757ms
+2024-09-24 11:50:58.242 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_vs/browserLink - null null
+2024-09-24 11:50:58.427 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/dotnet.js - null null
+2024-09-24 11:50:58.427 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:50:58.450 -06:00 [INF] The file /_framework/dotnet.js.gz was not modified
+2024-09-24 11:50:58.451 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:50:58.451 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/dotnet.js.gz - 304 null text/javascript 24.4271ms
+2024-09-24 11:50:58.525 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_vs/browserLink - 200 null text/javascript; charset=UTF-8 282.7214ms
+2024-09-24 11:50:58.553 -06:00 [INF] Request starting HTTP/1.1 GET https://localhost:7068/_framework/dotnet.js.map - null null
+2024-09-24 11:50:58.553 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:50:58.581 -06:00 [INF] Sending file. Request path: '/_framework/dotnet.js.map.gz'. Physical path: 'C:\Desarrollo\BrayanCarranza\Repos\GInterfaceCore\GInterfaceCore.Client\bin\Debug\net8.0\wwwroot\_framework\dotnet.js.map.gz'
+2024-09-24 11:50:58.582 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:50:58.582 -06:00 [INF] Request finished HTTP/1.1 GET https://localhost:7068/_framework/dotnet.js.map.gz - 200 18741 text/plain 29.7825ms
+2024-09-24 11:50:58.619 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/blazor.boot.json - null null
+2024-09-24 11:50:58.619 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:50:58.621 -06:00 [INF] The file /_framework/blazor.boot.json.gz was not modified
+2024-09-24 11:50:58.621 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:50:58.622 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/blazor.boot.json.gz - 304 null application/json 3.1194ms
+2024-09-24 11:50:58.693 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/dotnet.runtime.8.0.8.29rooc9szm.js - null null
+2024-09-24 11:50:58.693 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/dotnet.native.8.0.8.e0zg01041f.js - null null
+2024-09-24 11:50:58.694 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:50:58.694 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:50:58.695 -06:00 [INF] The file /_framework/dotnet.runtime.8.0.8.29rooc9szm.js.gz was not modified
+2024-09-24 11:50:58.695 -06:00 [INF] The file /_framework/dotnet.native.8.0.8.e0zg01041f.js.gz was not modified
+2024-09-24 11:50:58.695 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:50:58.695 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:50:58.695 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/dotnet.runtime.8.0.8.29rooc9szm.js.gz - 304 null text/javascript 1.5504ms
+2024-09-24 11:50:58.699 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/dotnet.native.8.0.8.e0zg01041f.js.gz - 304 null text/javascript 1.5914ms
+2024-09-24 11:50:58.741 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/appsettings.Development.json - null null
+2024-09-24 11:50:58.767 -06:00 [INF] The file /appsettings.Development.json was not modified
+2024-09-24 11:50:58.768 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/appsettings.Development.json - 304 null application/json 27.3302ms
+2024-09-24 11:50:58.810 -06:00 [INF] Request starting HTTP/1.1 GET https://localhost:7068/_framework/dotnet.runtime.js.map - null null
+2024-09-24 11:50:58.810 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:50:58.817 -06:00 [INF] Sending file. Request path: '/_framework/dotnet.runtime.js.map.gz'. Physical path: 'C:\Desarrollo\BrayanCarranza\Repos\GInterfaceCore\GInterfaceCore.Client\bin\Debug\net8.0\wwwroot\_framework\dotnet.runtime.js.map.gz'
+2024-09-24 11:50:58.817 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:50:58.818 -06:00 [INF] Request finished HTTP/1.1 GET https://localhost:7068/_framework/dotnet.runtime.js.map.gz - 200 100233 text/plain 8.0421ms
+2024-09-24 11:50:58.972 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/appsettings.json - null null
+2024-09-24 11:50:58.973 -06:00 [INF] The file /appsettings.json was not modified
+2024-09-24 11:50:58.973 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/appsettings.json - 304 null application/json 1.6048ms
+2024-09-24 11:50:59.533 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/config - null null
+2024-09-24 11:50:59.546 -06:00 [INF] Executing endpoint '/config (/config)'
+2024-09-24 11:50:59.617 -06:00 [INF] Executed endpoint '/config (/config)'
+2024-09-24 11:50:59.622 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/config - 200 null text/html; charset=utf-8 89.2197ms
+2024-09-24 11:50:59.692 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_blazor/initializers - null null
+2024-09-24 11:50:59.697 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:50:59.704 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:50:59.705 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_blazor/initializers - 200 null application/json; charset=utf-8 13.8358ms
+2024-09-24 11:50:59.736 -06:00 [INF] Request starting HTTP/2 POST https://localhost:7068/_blazor/negotiate?negotiateVersion=1 - null 0
+2024-09-24 11:50:59.739 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:50:59.761 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:50:59.763 -06:00 [INF] Request finished HTTP/2 POST https://localhost:7068/_blazor/negotiate?negotiateVersion=1 - 200 316 application/json 26.9464ms
+2024-09-24 11:50:59.773 -06:00 [INF] Request starting HTTP/2 CONNECT https://localhost:7068/_blazor?id=Nhwwx72hLeS76bZ_DD-G-A - null null
+2024-09-24 11:50:59.773 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:51:33.090 -06:00 [INF] DATA:System.Collections.Generic.List`1[System.String]
+2024-09-24 11:54:21.118 -06:00 [INF] User profile is available. Using 'C:\Users\Josue\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2024-09-24 11:54:21.357 -06:00 [INF] Iniciando la aplicación web
+2024-09-24 11:54:22.326 -06:00 [INF] Now listening on: https://localhost:7068
+2024-09-24 11:54:22.326 -06:00 [INF] Now listening on: http://localhost:5078
+2024-09-24 11:54:22.358 -06:00 [INF] No action descriptors found. This may indicate an incorrectly configured application or missing application parts. To learn more, visit https://aka.ms/aspnet/mvc/app-parts
+2024-09-24 11:54:22.508 -06:00 [INF] Application started. Press Ctrl+C to shut down.
+2024-09-24 11:54:22.508 -06:00 [INF] Hosting environment: Development
+2024-09-24 11:54:22.509 -06:00 [INF] Content root path: C:\Desarrollo\BrayanCarranza\Repos\GInterfaceCore\GInterfaceCore
+2024-09-24 11:54:25.202 -06:00 [INF] Request starting HTTP/1.1 GET https://localhost/_framework/debug/ws-proxy?browser=ws%3A%2F%2F127.0.0.1%3A56028%2Fdevtools%2Fbrowser%2F295a8371-abfd-48bb-a27b-05dea947a0cd - null null
+2024-09-24 11:54:25.818 -06:00 [INF] Request finished HTTP/1.1 GET https://localhost/_framework/debug/ws-proxy?browser=ws%3A%2F%2F127.0.0.1%3A56028%2Fdevtools%2Fbrowser%2F295a8371-abfd-48bb-a27b-05dea947a0cd - 302 0 null 625.008ms
+2024-09-24 11:54:26.324 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/ - null null
+2024-09-24 11:54:26.627 -06:00 [INF] Executing endpoint '/ (/)'
+2024-09-24 11:54:27.345 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/aspnetcore-browser-refresh.js - null null
+2024-09-24 11:54:27.358 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/blazor.web.js - null null
+2024-09-24 11:54:27.363 -06:00 [INF] Executing endpoint 'Blazor web static files'
+2024-09-24 11:54:27.394 -06:00 [INF] The file /_framework/blazor.web.js was not modified
+2024-09-24 11:54:27.395 -06:00 [INF] Executed endpoint '/ (/)'
+2024-09-24 11:54:27.396 -06:00 [INF] Executed endpoint 'Blazor web static files'
+2024-09-24 11:54:27.396 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/blazor.web.js - 304 null text/javascript 38.069ms
+2024-09-24 11:54:27.399 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/aspnetcore-browser-refresh.js - 200 13764 application/javascript; charset=utf-8 53.6147ms
+2024-09-24 11:54:27.414 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/ - 200 null text/html; charset=utf-8 1090.9696ms
+2024-09-24 11:54:27.633 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_vs/browserLink - null null
+2024-09-24 11:54:27.742 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/dotnet.js - null null
+2024-09-24 11:54:27.742 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:54:27.765 -06:00 [INF] The file /_framework/dotnet.js.gz was not modified
+2024-09-24 11:54:27.766 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:54:27.766 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/dotnet.js.gz - 304 null text/javascript 24.4199ms
+2024-09-24 11:54:27.843 -06:00 [INF] Request starting HTTP/1.1 GET https://localhost:7068/_framework/dotnet.js.map - null null
+2024-09-24 11:54:27.848 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:54:27.857 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_vs/browserLink - 200 null text/javascript; charset=UTF-8 223.3849ms
+2024-09-24 11:54:27.887 -06:00 [INF] Sending file. Request path: '/_framework/dotnet.js.map.gz'. Physical path: 'C:\Desarrollo\BrayanCarranza\Repos\GInterfaceCore\GInterfaceCore.Client\bin\Debug\net8.0\wwwroot\_framework\dotnet.js.map.gz'
+2024-09-24 11:54:27.888 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:54:27.889 -06:00 [INF] Request finished HTTP/1.1 GET https://localhost:7068/_framework/dotnet.js.map.gz - 200 18741 text/plain 46.6855ms
+2024-09-24 11:54:27.937 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/blazor.boot.json - null null
+2024-09-24 11:54:27.938 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:54:27.939 -06:00 [INF] The file /_framework/blazor.boot.json.gz was not modified
+2024-09-24 11:54:27.939 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:54:27.940 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/blazor.boot.json.gz - 304 null application/json 2.2132ms
+2024-09-24 11:54:28.026 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/dotnet.runtime.8.0.8.29rooc9szm.js - null null
+2024-09-24 11:54:28.026 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/dotnet.native.8.0.8.e0zg01041f.js - null null
+2024-09-24 11:54:28.027 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:54:28.027 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:54:28.027 -06:00 [INF] The file /_framework/dotnet.runtime.8.0.8.29rooc9szm.js.gz was not modified
+2024-09-24 11:54:28.028 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:54:28.028 -06:00 [INF] The file /_framework/dotnet.native.8.0.8.e0zg01041f.js.gz was not modified
+2024-09-24 11:54:28.028 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/dotnet.runtime.8.0.8.29rooc9szm.js.gz - 304 null text/javascript 1.9899ms
+2024-09-24 11:54:28.028 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:54:28.028 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/dotnet.native.8.0.8.e0zg01041f.js.gz - 304 null text/javascript 1.5968ms
+2024-09-24 11:54:28.067 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/appsettings.Development.json - null null
+2024-09-24 11:54:28.080 -06:00 [INF] The file /appsettings.Development.json was not modified
+2024-09-24 11:54:28.081 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/appsettings.Development.json - 304 null application/json 13.496ms
+2024-09-24 11:54:28.125 -06:00 [INF] Request starting HTTP/1.1 GET https://localhost:7068/_framework/dotnet.runtime.js.map - null null
+2024-09-24 11:54:28.126 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:54:28.129 -06:00 [INF] Sending file. Request path: '/_framework/dotnet.runtime.js.map.gz'. Physical path: 'C:\Desarrollo\BrayanCarranza\Repos\GInterfaceCore\GInterfaceCore.Client\bin\Debug\net8.0\wwwroot\_framework\dotnet.runtime.js.map.gz'
+2024-09-24 11:54:28.130 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:54:28.130 -06:00 [INF] Request finished HTTP/1.1 GET https://localhost:7068/_framework/dotnet.runtime.js.map.gz - 200 100233 text/plain 4.7662ms
+2024-09-24 11:54:28.305 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/appsettings.json - null null
+2024-09-24 11:54:28.309 -06:00 [INF] The file /appsettings.json was not modified
+2024-09-24 11:54:28.310 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/appsettings.json - 304 null application/json 8.3526ms
+2024-09-24 11:54:35.098 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/blazor-hotreload.js - null null
+2024-09-24 11:54:35.099 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/blazor-hotreload.js - 200 574 application/javascript; charset=utf-8 1.0509ms
+2024-09-24 11:54:35.152 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/blazor-hotreload - null null
+2024-09-24 11:54:35.164 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/blazor-hotreload - 204 null null 14.3185ms
+2024-09-24 11:55:22.332 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/config - null null
+2024-09-24 11:55:22.339 -06:00 [INF] Executing endpoint '/config (/config)'
+2024-09-24 11:55:22.442 -06:00 [INF] Executed endpoint '/config (/config)'
+2024-09-24 11:55:22.453 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/config - 200 null text/html; charset=utf-8 121.5613ms
+2024-09-24 11:55:22.474 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_blazor/initializers - null null
+2024-09-24 11:55:22.474 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:55:22.503 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:55:22.504 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_blazor/initializers - 200 null application/json; charset=utf-8 30.3763ms
+2024-09-24 11:55:22.522 -06:00 [INF] Request starting HTTP/2 POST https://localhost:7068/_blazor/negotiate?negotiateVersion=1 - null 0
+2024-09-24 11:55:22.524 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:55:22.536 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:55:22.537 -06:00 [INF] Request finished HTTP/2 POST https://localhost:7068/_blazor/negotiate?negotiateVersion=1 - 200 316 application/json 14.7015ms
+2024-09-24 11:55:22.541 -06:00 [INF] Request starting HTTP/2 CONNECT https://localhost:7068/_blazor?id=7uCWR7s1evCKJWcVkFn4Ww - null null
+2024-09-24 11:55:22.541 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:55:26.580 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/config - null null
+2024-09-24 11:55:26.595 -06:00 [INF] Executing endpoint '/config (/config)'
+2024-09-24 11:55:26.615 -06:00 [INF] Executed endpoint '/config (/config)'
+2024-09-24 11:55:26.616 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/config - 200 null text/html; charset=utf-8 36.4672ms
+2024-09-24 11:55:26.627 -06:00 [INF] Request starting HTTP/2 POST https://localhost:7068/_blazor/disconnect - multipart/form-data; boundary=----WebKitFormBoundaryebMsIXBiPQCCFwzI 359
+2024-09-24 11:55:26.628 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:55:26.706 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_vs/browserLink - null null
+2024-09-24 11:55:26.711 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/aspnetcore-browser-refresh.js - null null
+2024-09-24 11:55:26.763 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/blazor.web.js - null null
+2024-09-24 11:55:26.763 -06:00 [INF] Executing endpoint 'Blazor web static files'
+2024-09-24 11:55:26.763 -06:00 [INF] The file /_framework/blazor.web.js was not modified
+2024-09-24 11:55:26.763 -06:00 [INF] Executed endpoint 'Blazor web static files'
+2024-09-24 11:55:26.764 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/blazor.web.js - 304 null text/javascript 1.2573ms
+2024-09-24 11:55:26.822 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/aspnetcore-browser-refresh.js - 200 13764 application/javascript; charset=utf-8 111.3198ms
+2024-09-24 11:55:26.863 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/dotnet.js - null null
+2024-09-24 11:55:26.863 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_blazor/initializers - null null
+2024-09-24 11:55:26.863 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:55:26.863 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:55:26.864 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:55:26.864 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_blazor/initializers - 200 null application/json; charset=utf-8 1.0262ms
+2024-09-24 11:55:26.864 -06:00 [INF] The file /_framework/dotnet.js.gz was not modified
+2024-09-24 11:55:26.864 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:55:26.864 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/dotnet.js.gz - 304 null text/javascript 1.8346ms
+2024-09-24 11:55:26.902 -06:00 [INF] Request starting HTTP/2 POST https://localhost:7068/_blazor/negotiate?negotiateVersion=1 - null 0
+2024-09-24 11:55:26.902 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:55:26.903 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:55:26.904 -06:00 [INF] Request finished HTTP/2 POST https://localhost:7068/_blazor/negotiate?negotiateVersion=1 - 200 316 application/json 1.982ms
+2024-09-24 11:55:26.952 -06:00 [INF] Request starting HTTP/2 CONNECT https://localhost:7068/_blazor?id=1PMcalK1M2lX9NpX2Cm6Eg - null null
+2024-09-24 11:55:26.971 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:55:27.131 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/blazor.boot.json - null null
+2024-09-24 11:55:27.132 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:55:27.171 -06:00 [INF] The file /_framework/blazor.boot.json.gz was not modified
+2024-09-24 11:55:27.171 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:55:27.171 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/blazor.boot.json.gz - 304 null application/json 40.0574ms
+2024-09-24 11:55:27.214 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/dotnet.runtime.8.0.8.29rooc9szm.js - null null
+2024-09-24 11:55:27.214 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:55:27.218 -06:00 [INF] The file /_framework/dotnet.runtime.8.0.8.29rooc9szm.js.gz was not modified
+2024-09-24 11:55:27.219 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:55:27.220 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/dotnet.runtime.8.0.8.29rooc9szm.js.gz - 304 null text/javascript 6.2088ms
+2024-09-24 11:55:27.220 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/dotnet.native.8.0.8.e0zg01041f.js - null null
+2024-09-24 11:55:27.221 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:55:27.222 -06:00 [INF] The file /_framework/dotnet.native.8.0.8.e0zg01041f.js.gz was not modified
+2024-09-24 11:55:27.222 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:55:27.222 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/dotnet.native.8.0.8.e0zg01041f.js.gz - 304 null text/javascript 2.1713ms
+2024-09-24 11:55:27.222 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/appsettings.Development.json - null null
+2024-09-24 11:55:27.223 -06:00 [INF] The file /appsettings.Development.json was not modified
+2024-09-24 11:55:27.223 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/appsettings.Development.json - 304 null application/json 0.7706ms
+2024-09-24 11:55:27.276 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:55:27.276 -06:00 [INF] Request finished HTTP/2 POST https://localhost:7068/_blazor/disconnect - 200 0 null 649.2395ms
+2024-09-24 11:55:27.447 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:55:27.448 -06:00 [INF] Request finished HTTP/2 CONNECT https://localhost:7068/_blazor?id=7uCWR7s1evCKJWcVkFn4Ww - 200 null null 4906.9023ms
+2024-09-24 11:55:27.453 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/appsettings.json - null null
+2024-09-24 11:55:27.453 -06:00 [INF] The file /appsettings.json was not modified
+2024-09-24 11:55:27.453 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/appsettings.json - 304 null application/json 0.8073ms
+2024-09-24 11:55:27.543 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_vs/browserLink - 200 null text/javascript; charset=UTF-8 858.8278ms
+2024-09-24 11:55:56.112 -06:00 [INF] ------------------------------------
+2024-09-24 11:55:56.112 -06:00 [INF] DATA #:410
+2024-09-24 11:55:56.112 -06:00 [INF] ------------------------------------
+2024-09-24 11:56:41.052 -06:00 [INF] ------------------------------------
+2024-09-24 11:57:02.365 -06:00 [INF] DATA #:410
+2024-09-24 11:57:02.515 -06:00 [INF] ------------------------------------
+2024-09-24 11:57:42.292 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:57:42.292 -06:00 [INF] Request finished HTTP/2 CONNECT https://localhost:7068/_blazor?id=1PMcalK1M2lX9NpX2Cm6Eg - 200 null null 135340.6879ms
+2024-09-24 11:57:42.356 -06:00 [INF] Connection id "0HN6SO7M16QC6", Request id "0HN6SO7M16QC6:00000019": the application completed without reading the entire request body.
+2024-09-24 11:57:45.278 -06:00 [INF] Request starting HTTP/2 POST https://localhost:7068/_blazor/negotiate?negotiateVersion=1 - null 0
+2024-09-24 11:57:45.278 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:57:45.279 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 11:57:45.279 -06:00 [INF] Request finished HTTP/2 POST https://localhost:7068/_blazor/negotiate?negotiateVersion=1 - 200 316 application/json 1.0143ms
+2024-09-24 11:57:45.288 -06:00 [INF] Request starting HTTP/2 CONNECT https://localhost:7068/_blazor?id=lyO9nbTUELm14f5Jr55L2Q - null null
+2024-09-24 11:57:45.289 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 12:03:46.677 -06:00 [INF] User profile is available. Using 'C:\Users\Josue\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2024-09-24 12:03:46.887 -06:00 [INF] Iniciando la aplicación web
+2024-09-24 12:03:47.529 -06:00 [INF] Now listening on: https://localhost:7068
+2024-09-24 12:03:47.530 -06:00 [INF] Now listening on: http://localhost:5078
+2024-09-24 12:03:47.558 -06:00 [INF] No action descriptors found. This may indicate an incorrectly configured application or missing application parts. To learn more, visit https://aka.ms/aspnet/mvc/app-parts
+2024-09-24 12:03:47.889 -06:00 [INF] Application started. Press Ctrl+C to shut down.
+2024-09-24 12:03:47.889 -06:00 [INF] Hosting environment: Development
+2024-09-24 12:03:47.890 -06:00 [INF] Content root path: C:\Desarrollo\BrayanCarranza\Repos\GInterfaceCore\GInterfaceCore
+2024-09-24 12:03:52.754 -06:00 [INF] Request starting HTTP/1.1 GET https://localhost/_framework/debug/ws-proxy?browser=ws%3A%2F%2F127.0.0.1%3A56117%2Fdevtools%2Fbrowser%2Fc38dc73b-7769-46bf-9580-58178c2141b6 - null null
+2024-09-24 12:03:53.430 -06:00 [INF] Request finished HTTP/1.1 GET https://localhost/_framework/debug/ws-proxy?browser=ws%3A%2F%2F127.0.0.1%3A56117%2Fdevtools%2Fbrowser%2Fc38dc73b-7769-46bf-9580-58178c2141b6 - 302 0 null 684.3597ms
+2024-09-24 12:03:54.304 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/ - null null
+2024-09-24 12:03:54.550 -06:00 [INF] Executing endpoint '/ (/)'
+2024-09-24 12:03:55.163 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/aspnetcore-browser-refresh.js - null null
+2024-09-24 12:03:55.169 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/blazor.web.js - null null
+2024-09-24 12:03:55.174 -06:00 [INF] Executed endpoint '/ (/)'
+2024-09-24 12:03:55.177 -06:00 [INF] Executing endpoint 'Blazor web static files'
+2024-09-24 12:03:55.184 -06:00 [INF] The file /_framework/blazor.web.js was not modified
+2024-09-24 12:03:55.186 -06:00 [INF] Executed endpoint 'Blazor web static files'
+2024-09-24 12:03:55.187 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/blazor.web.js - 304 null text/javascript 17.8531ms
+2024-09-24 12:03:55.187 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/ - 200 null text/html; charset=utf-8 882.8599ms
+2024-09-24 12:03:55.195 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/aspnetcore-browser-refresh.js - 200 13764 application/javascript; charset=utf-8 31.4796ms
+2024-09-24 12:03:55.544 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_vs/browserLink - null null
+2024-09-24 12:03:55.685 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/dotnet.js - null null
+2024-09-24 12:03:55.686 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 12:03:55.715 -06:00 [INF] The file /_framework/dotnet.js.gz was not modified
+2024-09-24 12:03:55.715 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 12:03:55.716 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/dotnet.js.gz - 304 null text/javascript 30.3866ms
+2024-09-24 12:03:55.868 -06:00 [INF] Request starting HTTP/1.1 GET https://localhost:7068/_framework/dotnet.js.map - null null
+2024-09-24 12:03:55.868 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 12:03:55.869 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_vs/browserLink - 200 null text/javascript; charset=UTF-8 325.3133ms
+2024-09-24 12:03:55.898 -06:00 [INF] Sending file. Request path: '/_framework/dotnet.js.map.gz'. Physical path: 'C:\Desarrollo\BrayanCarranza\Repos\GInterfaceCore\GInterfaceCore.Client\bin\Debug\net8.0\wwwroot\_framework\dotnet.js.map.gz'
+2024-09-24 12:03:55.899 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 12:03:55.902 -06:00 [INF] Request finished HTTP/1.1 GET https://localhost:7068/_framework/dotnet.js.map.gz - 200 18741 text/plain 32.5354ms
+2024-09-24 12:03:55.963 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/blazor.boot.json - null null
+2024-09-24 12:03:55.964 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 12:03:55.965 -06:00 [INF] The file /_framework/blazor.boot.json.gz was not modified
+2024-09-24 12:03:55.965 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 12:03:55.966 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/blazor.boot.json.gz - 304 null application/json 3.6189ms
+2024-09-24 12:03:56.063 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/dotnet.native.8.0.8.e0zg01041f.js - null null
+2024-09-24 12:03:56.063 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/dotnet.runtime.8.0.8.29rooc9szm.js - null null
+2024-09-24 12:03:56.064 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 12:03:56.064 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 12:03:56.065 -06:00 [INF] The file /_framework/dotnet.runtime.8.0.8.29rooc9szm.js.gz was not modified
+2024-09-24 12:03:56.065 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 12:03:56.065 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/dotnet.runtime.8.0.8.29rooc9szm.js.gz - 304 null text/javascript 2.9473ms
+2024-09-24 12:03:56.065 -06:00 [INF] The file /_framework/dotnet.native.8.0.8.e0zg01041f.js.gz was not modified
+2024-09-24 12:03:56.066 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 12:03:56.066 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/dotnet.native.8.0.8.e0zg01041f.js.gz - 304 null text/javascript 2.6109ms
+2024-09-24 12:03:56.316 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/appsettings.Development.json - null null
+2024-09-24 12:03:56.317 -06:00 [INF] The file /appsettings.Development.json was not modified
+2024-09-24 12:03:56.318 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/appsettings.Development.json - 304 null application/json 2.2834ms
+2024-09-24 12:03:56.326 -06:00 [INF] Request starting HTTP/1.1 GET https://localhost:7068/_framework/dotnet.runtime.js.map - null null
+2024-09-24 12:03:56.327 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 12:03:56.366 -06:00 [INF] Sending file. Request path: '/_framework/dotnet.runtime.js.map.gz'. Physical path: 'C:\Desarrollo\BrayanCarranza\Repos\GInterfaceCore\GInterfaceCore.Client\bin\Debug\net8.0\wwwroot\_framework\dotnet.runtime.js.map.gz'
+2024-09-24 12:03:56.366 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 12:03:56.366 -06:00 [INF] Request finished HTTP/1.1 GET https://localhost:7068/_framework/dotnet.runtime.js.map.gz - 200 100233 text/plain 40.8967ms
+2024-09-24 12:03:56.473 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/appsettings.json - null null
+2024-09-24 12:03:56.475 -06:00 [INF] The file /appsettings.json was not modified
+2024-09-24 12:03:56.476 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/appsettings.json - 304 null application/json 3.8339ms
+2024-09-24 12:03:58.518 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/blazor-hotreload.js - null null
+2024-09-24 12:03:58.519 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/blazor-hotreload.js - 200 574 application/javascript; charset=utf-8 0.7908ms
+2024-09-24 12:03:58.538 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/blazor-hotreload - null null
+2024-09-24 12:03:58.542 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/blazor-hotreload - 204 null null 3.9407ms
+2024-09-24 12:04:00.351 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/config - null null
+2024-09-24 12:04:00.387 -06:00 [INF] Executing endpoint '/config (/config)'
+2024-09-24 12:04:00.498 -06:00 [INF] Executed endpoint '/config (/config)'
+2024-09-24 12:04:00.499 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/config - 200 null text/html; charset=utf-8 148.6175ms
+2024-09-24 12:04:00.519 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_blazor/initializers - null null
+2024-09-24 12:04:00.520 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 12:04:00.529 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 12:04:00.529 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_blazor/initializers - 200 null application/json; charset=utf-8 9.8767ms
+2024-09-24 12:04:00.583 -06:00 [INF] Request starting HTTP/2 POST https://localhost:7068/_blazor/negotiate?negotiateVersion=1 - null 0
+2024-09-24 12:04:00.586 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 12:04:00.602 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 12:04:00.603 -06:00 [INF] Request finished HTTP/2 POST https://localhost:7068/_blazor/negotiate?negotiateVersion=1 - 200 316 application/json 20.0503ms
+2024-09-24 12:04:00.614 -06:00 [INF] Request starting HTTP/2 CONNECT https://localhost:7068/_blazor?id=c2t3iy8IuBG4f599wAEn2Q - null null
+2024-09-24 12:04:00.615 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 12:04:05.104 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/config - null null
+2024-09-24 12:04:05.107 -06:00 [INF] Executing endpoint '/config (/config)'
+2024-09-24 12:04:05.124 -06:00 [INF] Executed endpoint '/config (/config)'
+2024-09-24 12:04:05.125 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/config - 200 null text/html; charset=utf-8 21.7906ms
+2024-09-24 12:04:05.176 -06:00 [INF] Request starting HTTP/2 POST https://localhost:7068/_blazor/disconnect - multipart/form-data; boundary=----WebKitFormBoundarya6TVCuq3bAFDHADY 359
+2024-09-24 12:04:05.177 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 12:04:05.185 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/aspnetcore-browser-refresh.js - null null
+2024-09-24 12:04:05.185 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/blazor.web.js - null null
+2024-09-24 12:04:05.186 -06:00 [INF] Executing endpoint 'Blazor web static files'
+2024-09-24 12:04:05.186 -06:00 [INF] The file /_framework/blazor.web.js was not modified
+2024-09-24 12:04:05.186 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_vs/browserLink - null null
+2024-09-24 12:04:05.202 -06:00 [INF] Executed endpoint 'Blazor web static files'
+2024-09-24 12:04:05.202 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/blazor.web.js - 304 null text/javascript 16.8093ms
+2024-09-24 12:04:05.326 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/aspnetcore-browser-refresh.js - 200 13764 application/javascript; charset=utf-8 141.4047ms
+2024-09-24 12:04:05.523 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 12:04:05.523 -06:00 [INF] Request finished HTTP/2 POST https://localhost:7068/_blazor/disconnect - 200 0 null 349.8874ms
+2024-09-24 12:04:05.527 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/dotnet.js - null null
+2024-09-24 12:04:05.528 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 12:04:05.528 -06:00 [INF] The file /_framework/dotnet.js.gz was not modified
+2024-09-24 12:04:05.528 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 12:04:05.528 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/dotnet.js.gz - 304 null text/javascript 1.1174ms
+2024-09-24 12:04:05.529 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_blazor/initializers - null null
+2024-09-24 12:04:05.529 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 12:04:05.529 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 12:04:05.529 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_blazor/initializers - 200 null application/json; charset=utf-8 0.3858ms
+2024-09-24 12:04:05.529 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 12:04:05.534 -06:00 [INF] Request finished HTTP/2 CONNECT https://localhost:7068/_blazor?id=c2t3iy8IuBG4f599wAEn2Q - 200 null null 4919.7343ms
+2024-09-24 12:04:05.551 -06:00 [INF] Request starting HTTP/2 POST https://localhost:7068/_blazor/negotiate?negotiateVersion=1 - null 0
+2024-09-24 12:04:05.551 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 12:04:05.552 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 12:04:05.552 -06:00 [INF] Request finished HTTP/2 POST https://localhost:7068/_blazor/negotiate?negotiateVersion=1 - 200 316 application/json 0.997ms
+2024-09-24 12:04:05.571 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_vs/browserLink - 200 null text/javascript; charset=UTF-8 385.1519ms
+2024-09-24 12:04:05.580 -06:00 [INF] Request starting HTTP/2 CONNECT https://localhost:7068/_blazor?id=SFBReQ8Yr0cwIkXIEsmVIg - null null
+2024-09-24 12:04:05.581 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 12:04:05.593 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/blazor.boot.json - null null
+2024-09-24 12:04:05.593 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 12:04:05.594 -06:00 [INF] The file /_framework/blazor.boot.json.gz was not modified
+2024-09-24 12:04:05.595 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 12:04:05.595 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/blazor.boot.json.gz - 304 null application/json 2.3294ms
+2024-09-24 12:04:05.753 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/dotnet.runtime.8.0.8.29rooc9szm.js - null null
+2024-09-24 12:04:05.753 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 12:04:05.754 -06:00 [INF] The file /_framework/dotnet.runtime.8.0.8.29rooc9szm.js.gz was not modified
+2024-09-24 12:04:05.754 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 12:04:05.754 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/dotnet.runtime.8.0.8.29rooc9szm.js.gz - 304 null text/javascript 1.177ms
+2024-09-24 12:04:05.754 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/dotnet.native.8.0.8.e0zg01041f.js - null null
+2024-09-24 12:04:05.754 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/appsettings.Development.json - null null
+2024-09-24 12:04:05.755 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 12:04:05.755 -06:00 [INF] The file /appsettings.Development.json was not modified
+2024-09-24 12:04:05.755 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/appsettings.Development.json - 304 null application/json 0.6597ms
+2024-09-24 12:04:05.755 -06:00 [INF] The file /_framework/dotnet.native.8.0.8.e0zg01041f.js.gz was not modified
+2024-09-24 12:04:05.755 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 12:04:05.756 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/dotnet.native.8.0.8.e0zg01041f.js.gz - 304 null text/javascript 1.4547ms
+2024-09-24 12:04:05.964 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/appsettings.json - null null
+2024-09-24 12:04:05.965 -06:00 [INF] The file /appsettings.json was not modified
+2024-09-24 12:04:05.965 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/appsettings.json - 304 null application/json 0.7799ms
+2024-09-24 12:04:27.366 -06:00 [INF] ------------------------------------
+2024-09-24 12:04:27.367 -06:00 [INF] DATA File created->#:C:\Apps\Genesis\Ginterface\Data\Picklist DMS1B.xlsx
+2024-09-24 12:04:27.367 -06:00 [INF] ------------------------------------
+2024-09-24 12:04:33.176 -06:00 [INF] ------------------------------------
+2024-09-24 12:04:33.177 -06:00 [INF] DATA AllValues->#:410
+2024-09-24 12:04:33.177 -06:00 [INF] ------------------------------------
+2024-09-24 12:04:33.758 -06:00 [INF] ------------------------------------
+2024-09-24 12:04:33.758 -06:00 [INF] DATA -> result #:61
+2024-09-24 12:04:33.758 -06:00 [INF] ------------------------------------
+2024-09-24 12:04:59.029 -06:00 [INF] Request starting HTTP/2 POST https://localhost:7068/_blazor/disconnect - multipart/form-data; boundary=----WebKitFormBoundaryuG5CnNjHkuFWSmM2 359
+2024-09-24 12:04:59.030 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 12:04:59.908 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 12:04:59.936 -06:00 [INF] Request finished HTTP/2 CONNECT https://localhost:7068/_blazor?id=SFBReQ8Yr0cwIkXIEsmVIg - 200 null null 54354.0725ms
+2024-09-24 12:05:00.045 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 12:05:00.045 -06:00 [INF] Request finished HTTP/2 POST https://localhost:7068/_blazor/disconnect - 499 null null 1016.4276ms
+2024-09-24 12:32:04.574 -06:00 [INF] User profile is available. Using 'C:\Users\Josue\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2024-09-24 12:32:05.249 -06:00 [INF] Iniciando la aplicación web
+2024-09-24 12:32:07.102 -06:00 [INF] Now listening on: https://localhost:7068
+2024-09-24 12:32:07.102 -06:00 [INF] Now listening on: http://localhost:5078
+2024-09-24 12:32:07.124 -06:00 [INF] No action descriptors found. This may indicate an incorrectly configured application or missing application parts. To learn more, visit https://aka.ms/aspnet/mvc/app-parts
+2024-09-24 12:32:07.186 -06:00 [INF] Application started. Press Ctrl+C to shut down.
+2024-09-24 12:32:07.187 -06:00 [INF] Hosting environment: Development
+2024-09-24 12:32:07.187 -06:00 [INF] Content root path: C:\Desarrollo\BrayanCarranza\Repos\GInterfaceCore\GInterfaceCore
+2024-09-24 12:32:19.549 -06:00 [INF] Request starting HTTP/1.1 GET https://localhost/_framework/debug/ws-proxy?browser=ws%3A%2F%2F127.0.0.1%3A56565%2Fdevtools%2Fbrowser%2F0158008c-9126-4ee8-83ab-570a06d23362 - null null
+2024-09-24 12:32:20.442 -06:00 [INF] Request starting HTTP/1.1 GET https://localhost/_framework/debug/ws-proxy?browser=ws%3A%2F%2F127.0.0.1%3A56565%2Fdevtools%2Fbrowser%2F0158008c-9126-4ee8-83ab-570a06d23362 - null null
+2024-09-24 12:32:22.347 -06:00 [INF] Request finished HTTP/1.1 GET https://localhost/_framework/debug/ws-proxy?browser=ws%3A%2F%2F127.0.0.1%3A56565%2Fdevtools%2Fbrowser%2F0158008c-9126-4ee8-83ab-570a06d23362 - 302 0 null 1904.1253ms
+2024-09-24 12:32:22.347 -06:00 [INF] Request finished HTTP/1.1 GET https://localhost/_framework/debug/ws-proxy?browser=ws%3A%2F%2F127.0.0.1%3A56565%2Fdevtools%2Fbrowser%2F0158008c-9126-4ee8-83ab-570a06d23362 - 499 null null 2939.9673ms
+2024-09-24 12:32:22.757 -06:00 [INF] Request starting HTTP/1.1 GET https://localhost/_framework/debug/ws-proxy?browser=ws%3A%2F%2F127.0.0.1%3A56565%2Fdevtools%2Fbrowser%2F0158008c-9126-4ee8-83ab-570a06d23362 - null null
+2024-09-24 12:32:22.758 -06:00 [INF] Request finished HTTP/1.1 GET https://localhost/_framework/debug/ws-proxy?browser=ws%3A%2F%2F127.0.0.1%3A56565%2Fdevtools%2Fbrowser%2F0158008c-9126-4ee8-83ab-570a06d23362 - 302 0 null 1.9335ms
+2024-09-24 12:32:23.627 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/ - null null
+2024-09-24 12:32:23.971 -06:00 [INF] Executing endpoint '/ (/)'
+2024-09-24 12:32:27.307 -06:00 [INF] Executed endpoint '/ (/)'
+2024-09-24 12:32:27.515 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/ - 200 null text/html; charset=utf-8 3888.8858ms
+2024-09-24 12:32:27.648 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/aspnetcore-browser-refresh.js - null null
+2024-09-24 12:32:27.663 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/aspnetcore-browser-refresh.js - 200 13764 application/javascript; charset=utf-8 14.3738ms
+2024-09-24 12:32:27.880 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/blazor.web.js - null null
+2024-09-24 12:32:27.885 -06:00 [INF] Executing endpoint 'Blazor web static files'
+2024-09-24 12:32:27.987 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_vs/browserLink - null null
+2024-09-24 12:32:28.128 -06:00 [INF] The file /_framework/blazor.web.js was not modified
+2024-09-24 12:32:28.130 -06:00 [INF] Executed endpoint 'Blazor web static files'
+2024-09-24 12:32:28.131 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/blazor.web.js - 304 null text/javascript 251.5709ms
+2024-09-24 12:32:28.251 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_vs/browserLink - 200 null text/javascript; charset=UTF-8 263.8073ms
+2024-09-24 12:32:28.714 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/dotnet.js - null null
+2024-09-24 12:32:28.715 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 12:32:28.729 -06:00 [INF] The file /_framework/dotnet.js.gz was not modified
+2024-09-24 12:32:28.729 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 12:32:28.730 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/dotnet.js.gz - 304 null text/javascript 16.2356ms
+2024-09-24 12:32:29.613 -06:00 [INF] Request starting HTTP/1.1 GET https://localhost:7068/_framework/dotnet.js.map - null null
+2024-09-24 12:32:29.613 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 12:32:29.815 -06:00 [INF] Sending file. Request path: '/_framework/dotnet.js.map.gz'. Physical path: 'C:\Desarrollo\BrayanCarranza\Repos\GInterfaceCore\GInterfaceCore.Client\bin\Debug\net8.0\wwwroot\_framework\dotnet.js.map.gz'
+2024-09-24 12:32:29.816 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 12:32:29.817 -06:00 [INF] Request finished HTTP/1.1 GET https://localhost:7068/_framework/dotnet.js.map.gz - 200 18741 text/plain 203.6382ms
+2024-09-24 12:32:30.143 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/blazor.boot.json - null null
+2024-09-24 12:32:30.171 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 12:32:30.172 -06:00 [INF] The file /_framework/blazor.boot.json.gz was not modified
+2024-09-24 12:32:30.172 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 12:32:30.172 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/blazor.boot.json.gz - 304 null application/json 29.3832ms
+2024-09-24 12:32:30.337 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/dotnet.runtime.8.0.8.29rooc9szm.js - null null
+2024-09-24 12:32:30.338 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 12:32:30.340 -06:00 [INF] The file /_framework/dotnet.runtime.8.0.8.29rooc9szm.js.gz was not modified
+2024-09-24 12:32:30.340 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 12:32:30.341 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/dotnet.runtime.8.0.8.29rooc9szm.js.gz - 304 null text/javascript 3.6851ms
+2024-09-24 12:32:30.341 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/dotnet.native.8.0.8.e0zg01041f.js - null null
+2024-09-24 12:32:30.342 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 12:32:30.354 -06:00 [INF] The file /_framework/dotnet.native.8.0.8.e0zg01041f.js.gz was not modified
+2024-09-24 12:32:30.354 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 12:32:30.355 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/dotnet.native.8.0.8.e0zg01041f.js.gz - 304 null text/javascript 13.4565ms
+2024-09-24 12:32:30.363 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/appsettings.Development.json - null null
+2024-09-24 12:32:30.365 -06:00 [INF] The file /appsettings.Development.json was not modified
+2024-09-24 12:32:30.365 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/appsettings.Development.json - 304 null application/json 2.2756ms
+2024-09-24 12:32:30.414 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/appsettings.json - null null
+2024-09-24 12:32:30.414 -06:00 [INF] The file /appsettings.json was not modified
+2024-09-24 12:32:30.415 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/appsettings.json - 304 null application/json 1.1179ms
+2024-09-24 12:32:30.468 -06:00 [INF] Request starting HTTP/1.1 GET https://localhost:7068/_framework/dotnet.runtime.js.map - null null
+2024-09-24 12:32:30.469 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 12:32:30.563 -06:00 [INF] Sending file. Request path: '/_framework/dotnet.runtime.js.map.gz'. Physical path: 'C:\Desarrollo\BrayanCarranza\Repos\GInterfaceCore\GInterfaceCore.Client\bin\Debug\net8.0\wwwroot\_framework\dotnet.runtime.js.map.gz'
+2024-09-24 12:32:30.563 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 12:32:30.564 -06:00 [INF] Request finished HTTP/1.1 GET https://localhost:7068/_framework/dotnet.runtime.js.map.gz - 200 100233 text/plain 95.1127ms
+2024-09-24 12:32:38.892 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/config - null null
+2024-09-24 12:32:38.910 -06:00 [INF] Executing endpoint '/config (/config)'
+2024-09-24 12:32:39.567 -06:00 [INF] Executed endpoint '/config (/config)'
+2024-09-24 12:32:39.570 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/config - 200 null text/html; charset=utf-8 677.7913ms
+2024-09-24 12:32:39.871 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_blazor/initializers - null null
+2024-09-24 12:32:39.872 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 12:32:39.978 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 12:32:39.979 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_blazor/initializers - 200 null application/json; charset=utf-8 107.2617ms
+2024-09-24 12:32:45.068 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/config - null null
+2024-09-24 12:32:45.076 -06:00 [INF] Executing endpoint '/config (/config)'
+2024-09-24 12:32:45.160 -06:00 [INF] Executed endpoint '/config (/config)'
+2024-09-24 12:32:45.162 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/config - 200 null text/html; charset=utf-8 93.4608ms
+2024-09-24 12:32:45.177 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/blazor.web.js - null null
+2024-09-24 12:32:45.178 -06:00 [INF] Executing endpoint 'Blazor web static files'
+2024-09-24 12:32:45.178 -06:00 [INF] The file /_framework/blazor.web.js was not modified
+2024-09-24 12:32:45.178 -06:00 [INF] Executed endpoint 'Blazor web static files'
+2024-09-24 12:32:45.178 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/blazor.web.js - 304 null text/javascript 1.0617ms
+2024-09-24 12:32:45.218 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/aspnetcore-browser-refresh.js - null null
+2024-09-24 12:32:45.218 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_vs/browserLink - null null
+2024-09-24 12:32:45.229 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/aspnetcore-browser-refresh.js - 200 13764 application/javascript; charset=utf-8 11.5475ms
+2024-09-24 12:32:45.437 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/dotnet.js - null null
+2024-09-24 12:32:45.437 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 12:32:45.438 -06:00 [INF] The file /_framework/dotnet.js.gz was not modified
+2024-09-24 12:32:45.438 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 12:32:45.438 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/dotnet.js.gz - 304 null text/javascript 1.6299ms
+2024-09-24 12:32:45.438 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_blazor/initializers - null null
+2024-09-24 12:32:45.441 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 12:32:45.441 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 12:32:45.441 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_blazor/initializers - 200 null application/json; charset=utf-8 2.781ms
+2024-09-24 12:32:45.550 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_vs/browserLink - 200 null text/javascript; charset=UTF-8 328.5448ms
+2024-09-24 12:32:45.550 -06:00 [INF] Request starting HTTP/2 POST https://localhost:7068/_blazor/negotiate?negotiateVersion=1 - null 0
+2024-09-24 12:32:45.550 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 12:32:45.550 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/blazor.boot.json - null null
+2024-09-24 12:32:45.551 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 12:32:45.552 -06:00 [INF] The file /_framework/blazor.boot.json.gz was not modified
+2024-09-24 12:32:45.552 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 12:32:45.552 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/blazor.boot.json.gz - 304 null application/json 1.8651ms
+2024-09-24 12:32:45.728 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/dotnet.runtime.8.0.8.29rooc9szm.js - null null
+2024-09-24 12:32:45.729 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 12:32:45.730 -06:00 [INF] The file /_framework/dotnet.runtime.8.0.8.29rooc9szm.js.gz was not modified
+2024-09-24 12:32:45.730 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 12:32:45.730 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/dotnet.runtime.8.0.8.29rooc9szm.js.gz - 304 null text/javascript 2.1068ms
+2024-09-24 12:32:45.731 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/dotnet.native.8.0.8.e0zg01041f.js - null null
+2024-09-24 12:32:45.734 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 12:32:45.737 -06:00 [INF] The file /_framework/dotnet.native.8.0.8.e0zg01041f.js.gz was not modified
+2024-09-24 12:32:45.737 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 12:32:45.737 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/dotnet.native.8.0.8.e0zg01041f.js.gz - 304 null text/javascript 6.6238ms
+2024-09-24 12:32:45.737 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/appsettings.Development.json - null null
+2024-09-24 12:32:45.738 -06:00 [INF] The file /appsettings.Development.json was not modified
+2024-09-24 12:32:45.739 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/appsettings.Development.json - 304 null application/json 1.1325ms
+2024-09-24 12:32:45.758 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 12:32:45.758 -06:00 [INF] Request finished HTTP/2 POST https://localhost:7068/_blazor/negotiate?negotiateVersion=1 - 200 316 application/json 208.7246ms
+2024-09-24 12:32:45.763 -06:00 [INF] Request starting HTTP/2 CONNECT https://localhost:7068/_blazor?id=Un2NuomLfHCcdsiGBeXoEA - null null
+2024-09-24 12:32:45.764 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 12:32:45.974 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/appsettings.json - null null
+2024-09-24 12:32:45.975 -06:00 [INF] The file /appsettings.json was not modified
+2024-09-24 12:32:45.975 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/appsettings.json - 304 null application/json 1.0084ms
+2024-09-24 12:33:19.162 -06:00 [INF] ------------------------------------
+2024-09-24 12:33:19.163 -06:00 [INF] DATA File created->#:C:\Apps\Genesis\Ginterface\Data\Picklist DMS1B.xlsx
+2024-09-24 12:33:19.163 -06:00 [INF] ------------------------------------
+2024-09-24 12:33:22.455 -06:00 [INF] ------------------------------------
+2024-09-24 12:33:22.455 -06:00 [INF] DATA Excel instanciated
+2024-09-24 12:33:22.455 -06:00 [INF] ------------------------------------
+2024-09-24 12:33:23.177 -06:00 [INF] ------------------------------------
+2024-09-24 12:33:23.177 -06:00 [INF] DATA Excel Open
+2024-09-24 12:33:23.177 -06:00 [INF] ------------------------------------
+2024-09-24 12:33:23.269 -06:00 [INF] ------------------------------------
+2024-09-24 12:33:23.269 -06:00 [INF] DATA Excel _Worksheet
+2024-09-24 12:33:23.269 -06:00 [INF] ------------------------------------
+2024-09-24 12:33:28.821 -06:00 [INF] ------------------------------------
+2024-09-24 12:33:28.821 -06:00 [INF] DATA AllValues->#:410
+2024-09-24 12:33:28.821 -06:00 [INF] ------------------------------------
+2024-09-24 12:33:30.429 -06:00 [INF] ------------------------------------
+2024-09-24 12:33:30.429 -06:00 [INF] DATA -> result #:61
+2024-09-24 12:33:30.429 -06:00 [INF] ------------------------------------
+2024-09-24 13:14:32.683 -06:00 [INF] User profile is available. Using 'C:\Users\Josue\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2024-09-24 13:14:32.895 -06:00 [INF] Iniciando la aplicación web
+2024-09-24 13:14:33.615 -06:00 [INF] Now listening on: https://localhost:7068
+2024-09-24 13:14:33.615 -06:00 [INF] Now listening on: http://localhost:5078
+2024-09-24 13:14:33.631 -06:00 [INF] No action descriptors found. This may indicate an incorrectly configured application or missing application parts. To learn more, visit https://aka.ms/aspnet/mvc/app-parts
+2024-09-24 13:14:33.713 -06:00 [INF] Application started. Press Ctrl+C to shut down.
+2024-09-24 13:14:33.714 -06:00 [INF] Hosting environment: Development
+2024-09-24 13:14:33.714 -06:00 [INF] Content root path: C:\Desarrollo\BrayanCarranza\Repos\GInterfaceCore\GInterfaceCore
+2024-09-24 13:14:37.068 -06:00 [INF] Request starting HTTP/1.1 GET https://localhost/_framework/debug/ws-proxy?browser=ws%3A%2F%2F127.0.0.1%3A57400%2Fdevtools%2Fbrowser%2F0876b916-cc46-48b8-b4f9-f06861fda457 - null null
+2024-09-24 13:14:37.754 -06:00 [INF] Request finished HTTP/1.1 GET https://localhost/_framework/debug/ws-proxy?browser=ws%3A%2F%2F127.0.0.1%3A57400%2Fdevtools%2Fbrowser%2F0876b916-cc46-48b8-b4f9-f06861fda457 - 302 0 null 704.101ms
+2024-09-24 13:14:38.306 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/ - null null
+2024-09-24 13:14:38.567 -06:00 [INF] Executing endpoint '/ (/)'
+2024-09-24 13:14:39.258 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/aspnetcore-browser-refresh.js - null null
+2024-09-24 13:14:39.264 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/blazor.web.js - null null
+2024-09-24 13:14:39.268 -06:00 [INF] Executing endpoint 'Blazor web static files'
+2024-09-24 13:14:39.269 -06:00 [INF] Executed endpoint '/ (/)'
+2024-09-24 13:14:39.285 -06:00 [INF] The file /_framework/blazor.web.js was not modified
+2024-09-24 13:14:39.286 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/ - 200 null text/html; charset=utf-8 982.1006ms
+2024-09-24 13:14:39.286 -06:00 [INF] Executed endpoint 'Blazor web static files'
+2024-09-24 13:14:39.287 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/blazor.web.js - 304 null text/javascript 23.1401ms
+2024-09-24 13:14:39.290 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/aspnetcore-browser-refresh.js - 200 13764 application/javascript; charset=utf-8 31.9178ms
+2024-09-24 13:14:39.428 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_vs/browserLink - null null
+2024-09-24 13:14:39.585 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/dotnet.js - null null
+2024-09-24 13:14:39.585 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 13:14:39.625 -06:00 [INF] The file /_framework/dotnet.js.gz was not modified
+2024-09-24 13:14:39.626 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 13:14:39.626 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/dotnet.js.gz - 304 null text/javascript 42.0644ms
+2024-09-24 13:14:39.734 -06:00 [INF] Request starting HTTP/1.1 GET https://localhost:7068/_framework/dotnet.js.map - null null
+2024-09-24 13:14:39.735 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 13:14:39.741 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_vs/browserLink - 200 null text/javascript; charset=UTF-8 314.9619ms
+2024-09-24 13:14:39.790 -06:00 [INF] Sending file. Request path: '/_framework/dotnet.js.map.gz'. Physical path: 'C:\Desarrollo\BrayanCarranza\Repos\GInterfaceCore\GInterfaceCore.Client\bin\Debug\net8.0\wwwroot\_framework\dotnet.js.map.gz'
+2024-09-24 13:14:39.791 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 13:14:39.792 -06:00 [INF] Request finished HTTP/1.1 GET https://localhost:7068/_framework/dotnet.js.map.gz - 200 18741 text/plain 58.2612ms
+2024-09-24 13:14:39.836 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/blazor.boot.json - null null
+2024-09-24 13:14:39.837 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 13:14:39.842 -06:00 [INF] The file /_framework/blazor.boot.json.gz was not modified
+2024-09-24 13:14:39.842 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 13:14:39.842 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/blazor.boot.json.gz - 304 null application/json 6.2686ms
+2024-09-24 13:14:39.968 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/dotnet.runtime.8.0.8.29rooc9szm.js - null null
+2024-09-24 13:14:39.968 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/dotnet.native.8.0.8.e0zg01041f.js - null null
+2024-09-24 13:14:39.969 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 13:14:39.969 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 13:14:39.970 -06:00 [INF] The file /_framework/dotnet.native.8.0.8.e0zg01041f.js.gz was not modified
+2024-09-24 13:14:39.970 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 13:14:39.971 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/dotnet.native.8.0.8.e0zg01041f.js.gz - 304 null text/javascript 2.9073ms
+2024-09-24 13:14:39.972 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/appsettings.Development.json - null null
+2024-09-24 13:14:39.973 -06:00 [INF] The file /_framework/dotnet.runtime.8.0.8.29rooc9szm.js.gz was not modified
+2024-09-24 13:14:39.974 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 13:14:39.974 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/dotnet.runtime.8.0.8.29rooc9szm.js.gz - 304 null text/javascript 7.0923ms
+2024-09-24 13:14:39.974 -06:00 [INF] The file /appsettings.Development.json was not modified
+2024-09-24 13:14:39.975 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/appsettings.Development.json - 304 null application/json 3.3925ms
+2024-09-24 13:14:40.035 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/appsettings.json - null null
+2024-09-24 13:14:40.038 -06:00 [INF] The file /appsettings.json was not modified
+2024-09-24 13:14:40.040 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/appsettings.json - 304 null application/json 3.8579ms
+2024-09-24 13:14:40.043 -06:00 [INF] Request starting HTTP/1.1 GET https://localhost:7068/_framework/dotnet.runtime.js.map - null null
+2024-09-24 13:14:40.043 -06:00 [INF] Executing endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 13:14:40.063 -06:00 [INF] Sending file. Request path: '/_framework/dotnet.runtime.js.map.gz'. Physical path: 'C:\Desarrollo\BrayanCarranza\Repos\GInterfaceCore\GInterfaceCore.Client\bin\Debug\net8.0\wwwroot\_framework\dotnet.runtime.js.map.gz'
+2024-09-24 13:14:40.063 -06:00 [INF] Executed endpoint 'Microsoft.AspNetCore.Routing.RouteEndpoint'
+2024-09-24 13:14:40.064 -06:00 [INF] Request finished HTTP/1.1 GET https://localhost:7068/_framework/dotnet.runtime.js.map.gz - 200 100233 text/plain 21.2987ms
+2024-09-24 13:14:46.150 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/blazor-hotreload.js - null null
+2024-09-24 13:14:46.150 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/blazor-hotreload.js - 200 574 application/javascript; charset=utf-8 1.1601ms
+2024-09-24 13:14:46.182 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7068/_framework/blazor-hotreload - null null
+2024-09-24 13:14:46.184 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7068/_framework/blazor-hotreload - 204 null null 2.3453ms

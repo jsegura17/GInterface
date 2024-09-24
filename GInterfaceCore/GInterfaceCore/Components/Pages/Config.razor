@@ -1,124 +1,108 @@
 ﻿@page "/config"
+@rendermode InteractiveServer
 
 <PageTitle>Configuración de Tipos de Documentos</PageTitle>
 
-<RadzenCard>
-    <RadzenHeading Size="H1">Configuración de Tipos de Documentos</RadzenHeading>
-
-    <RadzenDropDown Data="@_appCore.GlobalDocType"
-                    @bind-Value="selectedDocumentType"
-                    Placeholder="Seleccionar Tipo de Documento"
-                    Change="@OnChange"
-                    Style="width: 100%;" />
-
-    @if (showDropZone)
-    {       
-        <RadzenHeading Size="H2">Configuración Detallada del Documento</RadzenHeading>
-
-        <RadzenDropZoneContainer TItem="ConfigItem" Data="configData"
-                                 ItemSelector="@ConfigItemSelector"
-                                 ItemRender="@OnConfigItemRender"
-                                 Drop="@OnConfigDrop">
-            <ChildContent>
-                <RadzenStack Orientation="Orientation.Horizontal" Visible="showFuenteDeDatos" Gap="1rem" Wrap="FlexWrap.Wrap" Class="rz-p-12">
-                    <RadzenDropZone Value="ConfigArea.FuenteDeDatos" Class="rz-display-flex rz-flex-column rz-background-color-info-lighter rz-border-info-light rz-border-radius-2 rz-p-4" Style="flex: 1; gap: 1rem;">
-                        <RadzenText Text="Fuente de datos" TextStyle="TextStyle.Subtitle2" />
-                    </RadzenDropZone>
-
-                    <RadzenDropZone Value="ConfigArea.CamposDeOrigen" Visible="showCamposDeOrigen" Class="rz-display-flex rz-flex-column rz-background-color-warning-lighter rz-border-warning-light rz-border-radius-2 rz-p-4" Style="flex: 1; gap: 1rem;">
-                        <RadzenText Text="Campos de Origen" TextStyle="TextStyle.Subtitle2" />
-                    </RadzenDropZone>
-
-                    <RadzenDropZone Value="ConfigArea.FuenteDeDestino" Visible="showFuenteDeDestino" Class="rz-display-flex rz-flex-column rz-background-color-success-lighter rz-border-success-light rz-border-radius-2 rz-p-4" Style="flex: 1; gap: 1rem;">
-                        <RadzenText Text="Fuente de Destino" TextStyle="TextStyle.Subtitle2" />
-                    </RadzenDropZone>
-
-                    <RadzenDropZone Value="ConfigArea.CamposDeMapeo" Visible="showCamposDeMapeo" Class="rz-display-flex rz-flex-column rz-background-color-danger-lighter rz-border-danger-light rz-border-radius-2 rz-p-4" Style="flex: 1; gap: 1rem;">
-                        <RadzenText Text="Campos de Mapeo" TextStyle="TextStyle.Subtitle2" />
-                    </RadzenDropZone>
-                </RadzenStack>
-                <RadzenStack Orientation="Orientation.Horizontal" Visible="showDocumento" Gap="1rem" Wrap="FlexWrap.Wrap" Class="rz-p-12">
-                    <RadzenDropZone Value="ConfigArea.Documento" Class="rz-display-flex rz-flex-column rz-background-color-info-lighter rz-border-info-light rz-border-radius-2 rz-p-4" Style="flex: 1; gap: 1rem;">
-                        <RadzenText Text="Documento" TextStyle="TextStyle.Subtitle2" />
-                    </RadzenDropZone>
-                </RadzenStack>
-            </ChildContent>
-            <Template>
-                <strong>@context.Name</strong>
-            </Template>
-        </RadzenDropZoneContainer>
-    }
-</RadzenCard>
+<table style="width:80%">
+    <tr>
+        <td hidden="@hideMenu1">
+            <!-- Botón con imagen de fondo -->
+            <button @onclick="() => OnClick(GInterfaceCore.Models.EnumTypes.MenuItems.Picklist)"
+                    class="btn"
+                    style="background-image: url('/images/integra.png'); width: 100px; height: 100px; background-size: cover; border: none;">
+            </button>
+            <!-- Texto debajo del botón -->
+            <p class="size_12 text_center">@GInterfaceCore.Models.EnumTypes.MenuItems.Picklist.GetDisplayDescription()</p>
+        </td>
+    </tr>
+</table>
 
 @code {
     //Get Global Core Settings
     private Core.AppCore _appCore = Core.AppCore.Instance;
-
-    private DocumentType selectedDocumentType;
-
-    private bool showDropZone = false;
-    private bool showCamposDeOrigen = false;
-    private bool showFuenteDeDatos = true;
-    private bool showFuenteDeDestino = false;
-    private bool showCamposDeMapeo = false;
-    private bool showDocumento = true;
-
-    IList<ConfigItem> configData;
+    //By Menu Btns
+    bool hideMenu1 = false;
 
     protected override void OnInitialized()
     {
-        configData = new List<ConfigItem>
-        {
-            new ConfigItem { Id = 1, Name = "Fuente de Datos CSV", Area = ConfigArea.FuenteDeDatos },
-            new ConfigItem { Id = 2, Name = "Campos de Origen", Area = ConfigArea.CamposDeOrigen },
-            new ConfigItem { Id = 3, Name = "Fuente de Destino", Area = ConfigArea.FuenteDeDestino },
-            new ConfigItem { Id = 4, Name = "Campos de Mapeo", Area = ConfigArea.CamposDeMapeo }
-        };
+
     }
 
     // Mostrar Panel de Configuracion del Documento
-    private void OnChange(dynamic value)
+    private async Task OnClick(GInterfaceCore.Models.EnumTypes.MenuItems globalMenuItems)
     {
-        selectedDocumentType = value;
-        showDropZone = true;
-    }
 
-    // Config Items
-    Func<ConfigItem, RadzenDropZone<ConfigItem>, bool> ConfigItemSelector = (item, zone) => item.Area == (ConfigArea)zone.Value;
-
-    void OnConfigItemRender(RadzenDropZoneItemRenderEventArgs<ConfigItem> args)
-    {
-        args.Attributes["class"] = "rz-card rz-variant-filled rz-background-color-primary-light rz-color-on-primary-light";
-    }
-
-    async void OnConfigDrop(RadzenDropZoneItemEventArgs<ConfigItem> args)
-    {
-        if (args.FromZone != args.ToZone)
+        switch (globalMenuItems)
         {
-            // update item zone
-            args.Item.Area = (ConfigArea)args.ToZone.Value;
+            case GInterfaceCore.Models.EnumTypes.MenuItems.Picklist:
+                //Call Picklist Process
+                var parameters = "globalMenuItems";
 
-            //Validate item
-            switch (args.FromZone.Value)
-            {
-                case ConfigArea.FuenteDeDatos:
-                    await OpenUpLoadFile();
-                    break;
-                default:
-                    break;
-            }
-        }
+                // Mostrar modal para pedir el tamaño del header
+                //var result = await DialogService.OpenAsync<HeaderSizeDialog>("Tamaño del Encabezado",
+                //new Dictionary<string, object>() { { "FileName", fileName } },
+                //new DialogOptions() { Width = "500px", Height = "300px" });
+                
+                var result = await DialogService.OpenComponentExtension<FileUpLoad>("Espera");
 
-        if (args.ToItem != null && args.ToItem != args.Item)
-        {
-            // reorder items in same zone or place the item at specific index in new zone
-            configData.Remove(args.Item);
-            configData.Insert(configData.IndexOf(args.ToItem), args.Item);
+                if (result != null)
+                {
+                    int headerSize;
+                    if (int.TryParse(result.HeaderSize.ToString(), out headerSize))
+                    {
+                        // Ejecutar una tarea en segundo plano
+                        await Task.Run(async () =>
+                    {
+                        try
+                        {
+                            // Simular una tarea en segundo plano
+                            await InvokeAsync(async () =>
+                            {
+                                NotificationService.Notify(new NotificationMessage
+                                        {
+                                            Severity = NotificationSeverity.Info,
+                                            Summary = "Button Clicked",
+                                            Detail = globalMenuItems.GetDisplayDescription()
+                                        });
+
+                                // Lógica adicional que deseas ejecutar
+                                DialogService.Close();
+                            });
+
+                            await BusyDialog();
+                        }
+                        catch (Exception ex)
+                        {
+                            // Manejo de excepciones
+                            NotificationService.Notify(new NotificationMessage
+                                    {
+                                        Severity = NotificationSeverity.Error,
+                                        Summary = "Error",
+                                        Detail = $"Ocurrió un error: {ex.Message}"
+                                    });
+                        }
+                    });
+                    }
+                    else
+                    {
+                        NotificationService.Notify(new NotificationMessage
+                                {
+                                    Severity = NotificationSeverity.Error,
+                                    Summary = "Error en el Tamaño del Encabezado",
+                                    Detail = "El tamaño del encabezado ingresado no es válido. Por favor, ingrese un número entero."
+                                });
+                        return;
+                    }
+                }
+
+                break;
+            default:
+                break;
         }
     }
 
     public async Task OpenUpLoadFile()
-    {        
+    {
         await DialogService.OpenAsync<FileUpLoad>("Subir Archivo",
                new Dictionary<string, object>() { },
                new DialogOptions()
@@ -126,5 +110,15 @@
                        Resizable = true,
                        Draggable = true
                    });
+    }
+
+    // Busy dialog from markup
+    async Task BusyDialog()
+    {
+        await DialogService.OpenAsync("", ds =>
+            @<RadzenStack AlignItems="AlignItems.Center" Gap="2rem" class="rz-p-12">
+                <RadzenImage Path="images/loading.gif" Style="width: 200px;" AlternateText="community" />
+                <RadzenText TextStyle="TextStyle.H6">Cargando meta informacion...</RadzenText>
+            </RadzenStack>, new DialogOptions() { ShowTitle = false, Style = "min-height:auto;min-width:auto;width:auto", CloseDialogOnEsc = false });
     }
 }

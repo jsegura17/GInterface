@@ -84,6 +84,7 @@ namespace GInterfaceCore.Core
         public DataTable InfotTempo;
         public int head;
         public string[] headers;
+        public int documentType;
 
         //Lista de Tipos de Documentos
         public List<DocumentType> GlobalDocType { get; set; }
@@ -533,7 +534,7 @@ namespace GInterfaceCore.Core
                 {
                     connection.Open();
 
-                    using (SqlCommand command = new SqlCommand("SP_InsertFileCSVBase", connection))
+                    using (SqlCommand command = new SqlCommand("SP_InsertFileBase", connection))
                     {
                         command.CommandType = CommandType.StoredProcedure;
 
@@ -549,6 +550,10 @@ namespace GInterfaceCore.Core
                         command.Parameters.Add(new SqlParameter("@FileFields", SqlDbType.Int)
                         {
                             Value = fileFields
+                        });
+                        command.Parameters.Add(new SqlParameter("@FileType", SqlDbType.Int)
+                        {
+                            Value = instance.documentType
                         });
                         command.Parameters.Add(new SqlParameter("@FileJsonObj", SqlDbType.NVarChar, -1)
                         {
@@ -595,7 +600,38 @@ namespace GInterfaceCore.Core
 
 
         }
+        public List<FileCSV> GetTemplateFiles()
+        {
+            List<FileCSV> templateFiles = new List<FileCSV>();
 
+            using (SqlConnection connection = GetDBConnection())
+            {
+                SqlCommand cmd = new SqlCommand("SP_GetBaseFileTemplate", connection);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                connection.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    FileCSV file = new FileCSV
+                    {
+                        ID = Convert.ToInt32(reader["ID"]),
+                        FileNames = reader["FileNames"].ToString(),
+                        FileDate = Convert.ToDateTime(reader["FileDate"]),
+                        FileStatus = (TransactionStatus)Convert.ToInt32(reader["FileStatus"]), // Asegúrate de que FileStatus sea un int en la base de datos y se pueda mapear a TransactionStatus
+                        FileFields = Convert.ToInt32(reader["FileFields"]),
+                        FileType = (DocumentType)Convert.ToInt32(reader["FileType"]),
+                        FileJsonObj = reader["FileJsonObj"].ToString()
+                    };
+
+
+                    templateFiles.Add(file);
+                }
+            }
+
+            return templateFiles;
+        }
 
         private static DataTable LoadCsvData(List<TempCSVGlobal> temp)
         {

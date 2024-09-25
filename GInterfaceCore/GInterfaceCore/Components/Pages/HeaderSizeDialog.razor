@@ -8,10 +8,14 @@
     public string EndRow { get; set; } // Almacena la fila final del reporte
     public bool IsAdditionalFieldChecked { get; set; } // Almacena el estado del checkbox
     public string AdditionalFieldText { get; set; } // Almacena el texto adicional ingresado
+    public DocumentType SelectedDocumentType { get; set; } // Almacena el tipo de documento seleccionado
+
+    // Convertir el enum a una lista para mostrar en el select
+    public List<DocumentType> DocumentTypes => Enum.GetValues(typeof(DocumentType)).Cast<DocumentType>().ToList();
 
     private void Confirm()
     {
-        DialogService.Close(new { HeaderSize, StartRow, EndRow, AdditionalFieldText });
+        DialogService.Close(new { HeaderSize, StartRow, EndRow, AdditionalFieldText, SelectedDocumentType });
     }
 
     private void Cancel()
@@ -47,6 +51,10 @@
             <RadzenTextBox @bind-Value="AdditionalFieldText" Placeholder="Texto adicional" Style="width:100%;" />
         </div>
     }
+
+    <div style="margin-bottom: 20px;">
+        <RadzenDropDown @bind-Value="SelectedDocumentType" Data=@DocumentTypes TextProperty="Name" ValueProperty="Value" Placeholder="Seleccionar tipo de documento" Style="width:100%;" />
+    </div>
 
     <div style="margin-top:20px;">
         <RadzenButton Text="Confirmar" Click="Confirm" ButtonStyle="ButtonStyle.Primary" />

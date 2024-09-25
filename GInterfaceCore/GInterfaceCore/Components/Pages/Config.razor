@@ -4,45 +4,104 @@
 <PageTitle>Configuración de Tipos de Documentos</PageTitle>
 
 <table style="width:80%">
-    <tr>
-        <td hidden="@hideMenu1">
-            <!-- Botón con imagen de fondo -->
-            <button @onclick="() => OnClick(GInterfaceCore.Models.EnumTypes.MenuItems.Picklist)"
-                    class="btn"
-                    style="background-image: url('/images/integra.png'); width: 100px; height: 100px; background-size: cover; border: none;">
-            </button>
-            <!-- Texto debajo del botón -->
-            <p class="size_12 text_center">@GInterfaceCore.Models.EnumTypes.MenuItems.Picklist.GetDisplayDescription()</p>
-        </td>
-    </tr>
+    @if (templateFiles != null && templateFiles.Any())
+    {
+        foreach (var file in templateFiles)
+        {
+            <tr>
+                <td>
+                    <button @onclick="() => OnClick(file)" class="btn"
+                            style="background-image: url('/images/integra.png'); width: 100px; height: 100px; background-size: cover; border: none;">
+                    </button>
+                    <p class="size_12 text_center">@file.FileType</p>
+                </td>
+            </tr>
+        }
+    }
+    else
+    {
+        <tr>
+            <td colspan="2" class="text_center">No hay archivos disponibles.</td>
+        </tr>
+    }
 </table>
+@if (true) // Verificación para mostrar el botón solo si el usuario es administrador
+{
+    <div class="text_center">
+        <button @onclick="() => OpenTempFileUpload()" class="btn" style="margin-top: 20px;">
+            Agregar Más
+        </button>
+    </div>
+}
 
 @code {
-    //Get Global Core Settings
+    // Get Global Core Settings
     private Core.AppCore _appCore = Core.AppCore.Instance;
-    //By Menu Btns
-    bool hideMenu1 = false;
+    private List<FileCSV> templateFiles = null;
 
     protected override void OnInitialized()
     {
+        templateFiles = _appCore.GetTemplateFiles();
+    }
+    private async Task OpenTempFileUpload()
+    {
+        FileCSV file = null;
+        var result = await DialogService.OpenComponentExtension<FileUpLoad>("Espera");
 
+        if (result != null)
+        {
+            int headerSize;
+            if (int.TryParse(result.HeaderSize.ToString(), out headerSize))
+            {
+                // Ejecutar una tarea en segundo plano
+                await Task.Run(async () =>
+        {
+            try
+            {
+                await InvokeAsync(async () =>
+                {
+                    NotificationService.Notify(new NotificationMessage
+                            {
+                                Severity = NotificationSeverity.Info,
+                                Summary = "Button Clicked",
+                                Detail = file.FileType.GetDisplayDescription()
+                            });
+
+                    DialogService.Close();
+                });
+
+                await BusyDialog();
+            }
+            catch (Exception ex)
+            {
+                NotificationService.Notify(new NotificationMessage
+                        {
+                            Severity = NotificationSeverity.Error,
+                            Summary = "Error",
+                            Detail = $"Ocurrió un error: {ex.Message}"
+                        });
+            }
+        });
+            }
+            else
+            {
+                NotificationService.Notify(new NotificationMessage
+                        {
+                            Severity = NotificationSeverity.Error,
+                            Summary = "Error en el Tamaño del Encabezado",
+                            Detail = "El tamaño del encabezado ingresado no es válido. Por favor, ingrese un número entero."
+                        });
+                return;
+            }
+        }
     }
 
-    // Mostrar Panel de Configuracion del Documento
-    private async Task OnClick(GInterfaceCore.Models.EnumTypes.MenuItems globalMenuItems)
+    // Mostrar Panel de Configuración del Documento
+    private async Task OnClick(FileCSV file)
     {
-
-        switch (globalMenuItems)
+        switch (file.FileType)
         {
-            case GInterfaceCore.Models.EnumTypes.MenuItems.Picklist:
-                //Call Picklist Process
-                var parameters = "globalMenuItems";
-
-                // Mostrar modal para pedir el tamaño del header
-                //var result = await DialogService.OpenAsync<HeaderSizeDialog>("Tamaño del Encabezado",
-                //new Dictionary<string, object>() { { "FileName", fileName } },
-                //new DialogOptions() { Width = "500px", Height = "300px" });
-                
+            case GInterfaceCore.Models.EnumTypes.DocumentType.Picklist:
                 var result = await DialogService.OpenComponentExtension<FileUpLoad>("Espera");
 
                 if (result != null)
@@ -55,17 +114,15 @@
                     {
                         try
                         {
-                            // Simular una tarea en segundo plano
                             await InvokeAsync(async () =>
                             {
                                 NotificationService.Notify(new NotificationMessage
                                         {
                                             Severity = NotificationSeverity.Info,
                                             Summary = "Button Clicked",
-                                            Detail = globalMenuItems.GetDisplayDescription()
+                                            Detail = file.FileType.GetDisplayDescription()
                                         });
 
-                                // Lógica adicional que deseas ejecutar
                                 DialogService.Close();
                             });
 
@@ -73,7 +130,6 @@
                         }
                         catch (Exception ex)
                         {
-                            // Manejo de excepciones
                             NotificationService.Notify(new NotificationMessage
                                     {
                                         Severity = NotificationSeverity.Error,
@@ -96,6 +152,7 @@
                 }
 
                 break;
+
             default:
                 break;
         }
@@ -104,8 +161,8 @@
     public async Task OpenUpLoadFile()
     {
         await DialogService.OpenAsync<FileUpLoad>("Subir Archivo",
-               new Dictionary<string, object>() { },
-               new DialogOptions()
+           new Dictionary<string, object>() { },
+           new DialogOptions()
                    {
                        Resizable = true,
                        Draggable = true
@@ -116,9 +173,9 @@
     async Task BusyDialog()
     {
         await DialogService.OpenAsync("", ds =>
-            @<RadzenStack AlignItems="AlignItems.Center" Gap="2rem" class="rz-p-12">
-                <RadzenImage Path="images/loading.gif" Style="width: 200px;" AlternateText="community" />
-                <RadzenText TextStyle="TextStyle.H6">Cargando meta informacion...</RadzenText>
-            </RadzenStack>, new DialogOptions() { ShowTitle = false, Style = "min-height:auto;min-width:auto;width:auto", CloseDialogOnEsc = false });
+    @<RadzenStack AlignItems="AlignItems.Center" Gap="2rem" class="rz-p-12">
+        <RadzenImage Path="images/loading.gif" Style="width: 200px;" AlternateText="community" />
+        <RadzenText TextStyle="TextStyle.H6">Cargando meta información...</RadzenText>
+    </RadzenStack>, new DialogOptions() { ShowTitle = false, Style = "min-height:auto;min-width:auto;width:auto", CloseDialogOnEsc = false });
     }
 }

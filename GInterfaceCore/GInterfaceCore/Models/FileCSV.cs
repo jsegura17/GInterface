@@ -1,4 +1,5 @@
-﻿using System.Transactions;
+﻿using DocumentFormat.OpenXml.Wordprocessing;
+using System.Transactions;
 
 namespace GInterfaceCore.Models
 {
@@ -9,7 +10,9 @@ namespace GInterfaceCore.Models
         public string FileNames { get; set; }
         public DateTime FileDate { get; set; }
         public TransactionStatus FileStatus { get; set; } // status the document
-        public int FileFields { get; set; }  
+        public int FileFields { get; set; }
+
+        public EnumTypes.DocumentType documentType  { get; set; }
         public string FileJsonObj { get; set; }
 
     }

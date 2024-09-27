@@ -8,10 +8,12 @@
     public string EndRow { get; set; } // Almacena la fila final del reporte
     public bool IsAdditionalFieldChecked { get; set; } // Almacena el estado del checkbox
     public string AdditionalFieldText { get; set; } // Almacena el texto adicional ingresado
+    public string SelectedOption { get; set; } // Almacena la opción seleccionada en el dropdown
+    public List<string> Options { get; set; } = new List<string> { "Opción 1", "Opción 2", "Opción 3" }; // Opciones del select
 
     private void Confirm()
     {
-        DialogService.Close(new { HeaderSize, StartRow, EndRow, AdditionalFieldText });
+        DialogService.Close(new { HeaderSize, StartRow, EndRow, AdditionalFieldText, SelectedOption });
     }
 
     private void Cancel()
@@ -34,6 +36,10 @@
 
     <div style="margin-bottom: 20px;">
         <RadzenTextBox @bind-Value="EndRow" Placeholder="Fila Final" Style="width:100%;" />
+    </div>
+
+    <div style="margin-bottom: 20px;">
+        <RadzenDropDown @bind-Value="SelectedOption" Data="@Options" Placeholder="Seleccione una opción" Style="width:100%;" />
     </div>
 
     <div style="margin-bottom: 20px;">

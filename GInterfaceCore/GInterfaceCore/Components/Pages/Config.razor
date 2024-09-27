@@ -16,6 +16,12 @@
         </td>
     </tr>
 </table>
+@if (_appCore.IsAdmin== false)
+{
+    <div class="text_center">
+        <RadzenButton Shade="Shade.Light" Click=@(args =>OnClick(GInterfaceCore.Models.EnumTypes.MenuItems.Picklist)) Text="Agregar Más" ButtonStyle="ButtonStyle.Success" />
+    </div>
+}
 
 @code {
     //Get Global Core Settings
@@ -27,6 +33,7 @@
     {
 
     }
+   
 
     // Mostrar Panel de Configuracion del Documento
     private async Task OnClick(GInterfaceCore.Models.EnumTypes.MenuItems globalMenuItems)

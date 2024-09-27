@@ -2,18 +2,23 @@
 @inject DialogService DialogService
 
 @code {
-    [Parameter] public string FileName { get; set; } // Recibe el nombre del archivo
-    public string HeaderSize { get; set; } // Almacena el tamaño del encabezado ingresado por el usuario
-    public string StartRow { get; set; } // Almacena la fila de inicio del reporte
-    public string EndRow { get; set; } // Almacena la fila final del reporte
-    public bool IsAdditionalFieldChecked { get; set; } // Almacena el estado del checkbox
-    public string AdditionalFieldText { get; set; } // Almacena el texto adicional ingresado
-    public string SelectedOption { get; set; } // Almacena la opción seleccionada en el dropdown
-    public List<string> Options { get; set; } = new List<string> { "Opción 1", "Opción 2", "Opción 3" }; // Opciones del select
+    [Parameter] public string FileName { get; set; }
+    public string HeaderSize { get; set; }
+    public string StartRow { get; set; }
+    public string EndRow { get; set; }
+    public bool IsAdditionalFieldChecked { get; set; }
+    public string AdditionalFieldText { get; set; }
+    public int SelectedOption { get; set; } // Almacena el valor numérico seleccionado
+    private Core.AppCore _appCore = Core.AppCore.Instance;
 
-
-    // Convertir el enum a una lista para mostrar en el select
-    public List<DocumentType> DocumentTypes => Enum.GetValues(typeof(DocumentType)).Cast<DocumentType>().ToList();
+    // Convertir el enum a una lista de SelectItems (sin drag and drop)
+    public List<EnumValue> DocumentTypeItems => Enum.GetValues(typeof(DocumentType))
+        .Cast<DocumentType>()
+        .Select(dt => new EnumValue
+        {
+            Name = dt.ToString(),
+            Value = (int)dt
+        }).ToList();
 
     private void Confirm()
     {
@@ -23,6 +28,12 @@
     private void Cancel()
     {
         DialogService.Close(null);
+    }
+
+    public class EnumValue
+    {
+        public string Name { get; set; }
+        public int Value { get; set; }
     }
 }
 
@@ -43,7 +54,7 @@
     </div>
 
     <div style="margin-bottom: 20px;">
-        <RadzenDropDown @bind-Value="SelectedOption" Data="@Options" Placeholder="Seleccione una opción" Style="width:100%;" />
+        <RadzenDropDown @bind-Value="SelectedOption" Data="@DocumentTypeItems" TextProperty="Name" ValueProperty="Value" Placeholder="Seleccione una opción" Style="width:100%;" />
     </div>
 
     <div style="margin-bottom: 20px;">

@@ -5,7 +5,6 @@ using System.Text.Json.Nodes;
 using System.Text.Json;
 using System.Text;
 using GInterfaceCore.Models;
-using Newtonsoft.Json;
 using GInterfaceCore.Core.Utils;
 using static GInterfaceCore.Models.EnumTypes;
 using System.Data.SqlClient;
@@ -13,6 +12,7 @@ using GInterfaceCore.Properties;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Components;
 using GInterfaceCore.Components.Layout;
+using DocumentFormat.OpenXml.Wordprocessing;
 
 namespace GInterfaceCore.Core
 {
@@ -39,6 +39,7 @@ namespace GInterfaceCore.Core
 
         //Global Settings
         public IJSRuntime JS { get; set; }
+        
         public bool SyncProcessRunning { get; set; } = false;
         public bool LoginProcessRunning { get; set; } = false;
         public bool PullProcessTime { get; set; } = false;
@@ -51,8 +52,7 @@ namespace GInterfaceCore.Core
         public bool IsAdmin { get; set; } = true;
         public EnumTypes.TransactionTask LastTransactionTask { get; set; }
         public HttpClient Global_HttpClient;
-        JsonSerializerSettings settings;
-
+        
         //Global EventManager for Class
         public EventManager<TransactionEvent> Global_EventManager { get; set; }
         public NavigationManager _navigationManager { get; set; }
@@ -87,7 +87,7 @@ namespace GInterfaceCore.Core
         public int documentType;
 
         //Lista de Tipos de Documentos
-        public List<DocumentType> GlobalDocType { get; set; }
+        public List<EnumTypes.DocumentType> GlobalDocType { get; set; }
 
         /*
         * Set initial Data for Singleton Pattern Class
@@ -123,11 +123,7 @@ namespace GInterfaceCore.Core
                 clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
 
                 temp.Global_HttpClient = new HttpClient(clientHandler);
-                temp.settings = new JsonSerializerSettings()
-                {
-                    NullValueHandling = NullValueHandling.Ignore,
-                    MissingMemberHandling = MissingMemberHandling.Ignore
-                };
+                
                 temp.Global_EventManager = new EventManager<TransactionEvent>();
                 temp.lstTransactionEvents = new List<TransactionEvent>();
 
@@ -138,7 +134,7 @@ namespace GInterfaceCore.Core
                 temp.IsLoginUser = false;
                 temp.IsAdmin = false;
 
-                temp.GlobalDocType = EnumHelpers<DocumentType>.GetValues().ToList();
+                temp.GlobalDocType = EnumHelpers<EnumTypes.DocumentType>.GetValues().ToList();
 
             }
             catch (Exception ex)
@@ -522,7 +518,7 @@ namespace GInterfaceCore.Core
 
         }
 
-        public void InsertBaseFileCsv(string fileNames, TransactionStatus fileStatus, int fileFields, string fileJsonObj)
+        public void InsertBaseFileCsv(string fileNames, TransactionStatus fileStatus, int fileFields, int fileType, string fileJsonObj)
         {
 
             string message = string.Empty;
@@ -553,7 +549,7 @@ namespace GInterfaceCore.Core
                         });
                         command.Parameters.Add(new SqlParameter("@FileType", SqlDbType.Int)
                         {
-                            Value = instance.documentType
+                            Value = fileType
                         });
                         command.Parameters.Add(new SqlParameter("@FileJsonObj", SqlDbType.NVarChar, -1)
                         {
@@ -621,7 +617,7 @@ namespace GInterfaceCore.Core
                         FileDate = Convert.ToDateTime(reader["FileDate"]),
                         FileStatus = (TransactionStatus)Convert.ToInt32(reader["FileStatus"]), // Asegúrate de que FileStatus sea un int en la base de datos y se pueda mapear a TransactionStatus
                         FileFields = Convert.ToInt32(reader["FileFields"]),
-                        FileType = (DocumentType)Convert.ToInt32(reader["FileType"]),
+                        FileType = (EnumTypes.DocumentType)Convert.ToInt32(reader["FileType"]),
                         FileJsonObj = reader["FileJsonObj"].ToString()
                     };
 
@@ -740,7 +736,7 @@ namespace GInterfaceCore.Core
             }
             return table;
         }
-        public void sortDataExcel(List<List<string>> excel, string fileName, string dataArray)
+        public void sortDataExcel(List<List<string>> excel, string fileName, string dataArray, string endStartInfo)
         {
             fileName = AppendDateTimeToName(fileName);
             var requireCount = 0;
@@ -824,9 +820,9 @@ namespace GInterfaceCore.Core
                     }
 
                     // Procesar datos CSV
-                    objjson = convertJsonExcel(headers, fieldNames, requireData, excel);
-                    fileFields = headers.Count;
 
+                    fileFields = headers.Count;
+                    objjson = convertJsonExcel(headers, fieldNames, requireData, endStartInfo, fileFields, excel);
                     // Insertar en base de datos
                     DataTable dataTable = LoadCsvData(processedData);
                     instance.CFileName = fileName;
@@ -863,12 +859,23 @@ namespace GInterfaceCore.Core
             string jsonString = System.Text.Json.JsonSerializer.Serialize(jsonObject, new JsonSerializerOptions { WriteIndented = true });
             return jsonString;
         }
-        public string convertJsonExcel(List<string> header, List<string> fieldNames, string[] require, List<List<string>>excel )
+        public string convertJsonExcel(List<string> header, List<string> fieldNames, string[] require, string endStartInfo, int fielfields, List<List<string>> excel)
         {
             var node = new JsonArray();
             var columns = new JsonArray();
             var requireNode = new JsonArray();
             var dataRequireNode = new JsonArray();
+            var startEndHead = new JsonArray();
+            startEndHead = new JsonArray();
+
+            startEndHead.Add(fielfields);
+
+
+            var row = endStartInfo.Split(',');
+            foreach (var item in row)
+            {
+                startEndHead.Add(item);
+            }
             foreach (var item in header)
             {
                 int index = header.IndexOf(item);
@@ -879,7 +886,7 @@ namespace GInterfaceCore.Core
                                        .Take(require.Length)
                                        .ToList();
             foreach (var req in require)
-            {  requireNode.Add(req);}
+            { requireNode.Add(req); }
             foreach (var dataReq in onlySeconds)
             { dataRequireNode.Add(dataReq); }
 
@@ -890,12 +897,19 @@ namespace GInterfaceCore.Core
         { "FileColumName", node },
         { "FileColumNamePosition", columns },
         { "RequireFields", requireNode },
-        { "DataRequireFields", dataRequireNode }
+        { "DataRequireFields", dataRequireNode },
+        { "StartEndHead", startEndHead }
     };
             string jsonString = System.Text.Json.JsonSerializer.Serialize(jsonObject, new JsonSerializerOptions { WriteIndented = true });
             return jsonString;
         }
-        public void LogOut()
+
+        public JsonTemplate TemplateJson(FileCSV data)
+        {
+            JsonTemplate fileJson = JsonSerializer.Deserialize<JsonTemplate>(data.FileJsonObj);
+            return fileJson;
+        }
+    public void LogOut()
         {
             instance.IsLoginUser = false;
             instance.IsAdmin = false;

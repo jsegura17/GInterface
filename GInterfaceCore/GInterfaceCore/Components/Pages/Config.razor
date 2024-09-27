@@ -1,4 +1,5 @@
 ﻿@page "/config"
+@page "/config/{IsAdmin:bool}"
 @rendermode InteractiveServer
 
 <PageTitle>Configuración de Tipos de Documentos</PageTitle>
@@ -25,12 +26,10 @@
         </tr>
     }
 </table>
-@if (true) // Verificación para mostrar el botón solo si el usuario es administrador
+@if (_appCore.IsAdmin)
 {
     <div class="text_center">
-        <button @onclick="() => OpenTempFileUpload()" class="btn" style="margin-top: 20px; font-size: 12px; padding: 5px 10px; width: 80px; height: 30px;">
-            Agregar
-        </button>
+        <RadzenButton Shade="Shade.Light" Click=@(args =>OpenTempFileUpload()) Text="Agregar Más" ButtonStyle="ButtonStyle.Success" />
     </div>
 }
 
@@ -39,14 +38,32 @@
     private Core.AppCore _appCore = Core.AppCore.Instance;
     private List<FileCSV> templateFiles = null;
 
+    [Parameter]
+    public bool IsAdmin { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        if (IsAdmin)
+        {
+            _appCore.IsAdmin = IsAdmin;
+        }
+        else
+        {
+            _appCore.IsAdmin = false;
+        }
+    }
+
     protected override void OnInitialized()
     {
         templateFiles = _appCore.GetTemplateFiles();
     }
+
+
+
     private async Task OpenTempFileUpload()
     {
         FileCSV file = null;
-        var result = await DialogService.OpenComponentExtension<FileUpLoad>("Espera");
+        var result = await DialogService.OpenComponentExtension<TempFileUpload>("Espera");
 
         if (result != null)
         {
@@ -96,14 +113,22 @@
         }
     }
    
+  
+    
+    
+  
 
-    // Mostrar Panel de Configuración del Documento
     private async Task OnClick(FileCSV file)
     {
         switch (file.FileType)
         {
             case GInterfaceCore.Models.EnumTypes.DocumentType.Picklist:
-                var result = await DialogService.OpenComponentExtension<FileUpLoad>("Espera");
+                var parameters = new Dictionary<string, object>
+                {
+                { "SomeParameter", file }, // O cualquier propiedad que necesites pasar
+                };
+
+                var result = await DialogService.OpenComponentExtension<FileUpLoad>("Espera", parameters);
 
                 if (result != null)
                 {
@@ -158,6 +183,7 @@
                 break;
         }
     }
+
 
     public async Task OpenUpLoadFile()
     {

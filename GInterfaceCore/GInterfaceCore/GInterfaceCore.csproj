@@ -12,7 +12,6 @@
     <PackageReference Include="ExcelDna.Interop" Version="15.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.8" />
     <PackageReference Include="Microsoft.Office.Interop.Excel" Version="15.0.4795.1001" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Radzen.Blazor" Version="5.2.2" />
     <PackageReference Include="RestSharp" Version="112.0.0" />
     <PackageReference Include="Serilog.AspNetCore" Version="8.0.2" />

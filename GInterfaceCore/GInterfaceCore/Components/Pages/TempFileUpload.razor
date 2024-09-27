@@ -25,7 +25,7 @@
 
     private void OnClick(string text)
     {
-        _appCore.InsertBaseFileCsv(_appCore.CFileName, _appCore.fileStatus, _appCore.head, _appCore.ObjJason);
+        _appCore.InsertBaseFileCsv(_appCore.CFileName, _appCore.fileStatus, _appCore.head,_appCore.documentType, _appCore.ObjJason);
         DialogService.Close();
         NotificationService.Notify(new NotificationMessage { Severity = NotificationSeverity.Info, Summary = "Button Clicked", Detail = text });
     }
@@ -72,18 +72,17 @@
                             int headerSize;
                             if (int.TryParse(result.HeaderSize.ToString(), out headerSize))
                             {
-                                InvokeAsync(async () =>
-                            {
+
                                 // Simulate background task
                                 List<List<string>> informationExcel = await _excel.SimulateFileUpload(stream, fileName, headerSize, result.StartRow, result.EndRow, result.AdditionalFieldText);
-                                _appCore.sortDataExcel(informationExcel, fileName, result.AdditionalFieldText);
+                                var info = result.StartRow+","+result.EndRow;
+                                _appCore.sortDataExcel(informationExcel, fileName, result.AdditionalFieldText, info);
                                 headers = _appCore.headers;
                                 UploadedContent = "a";
-                                _appCore.documentType = result.SelectedDocumentType;
+                                _appCore.documentType = result.SelectedOption;
                                 // Close the dialog
-                                DialogService.Close();
-                            });
-                                await BusyDialog();
+                           
+                          
 
                             }
                             else

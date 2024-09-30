@@ -736,12 +736,12 @@ namespace GInterfaceCore.Core
             }
             return table;
         }
-        public void sortDataExcel(List<List<string>> excel, string fileName, string dataArray, string endStartInfo)
+        public void sortDataExcel(List<List<string>> excel, string fileName, List<string> dataArray, string endStartInfo)
         {
             fileName = AppendDateTimeToName(fileName);
             var requireCount = 0;
-            var requireData = dataArray.Split(new string[] { "," }, StringSplitOptions.None);
-            requireCount = requireData.Length;
+            var requireData = dataArray;
+            requireCount = requireData.Count;
 
             try
             {
@@ -760,10 +760,15 @@ namespace GInterfaceCore.Core
                     List<TempCSVGlobal> itemTemp = new List<TempCSVGlobal>();
 
                     // Asignamos la fila de headers
-                    var headers = excel[requireCount + 1];
+                    if (requireData[0].Equals("No_contiene_encabezado")) 
+                    { 
+                        requireCount =0; 
+                    }
+                        var headers = excel[requireCount];
+                    
 
                     // Iteramos a través de las filas del archivo EXCEL (omitimos el encabezado)
-                    for (int i = requireCount + 2; i < excel.Count; i++)
+                    for (int i = requireCount + 1; i < excel.Count; i++)
                     {
                         var row = excel[i]; // Ya es una lista de strings, no necesitas Split
 
@@ -859,7 +864,7 @@ namespace GInterfaceCore.Core
             string jsonString = System.Text.Json.JsonSerializer.Serialize(jsonObject, new JsonSerializerOptions { WriteIndented = true });
             return jsonString;
         }
-        public string convertJsonExcel(List<string> header, List<string> fieldNames, string[] require, string endStartInfo, int fielfields, List<List<string>> excel)
+        public string convertJsonExcel(List<string> header, List<string> fieldNames, List<string> require, string endStartInfo, int fielfields, List<List<string>> excel)
         {
             var node = new JsonArray();
             var columns = new JsonArray();
@@ -883,7 +888,7 @@ namespace GInterfaceCore.Core
                 columns.Add(fieldNames[index]);
             }
             List<string> onlySeconds = excel.Select(sublista => sublista[1])
-                                       .Take(require.Length)
+                                       .Take(require.Count)
                                        .ToList();
             foreach (var req in require)
             { requireNode.Add(req); }

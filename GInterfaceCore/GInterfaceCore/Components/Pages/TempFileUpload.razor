@@ -72,11 +72,22 @@
                             int headerSize;
                             if (int.TryParse(result.HeaderSize.ToString(), out headerSize))
                             {
+                                List<string> requireFields = new List<string> { "No_contiene_encabezado" };
+                                if (result.AdditionalFieldText != null)
+                                {
+                                   requireFields = new List<string>(result.AdditionalFieldText.Split(','));
+                                }
+                                else
+                                {
+                                    requireFields = new List<string> { "No_contiene_encabezado" };
+                                }
+
+
 
                                 // Simulate background task
-                                List<List<string>> informationExcel = await _excel.SimulateFileUpload(stream, fileName, headerSize, result.StartRow, result.EndRow, result.AdditionalFieldText);
+                                List<List<string>> informationExcel = await _excel.SimulateFileUpload(stream, fileName, headerSize, result.StartRow, result.EndRow, requireFields);
                                 var info = result.StartRow+","+result.EndRow;
-                                _appCore.sortDataExcel(informationExcel, fileName, result.AdditionalFieldText, info);
+                                _appCore.sortDataExcel(informationExcel, fileName, requireFields, info);
                                 headers = _appCore.headers;
                                 UploadedContent = "a";
                                 _appCore.documentType = result.SelectedOption;

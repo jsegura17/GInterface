@@ -61,44 +61,40 @@
                     if (fileName.Contains(".xls", StringComparison.OrdinalIgnoreCase) ||
                         fileName.Contains(".xlsx", StringComparison.OrdinalIgnoreCase))
                     {
-                        var parameters = new Dictionary<string, object>() { { "FileName", fileName } };
+
 
                         // Mostrar modal para pedir el tamaño del header
                         //var result = await DialogService.OpenAsync<HeaderSizeDialog>("Tamaño del Encabezado",
                         //new Dictionary<string, object>() { { "FileName", fileName } },
                         //new DialogOptions() { Width = "500px", Height = "300px" });
-                        var result = await DialogService.OpenComponentExtension<HeaderSizeDialog>("Título del Diálogo", parameters);
-                        result =SomeParameter;
-                        
-                        _appCore.TemplateJson(result);
+
+                        var result =SomeParameter;
+
+                        var listJson = _appCore.TemplateJson(result);
                         if (result != null)
                         {
-                            int headerSize;
-                            if (int.TryParse(result.HeaderSize.ToString(), out headerSize))
-                            {
-                                InvokeAsync(async () =>
+                            // Asumiendo que listJson.StartEndHead es de tipo List<object>
+                            List<string> stringList = listJson.StartEndHead
+                            .Select(o => o?.ToString() ?? string.Empty) // Convertir a string, manejando null
+                            .ToList();
+
+
+
+
+                            InvokeAsync(async () =>
                                 {
                                     // Simulate background task
-                                    List<List<string>> informationExcel = await _excel.SimulateFileUpload(stream, fileName, headerSize, result.StartRow, result.EndRow, result.AdditionalFieldText);
-                                    var info = result.StartRow + "," + result.EndRow;
-                                     _appCore.sortDataExcel(informationExcel, fileName, result.AdditionalFieldText, info);
+                                List<List<string>> informationExcel = await _excel.SimulateFileUpload(stream, fileName, int.Parse(stringList[0]), stringList[1], stringList[2], listJson.RequireFields);
+                                var info = stringList[1] + "," + stringList[2];
+                                    _appCore.sortDataExcel(informationExcel, fileName, listJson.RequireFields, info);
                                     UploadedContent = "a";
                                     // Close the dialog
                                     DialogService.Close();
                                 });
                                 await BusyDialog();  
                                       
-                            }
-                            else
-                            {
-                                NotificationService.Notify(new NotificationMessage
-                                    {
-                                        Severity = NotificationSeverity.Error,
-                                        Summary = "Error en el Tamaño del Encabezado",
-                                        Detail = "El tamaño del encabezado ingresado no es válido. Por favor, ingrese un número entero."
-                                    });
-                                return;
-                            }
+                            
+                            
                         }
                         else
                         {

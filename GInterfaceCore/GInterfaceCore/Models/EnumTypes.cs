@@ -18,6 +18,7 @@ namespace GInterfaceCore.Models
             Picklist = 1,
             TipoDocumento_02 = 2,
             TipoDocumento_03 = 3,
+            FormatoIngreso = 4,
         }
         public enum ConfigArea
         {

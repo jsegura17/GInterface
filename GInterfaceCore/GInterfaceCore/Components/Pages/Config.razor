@@ -112,79 +112,99 @@
             }
         }
     }
-   
-  
-    
-    
-  
+
+
+
+
+
 
     private async Task OnClick(FileCSV file)
     {
         switch (file.FileType)
         {
-            case GInterfaceCore.Models.EnumTypes.DocumentType.Picklist:
-                var parameters = new Dictionary<string, object>
-                {
-                { "SomeParameter", file }, // O cualquier propiedad que necesites pasar
-                };
+            case GInterfaceCore.Models.EnumTypes.DocumentType.Generico:
 
-                var result = await DialogService.OpenComponentExtension<FileUpLoad>("Espera", parameters);
-
-                if (result != null)
-                {
-                    int headerSize;
-                    if (int.TryParse(result.HeaderSize.ToString(), out headerSize))
-                    {
-                        // Ejecutar una tarea en segundo plano
-                        await Task.Run(async () =>
-                    {
-                        try
-                        {
-                            await InvokeAsync(async () =>
-                            {
-                                NotificationService.Notify(new NotificationMessage
-                                        {
-                                            Severity = NotificationSeverity.Info,
-                                            Summary = "Button Clicked",
-                                            Detail = file.FileType.GetDisplayDescription()
-                                        });
-
-                                DialogService.Close();
-                            });
-
-                            await BusyDialog();
-                        }
-                        catch (Exception ex)
-                        {
-                            NotificationService.Notify(new NotificationMessage
-                                    {
-                                        Severity = NotificationSeverity.Error,
-                                        Summary = "Error",
-                                        Detail = $"Ocurrió un error: {ex.Message}"
-                                    });
-                        }
-                    });
-                    }
-                    else
-                    {
-                        NotificationService.Notify(new NotificationMessage
-                                {
-                                    Severity = NotificationSeverity.Error,
-                                    Summary = "Error en el Tamaño del Encabezado",
-                                    Detail = "El tamaño del encabezado ingresado no es válido. Por favor, ingrese un número entero."
-                                });
-                        return;
-                    }
-                }
-
+                ChargeDocument(file);
                 break;
+            case GInterfaceCore.Models.EnumTypes.DocumentType.Picklist:
+
+                ChargeDocument(file);
+                break;
+            case GInterfaceCore.Models.EnumTypes.DocumentType.TipoDocumento_02:
+
+                ChargeDocument(file);
+                break;
+            case GInterfaceCore.Models.EnumTypes.DocumentType.TipoDocumento_03:
+
+                ChargeDocument(file);
+                break;
+            case GInterfaceCore.Models.EnumTypes.DocumentType.FormatoIngreso:
+
+                ChargeDocument(file);
+                break;
+
 
             default:
                 break;
         }
     }
 
+    public async void ChargeDocument(FileCSV file)
+    {
+        var parameters = new Dictionary<string, object>
+                    {
+                { "SomeParameter", file }, // O cualquier propiedad que necesites pasar
+                    };
 
+        var result = await DialogService.OpenComponentExtension<FileUpLoad>("Espera", parameters);
+
+        if (result != null)
+        {
+            int headerSize;
+            if (int.TryParse(result.HeaderSize.ToString(), out headerSize))
+            {
+                // Ejecutar una tarea en segundo plano
+                await Task.Run(async () =>
+        {
+            try
+            {
+                await InvokeAsync(async () =>
+                {
+                    NotificationService.Notify(new NotificationMessage
+                            {
+                                Severity = NotificationSeverity.Info,
+                                Summary = "Button Clicked",
+                                Detail = file.FileType.GetDisplayDescription()
+                            });
+
+                    DialogService.Close();
+                });
+
+                await BusyDialog();
+            }
+            catch (Exception ex)
+            {
+                NotificationService.Notify(new NotificationMessage
+                        {
+                            Severity = NotificationSeverity.Error,
+                            Summary = "Error",
+                            Detail = $"Ocurrió un error: {ex.Message}"
+                        });
+            }
+        });
+            }
+            else
+            {
+                NotificationService.Notify(new NotificationMessage
+                        {
+                            Severity = NotificationSeverity.Error,
+                            Summary = "Error en el Tamaño del Encabezado",
+                            Detail = "El tamaño del encabezado ingresado no es válido. Por favor, ingrese un número entero."
+                        });
+                return;
+            }
+        }
+    }
     public async Task OpenUpLoadFile()
     {
         await DialogService.OpenAsync<FileUpLoad>("Subir Archivo",

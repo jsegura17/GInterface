@@ -628,6 +628,37 @@ namespace GInterfaceCore.Core
 
             return templateFiles;
         }
+        public List<FileCSV> GetPendingFiles()
+        {
+            List<FileCSV> templateFiles = new List<FileCSV>();
+
+            using (SqlConnection connection = GetDBConnection())
+            {
+                SqlCommand cmd = new SqlCommand("SP_GetFileCsv", connection);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                connection.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    FileCSV file = new FileCSV
+                    {
+                        ID = Convert.ToInt32(reader["ID"]),
+                        FileNames = reader["FileNames"].ToString(),
+                        FileDate = Convert.ToDateTime(reader["FileDate"]),
+                        FileStatus = (TransactionStatus)Convert.ToInt32(reader["FileStatus"]), // Asegúrate de que FileStatus sea un int en la base de datos y se pueda mapear a TransactionStatus
+                        FileFields = Convert.ToInt32(reader["FileFields"]),
+                        FileJsonObj = reader["FileJsonObj"].ToString()
+                    };
+
+
+                    templateFiles.Add(file);
+                }
+            }
+
+            return templateFiles;
+        }
 
         private static DataTable LoadCsvData(List<TempCSVGlobal> temp)
         {
@@ -742,6 +773,9 @@ namespace GInterfaceCore.Core
             var requireCount = 0;
             var requireData = dataArray;
             requireCount = requireData.Count;
+            
+
+            bool[] usable = new bool[15] { true, true, true, true, true, true, true, true, true, true, true, true, true, true, true};
 
             try
             {
@@ -765,8 +799,8 @@ namespace GInterfaceCore.Core
                         requireCount =0; 
                     }
                         var headers = excel[requireCount];
-                    
-
+                    var datanot = 0;
+                   
                     // Iteramos a través de las filas del archivo EXCEL (omitimos el encabezado)
                     for (int i = requireCount + 1; i < excel.Count; i++)
                     {
@@ -781,21 +815,24 @@ namespace GInterfaceCore.Core
                             {
                                 if (long.TryParse(row[j], out long number))
                                 {
-                                    if (j < Longer && item.Campo1 == 0) { item.Campo1 = number; assignedFields.Add("Campo1"); }
-                                    else if (j < Longer && item.Campo2 == 0) { item.Campo2 = number; assignedFields.Add("Campo2"); }
-                                    else if (j < Longer && item.Campo3 == 0) { item.Campo3 = number; assignedFields.Add("Campo3"); }
-                                    else if (j < Longer && item.Campo4 == 0) { item.Campo4 = number; assignedFields.Add("Campo4"); }
-                                    else if (j < Longer && item.Campo5 == 0) { item.Campo5 = number; assignedFields.Add("Campo5"); }
-                                    else if (j < Longer && item.Campo6 == 0) { item.Campo6 = number; assignedFields.Add("Campo6"); }
-                                    else if (j < Longer && item.Campo7 == 0) { item.Campo7 = number; assignedFields.Add("Campo7"); }
-                                    else if (j < Longer && item.Campo8 == 0) { item.Campo8 = number; assignedFields.Add("Campo8"); }
-                                    else if (j < Longer && item.Campo9 == 0) { item.Campo9 = number; assignedFields.Add("Campo9"); }
-                                    else if (j < Longer && item.Campo10 == 0) { item.Campo10 = number; assignedFields.Add("Campo10"); }
-                                    else if (j < Longer && item.Campo11 == 0) { item.Campo11 = number; assignedFields.Add("Campo11"); }
-                                    else if (j < Longer && item.Campo12 == 0) { item.Campo12 = number; assignedFields.Add("Campo12"); }
-                                    else if (j < Longer && item.Campo13 == 0) { item.Campo13 = number; assignedFields.Add("Campo13"); }
-                                    else if (j < Longer && item.Campo14 == 0) { item.Campo14 = number; assignedFields.Add("Campo14"); }
-                                    else if (j < Longer && item.Campo15 == 0) { item.Campo15 = number; assignedFields.Add("Campo15"); }
+                                    if (j < Longer && item.Campo1 == datanot && usable[0]) { item.Campo1 = number; assignedFields.Add("Campo1"); usable[0] = false; }
+                                    else if (j < Longer && item.Campo2 == datanot && usable[1]) { item.Campo2 = number; assignedFields.Add("Campo2"); usable[1] = false; }
+                                    else if (j < Longer && item.Campo3 == datanot && usable[2]) { item.Campo3 = number; assignedFields.Add("Campo3"); usable[2] = false; }
+                                    else if (j < Longer && item.Campo4 == datanot && usable[3]) { item.Campo4 = number; assignedFields.Add("Campo4"); usable[3] = false; }
+                                    else if (j < Longer && item.Campo5 == datanot && usable[4]) { item.Campo5 = number; assignedFields.Add("Campo5"); usable[4] = false; }
+                                    else if (j < Longer && item.Campo6 == datanot && usable[5]) { item.Campo6 = number; assignedFields.Add("Campo6"); usable[5] = false; }
+                                    else if (j < Longer && item.Campo7 == datanot && usable[6]) { item.Campo7 = number; assignedFields.Add("Campo7"); usable[6] = false; }
+                                    else if (j < Longer && item.Campo8 == datanot && usable[7]) { item.Campo8 = number; assignedFields.Add("Campo8"); usable[7] = false; }
+                                    else if (j < Longer && item.Campo9 == datanot && usable[8]) { item.Campo9 = number; assignedFields.Add("Campo9"); usable[8] = false; }
+                                    else if (j < Longer && item.Campo10 == datanot && usable[9]) { item.Campo10 = number; assignedFields.Add("Campo10"); usable[9] = false; }
+                                    else if (j < Longer && item.Campo11 == datanot && usable[10]) { item.Campo11 = number; assignedFields.Add("Campo11"); usable[10] = false; }
+                                    else if (j < Longer && item.Campo12 == datanot && usable[11]) { item.Campo12 = number; assignedFields.Add("Campo12"); usable[11] = false; }
+                                    else if (j < Longer && item.Campo13 == datanot && usable[12]) { item.Campo13 = number; assignedFields.Add("Campo13"); usable[12] = false; }
+                                    else if (j < Longer && item.Campo14 == datanot && usable[13]) { item.Campo14 = number; assignedFields.Add("Campo14"); usable[13] = false; }
+                                    else if (j < Longer && item.Campo15 == datanot && usable[14]) { item.Campo15 = number; assignedFields.Add("Campo15"); usable[14] = false; }
+
+
+
                                 }
                                 else
                                 {
@@ -820,7 +857,7 @@ namespace GInterfaceCore.Core
                             processedData.Add(item);
                             fieldNames.AddRange(assignedFields);
                             instance.headers = excel[requireCount + 1].ToArray();
-
+                            usable = new bool[15] { true, true, true, true, true, true, true, true, true, true, true, true, true, true, true };
                         }
                     }
 

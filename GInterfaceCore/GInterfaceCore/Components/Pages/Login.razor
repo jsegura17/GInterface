@@ -1,8 +1,15 @@
 ﻿@page "/login"
 
 <div class="login-container">
-    <div class="login-logo">
+    @* <div class="login-logo">
         <img src="images/logo.png" alt="Company Logo" />
+    </div> *@
+    <div
+        <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="1rem" Wrap="FlexWrap.Wrap">
+            <RadzenButton Text="Norteña" Icon="check_circle" ButtonStyle="ButtonStyle.Success" />
+            <RadzenButton Text="Dinor" Icon="check_circle" ButtonStyle="ButtonStyle.Success" />
+            <RadzenButton Text="CoDirecta" Icon="check_circle" ButtonStyle="ButtonStyle.Success" />
+        </RadzenStack>
     </div>
     <EditForm Model="loginModel" OnValidSubmit="@HandleLogin">
         <div class="row">

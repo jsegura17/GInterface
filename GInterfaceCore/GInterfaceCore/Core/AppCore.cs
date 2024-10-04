@@ -242,7 +242,11 @@ namespace GInterfaceCore.Core
 
         public SqlConnection GetDBConnection()
         {
+#if DEBUG
             string connString = Resources.ConnectionString;
+#else
+            string connString = Resources.ConnectionStringProd;
+#endif
 
             SqlConnection connection = new SqlConnection(connString);
 
@@ -604,7 +608,7 @@ namespace GInterfaceCore.Core
             {
                 SqlCommand cmd = new SqlCommand("SP_GetBaseFileTemplate", connection);
                 cmd.CommandType = CommandType.StoredProcedure;
-
+                Console.WriteLine(connection);
                 connection.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
 

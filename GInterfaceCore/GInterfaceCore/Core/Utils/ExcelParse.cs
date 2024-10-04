@@ -24,7 +24,11 @@ namespace GInterfaceCore.Core.Utils
         public static async Task<List<List<string>>> ProcessExcelFileAsync(Stream excelFileStream, string nameFile, int headers, string startKeyword, string endKeyword, List<string> headerBase)
         {
             List<List<string>> result = new List<List<string>>();
+#if DEBUG
             string customDirectory = @"C:\Apps\Genesis\Ginterface\Data";
+#else
+            string customDirectory = @"C:\Reintec\GInterface\Data";
+#endif
             string tempFilePath = Path.Combine(customDirectory, nameFile);
 
             try

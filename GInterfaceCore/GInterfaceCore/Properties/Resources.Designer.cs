@@ -68,5 +68,14 @@ namespace GInterfaceCore.Properties {
                 return ResourceManager.GetString("ConnectionString", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Server=WMS-SRV;Database=GInterface;User Id=genesis;Password=Infra170176;.
+        /// </summary>
+        internal static string ConnectionStringProd {
+            get {
+                return ResourceManager.GetString("ConnectionStringProd", resourceCulture);
+            }
+        }
     }
 }

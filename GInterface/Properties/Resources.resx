@@ -120,4 +120,7 @@
   <data name="ConnectionString" xml:space="preserve">
     <value>Server=genesiscgt.database.windows.net;Database=FacturaElectronicaCR;User Id=sagenesis;Password=Infra170176;</value>
   </data>
+  <data name="ConnectionStringProd" xml:space="preserve">
+    <value>Server=WMS-SRV;Database=GInterface;User Id=genesis;Password=Infra170176;</value>
+  </data>
 </root>

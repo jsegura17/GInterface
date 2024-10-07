@@ -20,6 +20,14 @@ namespace GInterfaceCore.Models
             TipoDocumento_03 = 3,
             FormatoIngreso = 4,
         }
+
+        public enum UserType
+        {
+            Codirecta=1,
+            Dinor=2,
+            Norteña=3,
+
+        }
         public enum ConfigArea
         {
             FuenteDeDatos,

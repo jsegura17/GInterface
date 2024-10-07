@@ -5,38 +5,50 @@
 @if (!string.IsNullOrEmpty(UploadedContent))
 {
     <h4>Tamaño del archivo: @FileSizeInKB KB</h4>
-    <RadzenButton Click=@(args => OnClick("Primary button")) Text="Ok" ButtonStyle="ButtonStyle.Primary" />
+    <RadzenButton Click=@(args => OnClick("Primary button")) Text="Ok" ButtonStyle="ButtonStyle.Primary" /> 
+                                                                                                          
 }
 
 @code {
     private string UploadedContent { get; set; } = string.Empty;
     private long FileSizeInBytes { get; set; }
     private double FileSizeInKB => FileSizeInBytes / 1024.0;
+    private Core.AppCore _appCore = Core.AppCore.Instance;
 
     string[] csvFile;
     string[] headers;
 
     private void OnClick(string text)
     {
+        _appCore.InsertFileCsv(_appCore.CFileName, TransactionStatus.Pending, _appCore.head, _appCore.ObjJason, _appCore.InfotTempo);
+        DialogService.Close(true);
+
         NotificationService.Notify(new NotificationMessage { Severity = NotificationSeverity.Info, Summary = "Button Clicked", Detail = text });
     }
 
     private async Task HandleFileSelected(InputFileChangeEventArgs e)
     {
         var file = e.File;
+        var fileName = file.Name;
         if (file != null)
         {
             FileSizeInBytes = file.Size; // Tamaño en bytes
             try
             {
-                using (var stream = file.OpenReadStream())
+                
+
+                using (var stream = file.OpenReadStream(104857600))
                 using (var reader = new StreamReader(stream))
                 {
                     UploadedContent = await reader.ReadToEndAsync();
                     // Read file into a string array
                     csvFile = UploadedContent.Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
                     // Get the header row of the CSV file and put it in an array
+
+                    
+                    _appCore.sortData(csvFile, fileName);
                     headers = csvFile[0].Split(',');
+                    
                 }
 
                 // Llamar al método para mostrar la información de los campos
@@ -66,4 +78,6 @@
         var message = $"El archivo CSV contiene {fieldCount} campos.\n\nCampos:\n{string.Join("\n", fields)}";
         await DialogService.OpenAsync("Información de Campos", ds =>@<div>@message</div>  );
     }
+    
+    
 }

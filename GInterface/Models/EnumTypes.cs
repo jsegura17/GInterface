@@ -14,7 +14,7 @@ namespace GInterface.Models
         public enum DocumentType
         {
             Generico = 0,
-            TipoDocumento_01 = 1,
+            Picklist = 1,
             TipoDocumento_02 = 2,
             TipoDocumento_03 = 3,
         }
@@ -98,6 +98,13 @@ namespace GInterface.Models
             Pending,
             Processing,
             Completed,
+            Canceled,
+            Rejected,
+            Reserved,
+            RejectedCollection,
+            Commited,
+            NotCommited,
+            Omit,
             Error
         }
 
@@ -109,6 +116,8 @@ namespace GInterface.Models
             GET_IMEI,
             /// <summary>Read Login from HH</summary>
             GET_LOGIN,
+            /// <summary>Read LogOUT from HH</summary>
+            GET_LOGOUT,
             /// <summary>Execute PUSH process</summary>
             GET_PUSH,
             /// <summary>Execute PULL process</summary>

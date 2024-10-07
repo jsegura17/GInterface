@@ -1,0 +1,163 @@
+﻿@page "/headersizedialog"
+@inject DialogService DialogService
+
+@code {
+    [Parameter] public string FileName { get; set; }
+    public string HeaderSize { get; set; }
+    public string StartRow { get; set; }
+    public string EndRow { get; set; }
+    public bool IsAdditionalFieldChecked { get; set; }
+    public string AdditionalFieldText { get; set; }
+    public int SelectedOption { get; set; }
+    private Core.AppCore _appCore = Core.AppCore.Instance;
+
+    public string HeaderSizeError { get; set; }
+    public string StartRowError { get; set; }
+    public string EndRowError { get; set; }
+    public string AdditionalFieldError { get; set; }
+    public string SelectedOptionError { get; set; }
+
+    public List<EnumValue> DocumentTypeItems => Enum.GetValues(typeof(DocumentType))
+        .Cast<DocumentType>()
+        .Select(dt => new EnumValue
+            {
+                Name = dt.ToString(),
+                Value = (int)dt
+            }).ToList();
+
+    private void Confirm()
+    {
+        bool isValid = true;
+
+        // Validaciones
+        if (string.IsNullOrWhiteSpace(HeaderSize))
+        {
+            HeaderSizeError = "Debe ingresar el tamaño de la tabla.";
+            isValid = false;
+        }
+        else
+        {
+            HeaderSizeError = null;
+        }
+
+        if (string.IsNullOrWhiteSpace(StartRow))
+        {
+            StartRowError = "Debe ingresar el primer dato del archivo.";
+            isValid = false;
+        }
+        else
+        {
+            StartRowError = null;
+        }
+
+        if (string.IsNullOrWhiteSpace(EndRow))
+        {
+            EndRowError = "Debe ingresar el nombre de la primera columna.";
+            isValid = false;
+        }
+        else
+        {
+            EndRowError = null;
+        }
+
+        if (SelectedOption == 0)
+        {
+            SelectedOptionError = "Debe seleccionar el tipo de documento.";
+            isValid = false;
+        }
+        else
+        {
+            SelectedOptionError = null;
+        }
+
+        if (IsAdditionalFieldChecked && string.IsNullOrWhiteSpace(AdditionalFieldText))
+        {
+            AdditionalFieldError = "Debe ingresar los datos del encabezado.";
+            isValid = false;
+        }
+        else
+        {
+            AdditionalFieldError = null;
+        }
+
+        // Si todos los datos son válidos, cerrar el diálogo
+        if (isValid)
+        {
+            DialogService.Close(new { HeaderSize, StartRow, EndRow, AdditionalFieldText, SelectedOption });
+        }
+    }
+
+    private void Cancel()
+    {
+        DialogService.Close(null);
+    }
+
+    public class EnumValue
+    {
+        public string Name { get; set; }
+        public int Value { get; set; }
+    }
+}
+
+<div>
+    <h3>Configurar Encabezado y Rango de Datos</h3>
+    <p>El archivo <strong>@FileName</strong> requiere que especifiques el tamaño del encabezado y el rango de datos.</p>
+
+    <div style="margin-bottom: 20px;">
+        <label for="headerSize">Tamaño de la Tabla:</label>
+        <RadzenNumeric id="headerSize" @bind-Value="HeaderSize" Placeholder="Tamaño del encabezado" Min="1" Max="100" Style="width:100%;" />
+        @if (!string.IsNullOrEmpty(HeaderSizeError))
+        {
+            <div style="color:red;">@HeaderSizeError</div>
+        }
+    </div>
+
+    <div style="margin-bottom: 20px;">
+        <label for="startRow">Primer Dato del archivo:</label>
+        <RadzenTextBox id="startRow" @bind-Value="StartRow" Placeholder="Fila de Inicio" Style="width:100%;" />
+        @if (!string.IsNullOrEmpty(StartRowError))
+        {
+            <div style="color:red;">@StartRowError</div>
+        }
+    </div>
+
+    <div style="margin-bottom: 20px;">
+        <label for="endRow">Nombre de la primera columna:</label>
+        <RadzenTextBox id="endRow" @bind-Value="EndRow" Placeholder="Nombre de la primera columna" Style="width:100%;" />
+        @if (!string.IsNullOrEmpty(EndRowError))
+        {
+            <div style="color:red;">@EndRowError</div>
+        }
+    </div>
+
+    <div style="margin-bottom: 20px;">
+        <label for="documentType">Selección del tipo de documento:</label>
+        <RadzenDropDown id="documentType" @bind-Value="SelectedOption" Data="@DocumentTypeItems" TextProperty="Name" ValueProperty="Value" Placeholder="Seleccione una opción" Style="width:100%;" />
+        @if (!string.IsNullOrEmpty(SelectedOptionError))
+        {
+            <div style="color:red;">@SelectedOptionError</div>
+        }
+    </div>
+
+    <div style="margin-bottom: 20px;">
+        <RadzenCheckBox @bind-Value="IsAdditionalFieldChecked" />
+        <label style="margin-left: 10px;">¿Definir datos del encabezado ("reporte, código del documento")?</label>
+    </div>
+
+    @if (IsAdditionalFieldChecked)
+    {
+        <div style="margin-bottom: 20px;">
+            <label for="additionalField">Datos del encabezado (Ingresar exactamente como está en el documento, separados por comas):</label>
+            <RadzenTextBox id="additionalField" @bind-Value="AdditionalFieldText" Placeholder="Texto adicional" Style="width:100%;" />
+            @if (!string.IsNullOrEmpty(AdditionalFieldError))
+            {
+                <div style="color:red;">@AdditionalFieldError</div>
+            }
+        </div>
+    }
+
+    <div style="margin-top:20px;">
+        <RadzenButton Text="Confirmar" Click="Confirm" ButtonStyle="ButtonStyle.Primary" />
+        <RadzenButton Text="Cancelar" Click="Cancel" ButtonStyle="ButtonStyle.Secondary" />
+    </div>
+</div>

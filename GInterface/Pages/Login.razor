@@ -7,10 +7,10 @@
     <EditForm Model="loginModel" OnValidSubmit="@HandleLogin">
         <div class="row">
             <div class="rz-p-2 rz-text-align-center">
-                <RadzenTextBox @bind-Value="loginModel.Username" Placeholder="Username" Style="width:100%" />
+                <RadzenTextBox @ref=_username @bind-Value="loginModel.Username" Placeholder="Username" Style="width:100%" />
             </div>
             <div class="rz-p-2 rz-text-align-center">
-                <RadzenPassword @bind-Value="loginModel.Password" Placeholder="Password" Style="width:100%" />
+                <RadzenPassword @ref=_password @bind-Value="loginModel.Password" Placeholder="Password" Style="width:100%" />
             </div>
         </div>
         <div class="row">
@@ -25,12 +25,14 @@
 @code {
     //Get Global Core Settings
     private Core.AppCore _appCore = Core.AppCore.Instance;
+    private RadzenTextBox _username { get; set; }
+    private RadzenPassword _password { get; set; }
 
     private User loginModel;
 
     protected override void OnInitialized()
     {
-        loginModel = new User { Username = "test", Password = "123456" };
+        loginModel = new User { Username = "Jonathan.perez@genesiscgt.com", Password = "Jona123*" };
         _appCore.IsLoginUser = true;
     }
 
@@ -48,6 +50,8 @@
                     Detail = "Inicio de sesión exitoso",
                     Duration = 4000
                 });
+
+            UriHelper.NavigateTo("/");
         }
         else
         {
@@ -59,6 +63,9 @@
                     Detail = "Inicio de sesión fallido",
                     Duration = 4000
                 });
+
+            await _username.FocusAsync();
+
         }
     }
     

@@ -1,0 +1,28 @@
+﻿@using System.Net.Http
+@using System.Net.Http.Json
+@using System.Text.Json
+@using GInterfaceCore.Interfaces
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components.Routing
+@using Microsoft.AspNetCore.Components.Web
+@using static Microsoft.AspNetCore.Components.Web.RenderMode
+@using Microsoft.AspNetCore.Components.Web.Virtualization
+@using Microsoft.JSInterop
+@using GInterfaceCore
+@using GInterfaceCore.Client
+@using GInterfaceCore.Components
+@using GInterfaceCore.Models
+@using GInterfaceCore.Data
+@using Radzen
+@using Radzen.Blazor
+
+@using static GInterfaceCore.Models.EnumTypes
+@using GInterfaceCore.Core.Utils
+
+@inject NavigationManager UriHelper
+@inject DialogService DialogService
+@inject NotificationService NotificationService
+@inject IJSRuntime JS
+@inherits LayoutComponentBase
+
+@inject IAuthenticationService AuthenticationService

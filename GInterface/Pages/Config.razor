@@ -20,24 +20,24 @@
                                  ItemRender="@OnConfigItemRender"
                                  Drop="@OnConfigDrop">
             <ChildContent>
-                <RadzenStack Orientation="Orientation.Horizontal" Gap="1rem" Wrap="FlexWrap.Wrap" Class="rz-p-12">
+                <RadzenStack Orientation="Orientation.Horizontal" Visible="showFuenteDeDatos" Gap="1rem" Wrap="FlexWrap.Wrap" Class="rz-p-12">
                     <RadzenDropZone Value="ConfigArea.FuenteDeDatos" Class="rz-display-flex rz-flex-column rz-background-color-info-lighter rz-border-info-light rz-border-radius-2 rz-p-4" Style="flex: 1; gap: 1rem;">
                         <RadzenText Text="Fuente de datos" TextStyle="TextStyle.Subtitle2" />
                     </RadzenDropZone>
 
-                    <RadzenDropZone Value="ConfigArea.CamposDeOrigen" Class="rz-display-flex rz-flex-column rz-background-color-warning-lighter rz-border-warning-light rz-border-radius-2 rz-p-4" Style="flex: 1; gap: 1rem;">
+                    <RadzenDropZone Value="ConfigArea.CamposDeOrigen" Visible="showCamposDeOrigen" Class="rz-display-flex rz-flex-column rz-background-color-warning-lighter rz-border-warning-light rz-border-radius-2 rz-p-4" Style="flex: 1; gap: 1rem;">
                         <RadzenText Text="Campos de Origen" TextStyle="TextStyle.Subtitle2" />
                     </RadzenDropZone>
 
-                    <RadzenDropZone Value="ConfigArea.FuenteDeDestino" Class="rz-display-flex rz-flex-column rz-background-color-success-lighter rz-border-success-light rz-border-radius-2 rz-p-4" Style="flex: 1; gap: 1rem;">
+                    <RadzenDropZone Value="ConfigArea.FuenteDeDestino" Visible="showFuenteDeDestino" Class="rz-display-flex rz-flex-column rz-background-color-success-lighter rz-border-success-light rz-border-radius-2 rz-p-4" Style="flex: 1; gap: 1rem;">
                         <RadzenText Text="Fuente de Destino" TextStyle="TextStyle.Subtitle2" />
                     </RadzenDropZone>
 
-                    <RadzenDropZone Value="ConfigArea.CamposDeMapeo" Class="rz-display-flex rz-flex-column rz-background-color-danger-lighter rz-border-danger-light rz-border-radius-2 rz-p-4" Style="flex: 1; gap: 1rem;">
+                    <RadzenDropZone Value="ConfigArea.CamposDeMapeo" Visible="showCamposDeMapeo" Class="rz-display-flex rz-flex-column rz-background-color-danger-lighter rz-border-danger-light rz-border-radius-2 rz-p-4" Style="flex: 1; gap: 1rem;">
                         <RadzenText Text="Campos de Mapeo" TextStyle="TextStyle.Subtitle2" />
                     </RadzenDropZone>
                 </RadzenStack>
-                <RadzenStack Orientation="Orientation.Horizontal" Gap="1rem" Wrap="FlexWrap.Wrap" Class="rz-p-12">
+                <RadzenStack Orientation="Orientation.Horizontal" Visible="showDocumento" Gap="1rem" Wrap="FlexWrap.Wrap" Class="rz-p-12">
                     <RadzenDropZone Value="ConfigArea.Documento" Class="rz-display-flex rz-flex-column rz-background-color-info-lighter rz-border-info-light rz-border-radius-2 rz-p-4" Style="flex: 1; gap: 1rem;">
                         <RadzenText Text="Documento" TextStyle="TextStyle.Subtitle2" />
                     </RadzenDropZone>
@@ -57,6 +57,11 @@
     private DocumentType selectedDocumentType;
 
     private bool showDropZone = false;
+    private bool showCamposDeOrigen = false;
+    private bool showFuenteDeDatos = true;
+    private bool showFuenteDeDestino = false;
+    private bool showCamposDeMapeo = false;
+    private bool showDocumento = true;
 
     IList<ConfigItem> configData;
 

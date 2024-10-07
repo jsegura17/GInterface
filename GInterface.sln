@@ -5,6 +5,10 @@ VisualStudioVersion = 17.11.34909.67
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GInterface", "GInterface\GInterface.csproj", "{A6DB66CD-90E7-4155-93C1-40B97ADBF122}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GInterfaceCore", "GInterfaceCore\GInterfaceCore\GInterfaceCore.csproj", "{C15CA650-AF65-4DE5-9DB3-5117F138801D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GInterfaceCore.Client", "GInterfaceCore\GInterfaceCore.Client\GInterfaceCore.Client.csproj", "{57AC1793-FFDF-467C-A958-9BE6DE85073B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{A6DB66CD-90E7-4155-93C1-40B97ADBF122}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A6DB66CD-90E7-4155-93C1-40B97ADBF122}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A6DB66CD-90E7-4155-93C1-40B97ADBF122}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C15CA650-AF65-4DE5-9DB3-5117F138801D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C15CA650-AF65-4DE5-9DB3-5117F138801D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C15CA650-AF65-4DE5-9DB3-5117F138801D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C15CA650-AF65-4DE5-9DB3-5117F138801D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{57AC1793-FFDF-467C-A958-9BE6DE85073B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57AC1793-FFDF-467C-A958-9BE6DE85073B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57AC1793-FFDF-467C-A958-9BE6DE85073B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57AC1793-FFDF-467C-A958-9BE6DE85073B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

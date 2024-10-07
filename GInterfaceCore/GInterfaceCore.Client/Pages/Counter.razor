@@ -1,0 +1,20 @@
+﻿@page "/counter"
+@rendermode InteractiveAuto
+
+<PageTitle>Area de trabajo</PageTitle>
+
+    <RadzenButton Click=@(args => OnClick("Primary button")) Text="Ok" ButtonStyle="ButtonStyle.Primary" />
+
+<h1>Counter</h1>
+
+
+
+@code {
+ 
+    private void OnClick(string text)
+    {
+        
+        NotificationService.Notify(new NotificationMessage { Severity = NotificationSeverity.Info, Summary = "Button Clicked", Detail = text });
+      
+    }
+}

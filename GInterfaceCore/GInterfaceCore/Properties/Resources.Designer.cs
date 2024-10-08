@@ -70,7 +70,7 @@ namespace GInterfaceCore.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Server=WMS-SRV;Database=GInterface;User Id=genesis;Password=Infra170176;.
+        ///   Looks up a localized string similar to Server=WMS-SRV;Database=GInterface;User Id=sa;Password=$ymbar2024!;.
         /// </summary>
         internal static string ConnectionStringProd {
             get {

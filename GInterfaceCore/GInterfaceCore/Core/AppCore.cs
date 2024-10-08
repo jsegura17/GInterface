@@ -771,6 +771,48 @@ namespace GInterfaceCore.Core
             }
             return table;
         }
+        public List<string> RequireHeaders() 
+        {
+            List<string> requireHeaderlist = new List<string> { };
+              
+            
+
+            switch (instance.documentType)
+            {
+                case 1:
+                    // Código a ejecutar si variable es igual a valor1
+                    break;
+
+                case 2:
+                    // Código a ejecutar si variable es igual a valor2
+                    break;
+
+                case 3:
+                    // Código a ejecutar si variable es igual a valor3
+                    break;
+                case 4:
+                    // Código a ejecutar si variable es igual a valor3
+                    break;
+                case 5:
+                    // Código a ejecutar si variable es igual a valor3
+                    break;
+                case 6:
+                    // Código a ejecutar si variable es igual a valor3
+                    break;
+                case 7:
+                    // Código a ejecutar si variable es igual a valor3
+                    break;
+
+                default:
+                    // Código a ejecutar si ninguno de los casos anteriores coincide
+                    break;
+            }
+
+
+            return requireHeaderlist;
+        }
+
+
         public void sortDataExcel(List<List<string>> excel, string fileName, List<string> dataArray, string endStartInfo)
         {
             fileName = AppendDateTimeToName(fileName);
@@ -802,7 +844,7 @@ namespace GInterfaceCore.Core
                     { 
                         requireCount =0; 
                     }
-                        var headers = excel[requireCount];
+                    var headers = excel[requireCount];
                     var datanot = 0;
                    
                     // Iteramos a través de las filas del archivo EXCEL (omitimos el encabezado)

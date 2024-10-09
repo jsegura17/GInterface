@@ -19,6 +19,7 @@ namespace GInterface.Interfaces
             bool response =_appCore.SqlVerificationUser(username,password);
             // Aquí implementarías la lógica de autenticación real
             // Por ejemplo, verificar las credenciales contra una base de datos
+         
             return await Task.FromResult(response);
         }
 

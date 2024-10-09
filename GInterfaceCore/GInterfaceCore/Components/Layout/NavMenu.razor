@@ -9,7 +9,7 @@
 <div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
     <nav class="flex-column">
        
-        @if (_appCore.IsLoginUser && !_appCore.IsAdmin)
+        @if (_appCore.IsLoginUser)
         {
             <div class="nav-item px-3">
                 <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
@@ -22,21 +22,20 @@
                     <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Manejo de Documentos
                 </NavLink>
             </div>
-        }
+            if (_appCore.IsLoginUser && _appCore.IsAdmin)
+            {
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="config/true">
+                        <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Config
+                    </NavLink>
+                </div>
 
-        else if (_appCore.IsLoginUser && _appCore.IsAdmin)
-        {
-            <div class="nav-item px-3">
-                <NavLink class="nav-link" href="config/true">
-                    <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Config
-                </NavLink>
-            </div>
-
-            <div class="nav-item px-3">
-                <NavLink class="nav-link" href="test">
-                    <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Registrar
-                </NavLink>
-            </div>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="test">
+                        <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Registrar
+                    </NavLink>
+                </div>
+            }
         }
 
     </nav>

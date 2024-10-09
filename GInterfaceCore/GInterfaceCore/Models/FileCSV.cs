@@ -12,7 +12,7 @@ namespace GInterfaceCore.Models
         public DateTime FileDate { get; set; }
         public TransactionStatus FileStatus { get; set; } // status the document
         public int FileFields { get; set; }
-        public DocumentType FileType { get; set; } // status the document
+        public Dictionary<int, string> FileType { get; set; } // status the document
         public string FileJsonObj { get; set; }
 
     }

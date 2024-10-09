@@ -75,6 +75,8 @@ namespace GInterfaceCore.Core
         public DateTime LastSyncPushDateTime { get; set; }
         public List<TransactionEvent> lstTransactionEvents { get; set; }
 
+        public Dictionary<int, string> DocumentType = new Dictionary<int, string>();
+
         /// <summary>
         /// Para esta parte va hacer para compartir los datos generados para guardar el csv
         /// </summary>
@@ -143,6 +145,10 @@ namespace GInterfaceCore.Core
 
             }
         }
+       
+            // Simulamos una llamada a un servicio o la carga de datos
+    
+        
 
         /*
          * For Generic certificate
@@ -239,7 +245,7 @@ namespace GInterfaceCore.Core
             }
             return _result;
         }
-
+       
         public SqlConnection GetDBConnection()
         {
 #if DEBUG
@@ -621,7 +627,7 @@ namespace GInterfaceCore.Core
                         FileDate = Convert.ToDateTime(reader["FileDate"]),
                         FileStatus = (TransactionStatus)Convert.ToInt32(reader["FileStatus"]), // Asegúrate de que FileStatus sea un int en la base de datos y se pueda mapear a TransactionStatus
                         FileFields = Convert.ToInt32(reader["FileFields"]),
-                        FileType = (EnumTypes.DocumentType)Convert.ToInt32(reader["FileType"]),
+                        FileType = GetDocumentType(Convert.ToInt32(reader["FileType"])),
                         FileJsonObj = reader["FileJsonObj"].ToString()
                     };
 
@@ -631,6 +637,13 @@ namespace GInterfaceCore.Core
             }
 
             return templateFiles;
+        }
+        private Dictionary<int, string> GetDocumentType(int fileTypeId)
+        {
+             documentTypeAsync();
+            
+             return instance.DocumentType; // Retorna la descripción del tipo de documento
+           
         }
         public List<FileCSV> GetPendingFiles()
         {
@@ -663,6 +676,46 @@ namespace GInterfaceCore.Core
 
             return templateFiles;
         }
+        public async Task<Dictionary<int, string>> documentTypeAsync()
+        {
+            // Llamar al método que obtiene los datos de la base de datos
+            instance.DocumentType = await instance.GetDocumentTypeAsync();
+            return instance.DocumentType;
+        }
+        public async Task<Dictionary<int, string>> GetDocumentTypeAsync()
+        {
+            var result = new Dictionary<int, string>();
+
+            using (SqlConnection connection = GetDBConnection())
+            {
+                using (SqlCommand command = new SqlCommand("SP_GInterface_GetDocumentType", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    await connection.OpenAsync();
+                    using (SqlDataReader reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            int tipoDocumentoIndex = reader.GetOrdinal("Tipo_Documento");
+                            int numeroDocumentoIndex = reader.GetOrdinal("Numero_Documento");
+
+                            string Tipo_Documento = reader.GetString(tipoDocumentoIndex);
+                            int Numero_Documento = reader.GetInt32(numeroDocumentoIndex);
+
+                            // Agregar los valores al diccionario
+                            result.Add(Numero_Documento, Tipo_Documento);
+
+
+                            
+                        }
+                    }
+                }
+            }
+            instance.DocumentType = result;
+            return result;
+        }
+
 
         private static DataTable LoadCsvData(List<TempCSVGlobal> temp)
         {
@@ -997,6 +1050,9 @@ namespace GInterfaceCore.Core
             JsonTemplate fileJson = JsonSerializer.Deserialize<JsonTemplate>(data.FileJsonObj);
             return fileJson;
         }
+
+
+
     public void LogOut()
         {
             instance.IsLoginUser = false;

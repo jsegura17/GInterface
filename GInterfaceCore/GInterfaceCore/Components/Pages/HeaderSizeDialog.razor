@@ -16,14 +16,14 @@
     public string EndRowError { get; set; }
     public string AdditionalFieldError { get; set; }
     public string SelectedOptionError { get; set; }
+    public Dictionary<int, string> DocumentTypeItems;
+    protected override async Task OnInitializedAsync()
+    {
+        // Llamar al método que obtiene los datos de la base de datos
+        DocumentTypeItems = await _appCore.documentTypeAsync();
+    }
 
-    public List<EnumValue> DocumentTypeItems => Enum.GetValues(typeof(DocumentType))
-        .Cast<DocumentType>()
-        .Select(dt => new EnumValue
-            {
-                Name = dt.ToString(),
-                Value = (int)dt
-            }).ToList();
+    
 
     private void Confirm()
     {
@@ -132,7 +132,12 @@
 
     <div style="margin-bottom: 20px;">
         <label for="documentType">Selección del tipo de documento:</label>
-        <RadzenDropDown id="documentType" @bind-Value="SelectedOption" Data="@DocumentTypeItems" TextProperty="Name" ValueProperty="Value" Placeholder="Seleccione una opción" Style="width:100%;" />
+        <RadzenDropDown id="documentType" @bind-Value="SelectedOption"
+                        Data="@DocumentTypeItems"
+                        TextProperty="Value"
+                        ValueProperty="Key"
+                        Placeholder="Seleccione una opción"
+                        Style="width:100%;" />
         @if (!string.IsNullOrEmpty(SelectedOptionError))
         {
             <div style="color:red;">@SelectedOptionError</div>

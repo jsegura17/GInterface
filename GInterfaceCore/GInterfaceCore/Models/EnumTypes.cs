@@ -19,6 +19,10 @@ namespace GInterfaceCore.Models
             TipoDocumento_02 = 2,
             TipoDocumento_03 = 3,
             FormatoIngreso = 4,
+            IngresoPorDevolucionCliente = 5,
+            IngresoPorDevolucionRetorno = 6,
+            IngresoPorConduces = 7,
+            
         }
 
         public enum UserType
@@ -26,6 +30,13 @@ namespace GInterfaceCore.Models
             Codirecta=1,
             Dinor=2,
             Norteña=3,
+
+        }
+        public enum Entry
+        {
+            Ingreso = 1,
+            Egreso = 2,
+            Conduce = 3,
 
         }
         public enum ConfigArea

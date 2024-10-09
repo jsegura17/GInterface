@@ -1,27 +1,55 @@
 ﻿@page "/workspace"
 @rendermode InteractiveServer
 
-<PageTitle>Configuración de Tipos de Documentos</PageTitle>
+
 <div style="text-align: center; margin-top: 20px;">
-    <h2>Cargar Archivos</h2>
+    <h2 style="background-color: royalblue; border-radius: 15px; padding: 20px;">Bases Disponibles</h2>
+     <div style="margin-bottom: 20px;">
+                        <label for="UserType">Selección del tipo de usuario:</label>
+        <RadzenDropDown id="UserType" @bind-Value="SelectedOption" Data="@transaction" TextProperty="Name" ValueProperty="Value" Placeholder="Seleccione una opción" Style="width:100%;" />
+                        @if (!string.IsNullOrEmpty(SelectedOptionError))
+                        {
+                            <div style="color:red;">@SelectedOptionError</div>
+                        }
+                    </div>
 </div>
+
 <div style="display: flex; justify-content: center; margin-top: 30px;">
-    <table style="width:80%">
+    <table style="width:80%; background-color: white;">
         @if (templateFiles != null && templateFiles.Any())
         {
             <tr>
                 @foreach (var file in templateFiles)
                 {
-                    <td>
-                        <div style="display: flex; flex-direction: column; align-items: center; margin: 10px;">
-                            <button @onclick="() => OnClick(file)" class="btn"
-                                    style="background-image: url('/images/integra.png'); width: 100px; height: 100px; background-size: cover; border: none;">
-                            </button>
-                            <p class="size_12 text_center">@file.FileType</p>
-                        </div>
-                    </td>
+                    bool shouldDisplay = false;
+
+                   
+                    if (SelectedOption == 1)
+                    {
+                        // Opción 1: Mostrar ingresos
+                        shouldDisplay = file.FileType.Equals(DocumentType.IngresoPorDevolucionCliente) ||
+                        file.FileType.Equals(DocumentType.FormatoIngreso);
+                    }
+                    else if (SelectedOption == 2)
+                    {
+                        // Opción 2: Mostrar egresos
+                        shouldDisplay = file.FileType.Equals(DocumentType.Picklist);
+                    }
+
+                    if (shouldDisplay)
+                    {
+                        <td>
+                            <div style="display: flex; flex-direction: column; align-items: center;">
+                                <button @onclick="() => ChargeDocument(file)" class="btn"
+                                        style="background-image: url('/images/integra.png'); width: 100px; height: 100px; background-size: cover; border: none;">
+                                </button>
+                                <p class="size_12 text_center">@file.FileType</p>
+                            </div>
+                        </td>
+                    }
                 }
             </tr>
+
         }
         else
         {
@@ -31,8 +59,10 @@
         }
     </table>
 </div>
+
+
 <div style="text-align: center; margin-top: 20px;">
-    <h2>Archivos Pendientes</h2>
+    <h2 style="background-color: royalblue; border-radius: 15px; padding: 20px;">Archivos Pendientes</h2>
 </div>
 <div style="display: flex; justify-content: center; margin-top: 30px;">
     <table style="width:80%">
@@ -43,7 +73,7 @@
                 {
                     <td>
                         <div style="display: flex; flex-direction: column; align-items: center; margin: 10px;">
-                            <button @onclick="() => OnClick(file)" class="btn"
+                            <button @onclick="() => ChargeDocument(file)" class="btn"
                                     style="background-image: url('/images/camiones.jpg'); width: 100px; height: 100px; background-size: cover; border: none;">
                             </button>
                             <p class="size_12 text_center">@file.FileNames</p>
@@ -66,55 +96,47 @@
 
 
 @code {
-    //By Menu Btns
+    // By Menu Btns
     private Core.AppCore _appCore = Core.AppCore.Instance;
     private List<FileCSV> templateFiles = null;
     private List<FileCSV> PendingFiles = null;
+    public Dictionary<int, string> DocumentTypeItems;
     bool hideMenu1 = false;
+    private bool isAdmin;
+    public int SelectedOption { get; set; }
+    public string SelectedOptionError { get; set; }
 
-    protected override void OnInitialized()
+    protected override async void OnInitialized()
     {
         templateFiles = _appCore.GetTemplateFiles();
         PendingFiles = _appCore.GetPendingFiles();
+        var admin = _appCore.IsAdmin;
+        DocumentTypeItems = await _appCore.documentTypeAsync();
+        SelectedOption = 1;
     }
 
-    private async Task OnClick(FileCSV file)
+    public List<EnumValue> transaction => Enum.GetValues(typeof(Entry))
+    .Cast<Entry>()
+    .Select(dt => new EnumValue
+            {
+                Name = dt.ToString(),
+                Value = (int)dt
+            }).ToList();
+
+    public class EnumValue
     {
-        switch (file.FileType)
-        {
-            case GInterfaceCore.Models.EnumTypes.DocumentType.Generico:
-
-                ChargeDocument(file);
-                break;
-            case GInterfaceCore.Models.EnumTypes.DocumentType.Picklist:
-
-                ChargeDocument(file);
-                break;
-            case GInterfaceCore.Models.EnumTypes.DocumentType.TipoDocumento_02:
-
-                ChargeDocument(file);
-                break;
-            case GInterfaceCore.Models.EnumTypes.DocumentType.TipoDocumento_03:
-
-                ChargeDocument(file);
-                break;
-            case GInterfaceCore.Models.EnumTypes.DocumentType.FormatoIngreso:
-
-                ChargeDocument(file);
-                break;
-
-
-            default:
-                break;
-        }
+        public string Name { get; set; }
+        public int Value { get; set; }
     }
+
+
 
     public async void ChargeDocument(FileCSV file)
     {
         var parameters = new Dictionary<string, object>
-                        {
-                { "SomeParameter", file }, // O cualquier propiedad que necesites pasar
-                        };
+            {
+            { "SomeParameter", file } // O cualquier propiedad que necesites pasar
+            };
 
         var result = await DialogService.OpenComponentExtension<FileUpLoad>("Espera", parameters);
 
@@ -125,33 +147,37 @@
             {
                 // Ejecutar una tarea en segundo plano
                 await Task.Run(async () =>
-    {
-        try
-        {
-            await InvokeAsync(async () =>
             {
-                NotificationService.Notify(new NotificationMessage
-                        {
-                            Severity = NotificationSeverity.Info,
-                            Summary = "Button Clicked",
-                            Detail = file.FileType.GetDisplayDescription()
-                        });
-
-                DialogService.Close();
-            });
-
-            await BusyDialog();
-        }
-        catch (Exception ex)
-        {
-            NotificationService.Notify(new NotificationMessage
+                try
+                {
+                    
+                    await InvokeAsync(async () =>
                     {
-                        Severity = NotificationSeverity.Error,
-                        Summary = "Error",
-                        Detail = $"Ocurrió un error: {ex.Message}"
+                        // Verifica si el tipo de archivo existe en el diccionario
+                  
+                        
+                            // Usar el valor obtenido del diccionario para la notificación
+                            NotificationService.Notify(new NotificationMessage
+                                    {
+                                        Severity = NotificationSeverity.Info,
+                                        Summary = "Button Clicked",
+                                    
+                                    });
+
+                            await BusyDialog();
+                        
                     });
-        }
-    });
+                }
+                catch (Exception ex)
+                {
+                    NotificationService.Notify(new NotificationMessage
+                            {
+                                Severity = NotificationSeverity.Error,
+                                Summary = "Error",
+                                Detail = $"Ocurrió un error: {ex.Message}"
+                            });
+                }
+            });
             }
             else
             {
@@ -172,11 +198,8 @@
     @<RadzenStack AlignItems="AlignItems.Center" Gap="2rem" class="rz-p-12">
         <RadzenImage Path="images/loading.gif" Style="width: 200px;" AlternateText="community" />
         <RadzenText TextStyle="TextStyle.H6">Cargando meta informacion...</RadzenText>
-    </RadzenStack>, new DialogOptions() { ShowTitle = false, Style = "min-height:auto;min-width:auto;width:auto", CloseDialogOnEsc = false });
+    </RadzenStack>,
+    new DialogOptions() { ShowTitle = false, Style = "min-height:auto;min-width:auto;width:auto", CloseDialogOnEsc = false });
     }
-
-
-
-
-
 }
+

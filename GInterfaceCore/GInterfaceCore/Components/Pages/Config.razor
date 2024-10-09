@@ -11,7 +11,7 @@
         {
             <tr>
                 <td>
-                    <button @onclick="() => OnClick(file)" class="btn"
+                    <button @onclick="() => ChargeDocument(file)" class="btn"
                             style="background-image: url('/images/integra.png'); width: 100px; height: 100px; background-size: cover; border: none;">
                     </button>
                     <p class="size_12 text_center">@file.FileType</p>
@@ -37,6 +37,7 @@
     // Get Global Core Settings
     private Core.AppCore _appCore = Core.AppCore.Instance;
     private List<FileCSV> templateFiles = null;
+    public Dictionary<int, string> DocumentTypeItems;
 
     [Parameter]
     public bool IsAdmin { get; set; }
@@ -53,9 +54,11 @@
         }
     }
 
-    protected override void OnInitialized()
+    protected override async void OnInitialized()
     {
         templateFiles = _appCore.GetTemplateFiles();
+
+        DocumentTypeItems = await _appCore.documentTypeAsync();
     }
 
 
@@ -72,33 +75,38 @@
             {
                 // Ejecutar una tarea en segundo plano
                 await Task.Run(async () =>
-        {
-            try
             {
-                await InvokeAsync(async () =>
+                try
+                {
+                    await InvokeAsync(async () =>
+                    {
+                        // Verificar si el tipo de archivo existe en el diccionario
+                       
+                            // Usar el valor del diccionario en la notificación
+                            NotificationService.Notify(new NotificationMessage
+                                    {
+                                        Severity = NotificationSeverity.Info,
+                                        Summary = "Button Clicked",
+                                       
+                                    });
+                        
+                        
+
+                        DialogService.Close();
+                    });
+
+                    await BusyDialog();
+                }
+                catch (Exception ex)
                 {
                     NotificationService.Notify(new NotificationMessage
                             {
-                                Severity = NotificationSeverity.Info,
-                                Summary = "Button Clicked",
-                                Detail = file.FileType.GetDisplayDescription()
+                                Severity = NotificationSeverity.Error,
+                                Summary = "Error",
+                                Detail = $"Ocurrió un error: {ex.Message}"
                             });
-
-                    DialogService.Close();
-                });
-
-                await BusyDialog();
-            }
-            catch (Exception ex)
-            {
-                NotificationService.Notify(new NotificationMessage
-                        {
-                            Severity = NotificationSeverity.Error,
-                            Summary = "Error",
-                            Detail = $"Ocurrió un error: {ex.Message}"
-                        });
-            }
-        });
+                }
+            });
             }
             else
             {
@@ -118,36 +126,8 @@
 
 
 
-    private async Task OnClick(FileCSV file)
-    {
-        switch (file.FileType)
-        {
-            case GInterfaceCore.Models.EnumTypes.DocumentType.Generico:
 
-                ChargeDocument(file);
-                break;
-            case GInterfaceCore.Models.EnumTypes.DocumentType.Picklist:
-
-                ChargeDocument(file);
-                break;
-            case GInterfaceCore.Models.EnumTypes.DocumentType.TipoDocumento_02:
-
-                ChargeDocument(file);
-                break;
-            case GInterfaceCore.Models.EnumTypes.DocumentType.TipoDocumento_03:
-
-                ChargeDocument(file);
-                break;
-            case GInterfaceCore.Models.EnumTypes.DocumentType.FormatoIngreso:
-
-                ChargeDocument(file);
-                break;
-
-
-            default:
-                break;
-        }
-    }
+  
 
     public async void ChargeDocument(FileCSV file)
     {
@@ -174,7 +154,7 @@
                             {
                                 Severity = NotificationSeverity.Info,
                                 Summary = "Button Clicked",
-                                Detail = file.FileType.GetDisplayDescription()
+                                
                             });
 
                     DialogService.Close();

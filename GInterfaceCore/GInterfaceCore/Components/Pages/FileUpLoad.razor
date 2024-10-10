@@ -27,7 +27,7 @@
 
     private void OnClick(string text)
     {
-        _appCore.InsertFileCsv(_appCore.CFileName, _appCore.fileStatus, _appCore.head, _appCore.ObjJason, _appCore.InfotTempo);
+        _appCore.InsertFileCsv(_appCore.CFileName, _appCore.fileStatus, _appCore.head, _appCore.ObjJason, _appCore.InfotTempo, _appCore.inbound);
         DialogService.Close();
         NotificationService.Notify(new NotificationMessage { Severity = NotificationSeverity.Info, Summary = "Button Clicked", Detail = text });
     }
@@ -69,7 +69,7 @@
                         //new DialogOptions() { Width = "500px", Height = "300px" });
 
                         var result =SomeParameter;
-
+                        
                         var listJson = _appCore.TemplateJson(result);
                         if (result != null)
                         {
@@ -88,6 +88,7 @@
                                 var info = stringList[1] + "," + stringList[2];
                                     _appCore.sortDataExcel(informationExcel, fileName, listJson.RequireFields, info);
                                     UploadedContent = "a";
+                                    _appCore.inbound = result.InboundOutbound;
                                     // Close the dialog
                                     DialogService.Close();
                                 });

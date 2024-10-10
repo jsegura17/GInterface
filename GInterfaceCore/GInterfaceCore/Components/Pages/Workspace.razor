@@ -1,55 +1,35 @@
 ﻿@page "/workspace"
 @rendermode InteractiveServer
 
-
 <div style="text-align: center; margin-top: 20px;">
     <h2 style="background-color: royalblue; border-radius: 15px; padding: 20px;">Bases Disponibles</h2>
-     <div style="margin-bottom: 20px;">
-                        <label for="UserType">Selección del tipo de usuario:</label>
-        <RadzenDropDown id="UserType" @bind-Value="SelectedOption" Data="@transaction" TextProperty="Name" ValueProperty="Value" Placeholder="Seleccione una opción" Style="width:100%;" />
-                        @if (!string.IsNullOrEmpty(SelectedOptionError))
-                        {
-                            <div style="color:red;">@SelectedOptionError</div>
-                        }
-                    </div>
+    <div style="margin-bottom: 20px;">
+        <label for="UserType">Selección del tipo de usuario:</label>
+        <RadzenDropDown id="UserType" @bind-Value="SelectedOption" Data="@transaction" TextProperty="Name" ValueProperty="Value" Placeholder="Seleccione una opción" Style="width:100%;" Change="OnSelectedOptionChanged" />
+        @if (!string.IsNullOrEmpty(SelectedOptionError))
+        {
+            <div style="color:red;">@SelectedOptionError</div>
+        }
+    </div>
 </div>
 
 <div style="display: flex; justify-content: center; margin-top: 30px;">
     <table style="width:80%; background-color: white;">
-        @if (templateFiles != null && templateFiles.Any())
+        @if (FilteredTemplateFiles != null && FilteredTemplateFiles.Any())
         {
             <tr>
-                @foreach (var file in templateFiles)
+                @foreach (var file in FilteredTemplateFiles)
                 {
-                    bool shouldDisplay = false;
-
-                   
-                    if (SelectedOption == 1)
-                    {
-                        // Opción 1: Mostrar ingresos
-                        shouldDisplay = file.FileType.Equals(DocumentType.IngresoPorDevolucionCliente) ||
-                        file.FileType.Equals(DocumentType.FormatoIngreso);
-                    }
-                    else if (SelectedOption == 2)
-                    {
-                        // Opción 2: Mostrar egresos
-                        shouldDisplay = file.FileType.Equals(DocumentType.Picklist);
-                    }
-
-                    if (shouldDisplay)
-                    {
-                        <td>
-                            <div style="display: flex; flex-direction: column; align-items: center;">
-                                <button @onclick="() => ChargeDocument(file)" class="btn"
-                                        style="background-image: url('/images/integra.png'); width: 100px; height: 100px; background-size: cover; border: none;">
-                                </button>
-                                <p class="size_12 text_center">@file.FileType</p>
-                            </div>
-                        </td>
-                    }
+                    <td>
+                        <div style="display: flex; flex-direction: column; align-items: center;">
+                            <button @onclick="() => ChargeDocument(file)" class="btn"
+                                    style="background-image: url('/images/integra.png'); width: 100px; height: 100px; background-size: cover; border: none;">
+                            </button>
+                            <p class="size_12 text_center">@file.FileNames</p>
+                        </div>
+                    </td>
                 }
             </tr>
-
         }
         else
         {
@@ -60,16 +40,15 @@
     </table>
 </div>
 
-
 <div style="text-align: center; margin-top: 20px;">
     <h2 style="background-color: royalblue; border-radius: 15px; padding: 20px;">Archivos Pendientes</h2>
 </div>
 <div style="display: flex; justify-content: center; margin-top: 30px;">
     <table style="width:80%">
-        @if (PendingFiles != null && PendingFiles.Any())
+        @if (FilteredPendingFiles != null && FilteredPendingFiles.Any())
         {
             <tr>
-                @foreach (var file in PendingFiles)
+                @foreach (var file in FilteredPendingFiles)
                 {
                     <td>
                         <div style="display: flex; flex-direction: column; align-items: center; margin: 10px;">
@@ -91,115 +70,61 @@
     </table>
 </div>
 
-
-
-
-
 @code {
-    // By Menu Btns
-    private Core.AppCore _appCore = Core.AppCore.Instance;
     private List<FileCSV> templateFiles = null;
     private List<FileCSV> PendingFiles = null;
-    public Dictionary<int, string> DocumentTypeItems;
-    bool hideMenu1 = false;
-    private bool isAdmin;
-    public int SelectedOption { get; set; }
+    private List<FileCSV> FilteredTemplateFiles = null;
+    private List<FileCSV> FilteredPendingFiles = null;
+    private Core.AppCore _appCore = Core.AppCore.Instance;
+    public string SelectedOption { get; set; }
     public string SelectedOptionError { get; set; }
 
     protected override async void OnInitialized()
     {
         templateFiles = _appCore.GetTemplateFiles();
         PendingFiles = _appCore.GetPendingFiles();
-        var admin = _appCore.IsAdmin;
-        DocumentTypeItems = await _appCore.documentTypeAsync();
-        SelectedOption = 1;
+        FilterFiles(); // Filtrar los archivos desde el inicio
     }
 
-    public List<EnumValue> transaction => Enum.GetValues(typeof(Entry))
-    .Cast<Entry>()
-    .Select(dt => new EnumValue
-            {
-                Name = dt.ToString(),
-                Value = (int)dt
-            }).ToList();
+    private void FilterFiles()
+    {
+        // Filtrar archivos basados en la opción seleccionada
+        if (!string.IsNullOrEmpty(SelectedOption))
+        {
+            FilteredTemplateFiles = templateFiles.Where(file => file.InboundOutbound == SelectedOption).ToList();
+            FilteredPendingFiles = PendingFiles.Where(file => file.InboundOutbound == SelectedOption).ToList();
+        }
+    }
+
+    private void OnSelectedOptionChanged(object value)
+    {
+        SelectedOption = value.ToString();
+        FilterFiles();
+    }
+
+    public List<EnumValue> transaction => new List<EnumValue>
+    {
+        new EnumValue { Name = "Ingreso", Value = "Ingreso" },
+        new EnumValue { Name = "Egreso", Value = "Egreso" }
+    };
 
     public class EnumValue
     {
         public string Name { get; set; }
-        public int Value { get; set; }
+        public string Value { get; set; }
     }
-
-
 
     public async void ChargeDocument(FileCSV file)
     {
         var parameters = new Dictionary<string, object>
-            {
-            { "SomeParameter", file } // O cualquier propiedad que necesites pasar
-            };
+        {
+            { "SomeParameter", file }
+        };
 
         var result = await DialogService.OpenComponentExtension<FileUpLoad>("Espera", parameters);
-
         if (result != null)
         {
-            int headerSize;
-            if (int.TryParse(result.HeaderSize.ToString(), out headerSize))
-            {
-                // Ejecutar una tarea en segundo plano
-                await Task.Run(async () =>
-            {
-                try
-                {
-                    
-                    await InvokeAsync(async () =>
-                    {
-                        // Verifica si el tipo de archivo existe en el diccionario
-                  
-                        
-                            // Usar el valor obtenido del diccionario para la notificación
-                            NotificationService.Notify(new NotificationMessage
-                                    {
-                                        Severity = NotificationSeverity.Info,
-                                        Summary = "Button Clicked",
-                                    
-                                    });
-
-                            await BusyDialog();
-                        
-                    });
-                }
-                catch (Exception ex)
-                {
-                    NotificationService.Notify(new NotificationMessage
-                            {
-                                Severity = NotificationSeverity.Error,
-                                Summary = "Error",
-                                Detail = $"Ocurrió un error: {ex.Message}"
-                            });
-                }
-            });
-            }
-            else
-            {
-                NotificationService.Notify(new NotificationMessage
-                        {
-                            Severity = NotificationSeverity.Error,
-                            Summary = "Error en el Tamaño del Encabezado",
-                            Detail = "El tamaño del encabezado ingresado no es válido. Por favor, ingrese un número entero."
-                        });
-                return;
-            }
+            // Lógica para procesar el archivo
         }
     }
-
-    async Task BusyDialog()
-    {
-        await DialogService.OpenAsync("", ds =>
-    @<RadzenStack AlignItems="AlignItems.Center" Gap="2rem" class="rz-p-12">
-        <RadzenImage Path="images/loading.gif" Style="width: 200px;" AlternateText="community" />
-        <RadzenText TextStyle="TextStyle.H6">Cargando meta informacion...</RadzenText>
-    </RadzenStack>,
-    new DialogOptions() { ShowTitle = false, Style = "min-height:auto;min-width:auto;width:auto", CloseDialogOnEsc = false });
-    }
 }
-

@@ -87,6 +87,7 @@ namespace GInterfaceCore.Core
         public int head;
         public string[] headers;
         public int documentType;
+        public string inbound;
 
         //Lista de Tipos de Documentos
         public List<EnumTypes.DocumentType> GlobalDocType { get; set; }
@@ -443,7 +444,7 @@ namespace GInterfaceCore.Core
             }
 
         }
-        public void InsertFileCsv(string fileNames, TransactionStatus fileStatus, int fileFields, string fileJsonObj, DataTable csvData)
+        public void InsertFileCsv(string fileNames, TransactionStatus fileStatus, int fileFields, string fileJsonObj, DataTable csvData, string inbound)
         {
 
             string message = string.Empty;
@@ -455,7 +456,7 @@ namespace GInterfaceCore.Core
                 {
                     connection.Open();
 
-                    using (SqlCommand command = new SqlCommand("SP_InsertFileCSV", connection))
+                    using (SqlCommand command = new SqlCommand("SP_GInterface_INSERT_FILE_CSV", connection))
                     {
                         command.CommandType = CommandType.StoredProcedure;
 
@@ -471,6 +472,10 @@ namespace GInterfaceCore.Core
                         command.Parameters.Add(new SqlParameter("@FileFields", SqlDbType.Int)
                         {
                             Value = fileFields
+                        });
+                        command.Parameters.Add(new SqlParameter("@Inbound", SqlDbType.NVarChar, -1)
+                        {
+                            Value = inbound
                         });
                         command.Parameters.Add(new SqlParameter("@FileJsonObj", SqlDbType.NVarChar, -1)
                         {
@@ -528,7 +533,7 @@ namespace GInterfaceCore.Core
 
         }
 
-        public void InsertBaseFileCsv(string fileNames, TransactionStatus fileStatus, int fileFields, int fileType, string fileJsonObj)
+        public void InsertBaseFileCsv(string fileNames, TransactionStatus fileStatus, int fileFields, int fileType, string fileJsonObj, string inbound)
         {
 
             string message = string.Empty;
@@ -540,7 +545,7 @@ namespace GInterfaceCore.Core
                 {
                     connection.Open();
 
-                    using (SqlCommand command = new SqlCommand("SP_InsertFileBase", connection))
+                    using (SqlCommand command = new SqlCommand("SP_GInterface_INSERT_BASE_FILE_CSV", connection))
                     {
                         command.CommandType = CommandType.StoredProcedure;
 
@@ -560,6 +565,10 @@ namespace GInterfaceCore.Core
                         command.Parameters.Add(new SqlParameter("@FileType", SqlDbType.Int)
                         {
                             Value = fileType
+                        });
+                        command.Parameters.Add(new SqlParameter("@Inbound", SqlDbType.NVarChar, -1)
+                        {
+                            Value = inbound
                         });
                         command.Parameters.Add(new SqlParameter("@FileJsonObj", SqlDbType.NVarChar, -1)
                         {
@@ -628,6 +637,7 @@ namespace GInterfaceCore.Core
                         FileStatus = (TransactionStatus)Convert.ToInt32(reader["FileStatus"]), // Asegúrate de que FileStatus sea un int en la base de datos y se pueda mapear a TransactionStatus
                         FileFields = Convert.ToInt32(reader["FileFields"]),
                         FileType = GetDocumentType(Convert.ToInt32(reader["FileType"])),
+                        InboundOutbound = reader["FileInbound"].ToString(),
                         FileJsonObj = reader["FileJsonObj"].ToString()
                     };
 
@@ -666,6 +676,7 @@ namespace GInterfaceCore.Core
                         FileDate = Convert.ToDateTime(reader["FileDate"]),
                         FileStatus = (TransactionStatus)Convert.ToInt32(reader["FileStatus"]), // Asegúrate de que FileStatus sea un int en la base de datos y se pueda mapear a TransactionStatus
                         FileFields = Convert.ToInt32(reader["FileFields"]),
+                        InboundOutbound = reader["FileInbound"].ToString(),
                         FileJsonObj = reader["FileJsonObj"].ToString()
                     };
 

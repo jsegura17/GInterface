@@ -13,6 +13,7 @@ namespace GInterfaceCore.Models
         public TransactionStatus FileStatus { get; set; } // status the document
         public int FileFields { get; set; }
         public Dictionary<int, string> FileType { get; set; } // status the document
+        public string InboundOutbound { get; set; }
         public string FileJsonObj { get; set; }
 
     }

@@ -9,8 +9,9 @@
     public bool IsAdditionalFieldChecked { get; set; }
     public string AdditionalFieldText { get; set; }
     public int SelectedOption { get; set; }
+    public string SelectedOptionInOut { get; set; }
     private Core.AppCore _appCore = Core.AppCore.Instance;
-
+    public List<string> inbound { get; set; }
     public string HeaderSizeError { get; set; }
     public string StartRowError { get; set; }
     public string EndRowError { get; set; }
@@ -19,6 +20,7 @@
     public Dictionary<int, string> DocumentTypeItems;
     protected override async Task OnInitializedAsync()
     {
+        inbound = new List<string> { "Ingreso", "Egreso" };
         // Llamar al método que obtiene los datos de la base de datos
         DocumentTypeItems = await _appCore.documentTypeAsync();
     }
@@ -69,6 +71,15 @@
         {
             SelectedOptionError = null;
         }
+        if (string.IsNullOrWhiteSpace(SelectedOptionInOut))
+        {
+            SelectedOptionError = "Debe seleccionar el tipo de transacción.";
+            isValid = false;
+        }
+        else
+        {
+            SelectedOptionError = null;
+        }
 
         if (IsAdditionalFieldChecked && string.IsNullOrWhiteSpace(AdditionalFieldText))
         {
@@ -83,7 +94,8 @@
         // Si todos los datos son válidos, cerrar el diálogo
         if (isValid)
         {
-            DialogService.Close(new { HeaderSize, StartRow, EndRow, AdditionalFieldText, SelectedOption });
+            DialogService.Close(new { HeaderSize, StartRow, EndRow, AdditionalFieldText, SelectedOption, SelectedOptionInOut });
+
         }
     }
 
@@ -136,6 +148,17 @@
                         Data="@DocumentTypeItems"
                         TextProperty="Value"
                         ValueProperty="Key"
+                        Placeholder="Seleccione una opción"
+                        Style="width:100%;" />
+        @if (!string.IsNullOrEmpty(SelectedOptionError))
+        {
+            <div style="color:red;">@SelectedOptionError</div>
+        }
+    </div>
+    <div style="margin-bottom: 20px;">
+        <label for="onbound">Selección del tipo de transacción:</label>
+        <RadzenDropDown id="onbound" @bind-Value="SelectedOptionInOut"
+                        Data="@inbound"
                         Placeholder="Seleccione una opción"
                         Style="width:100%;" />
         @if (!string.IsNullOrEmpty(SelectedOptionError))

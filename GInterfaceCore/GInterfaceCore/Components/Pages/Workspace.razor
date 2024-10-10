@@ -4,7 +4,7 @@
 <div style="text-align: center; margin-top: 20px;">
     <h2 style="background-color: royalblue; border-radius: 15px; padding: 20px;">Bases Disponibles</h2>
     <div style="margin-bottom: 20px;">
-        <label for="UserType">Selección del tipo de usuario:</label>
+        <label for="UserType">Selección del tipo de Documento:</label>
         <RadzenDropDown id="UserType" @bind-Value="SelectedOption" Data="@transaction" TextProperty="Name" ValueProperty="Value" Placeholder="Seleccione una opción" Style="width:100%;" Change="OnSelectedOptionChanged" />
         @if (!string.IsNullOrEmpty(SelectedOptionError))
         {

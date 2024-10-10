@@ -30,6 +30,8 @@ namespace GInterfaceCore.Models
             Codirecta=1,
             Dinor=2,
             Norteña=3,
+            Merlodist=4,
+            Noroestana=5,
 
         }
         public enum Entry

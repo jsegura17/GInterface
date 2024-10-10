@@ -14,7 +14,7 @@
                     <button @onclick="() => ChargeDocument(file)" class="btn"
                             style="background-image: url('/images/integra.png'); width: 100px; height: 100px; background-size: cover; border: none;">
                     </button>
-                    <p class="size_12 text_center">@file.FileType</p>
+                    <p class="size_12 text_center">@file.FileNames</p>
                 </td>
             </tr>
         }
@@ -29,7 +29,7 @@
 @if (_appCore.IsAdmin)
 {
     <div class="text_center">
-        <RadzenButton Shade="Shade.Light" Click=@(args =>OpenTempFileUpload()) Text="Agregar Más" ButtonStyle="ButtonStyle.Success" />
+        <RadzenButton Shade="Shade.Light" Click=@(async args =>OpenTempFileUpload()) Text="Agregar Más" ButtonStyle="ButtonStyle.Success" />
     </div>
 }
 
@@ -38,7 +38,7 @@
     private Core.AppCore _appCore = Core.AppCore.Instance;
     private List<FileCSV> templateFiles = null;
     public Dictionary<int, string> DocumentTypeItems;
-
+    public string fileName;
     [Parameter]
     public bool IsAdmin { get; set; }
 
@@ -61,7 +61,20 @@
         DocumentTypeItems = await _appCore.documentTypeAsync();
     }
 
+    public string name(FileCSV file)
+    {
 
+        char caracterAEliminar = '_';
+        string resultado="";
+        int index = file.FileNames.IndexOf(caracterAEliminar);
+        if (index != -1) // Verifica si se encontró el carácter
+        {
+            // Corta el string hasta la posición del carácter encontrado
+            resultado = file.FileNames.Substring(0, index);
+
+        }
+        return resultado;
+    }
 
     private async Task OpenTempFileUpload()
     {
@@ -81,16 +94,16 @@
                     await InvokeAsync(async () =>
                     {
                         // Verificar si el tipo de archivo existe en el diccionario
-                       
-                            // Usar el valor del diccionario en la notificación
-                            NotificationService.Notify(new NotificationMessage
+
+                        // Usar el valor del diccionario en la notificación
+                        NotificationService.Notify(new NotificationMessage
                                     {
                                         Severity = NotificationSeverity.Info,
                                         Summary = "Button Clicked",
-                                       
+
                                     });
-                        
-                        
+
+
 
                         DialogService.Close();
                     });
@@ -127,7 +140,7 @@
 
 
 
-  
+
 
     public async void ChargeDocument(FileCSV file)
     {
@@ -135,6 +148,8 @@
                     {
                 { "SomeParameter", file }, // O cualquier propiedad que necesites pasar
                     };
+
+                    fileName = name(file);
 
         var result = await DialogService.OpenComponentExtension<FileUpLoad>("Espera", parameters);
 

@@ -25,7 +25,7 @@
 
     private void OnClick(string text)
     {
-        _appCore.InsertBaseFileCsv(_appCore.CFileName, _appCore.fileStatus, _appCore.head,_appCore.documentType, _appCore.ObjJason);
+        _appCore.InsertBaseFileCsv(_appCore.CFileName, _appCore.fileStatus, _appCore.head,_appCore.documentType, _appCore.ObjJason, _appCore.inbound);
         DialogService.Close();
         NotificationService.Notify(new NotificationMessage { Severity = NotificationSeverity.Info, Summary = "Button Clicked", Detail = text });
     }
@@ -75,7 +75,7 @@
                                 List<string> requireFields = new List<string> { "No_contiene_encabezado" };
                                 if (result.AdditionalFieldText != null)
                                 {
-                                   requireFields = new List<string>(result.AdditionalFieldText.Split(','));
+                                    requireFields = new List<string>(result.AdditionalFieldText.Split(','));
                                 }
                                 else
                                 {
@@ -88,6 +88,7 @@
                                 List<List<string>> informationExcel = await _excel.SimulateFileUpload(stream, fileName, headerSize, result.StartRow, result.EndRow, requireFields);
                                 var info = result.StartRow+","+result.EndRow;
                                 _appCore.sortDataExcel(informationExcel, fileName, requireFields, info);
+                                _appCore.inbound = result.SelectedOptionInOut;
                                 headers = _appCore.headers;
                                 UploadedContent = "a";
                                 _appCore.documentType = result.SelectedOption;

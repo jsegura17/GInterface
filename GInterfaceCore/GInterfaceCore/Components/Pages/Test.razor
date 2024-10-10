@@ -28,6 +28,9 @@
                 <EditForm Model="loginModel" OnValidSubmit="@HandleLogin">
                     <div class="row">
                         <div class="rz-p-2 rz-text-align-center">
+                            <RadzenTextBox @ref=_fullName @bind-Value="loginModel.Username" Placeholder="Nombre Completo" Style="width:100%" />
+                        </div>
+                        <div class="rz-p-2 rz-text-align-center">
                             <RadzenTextBox @ref=_username @bind-Value="loginModel.Username" Placeholder="Username" Style="width:100%" />
                         </div>
                         <div class="rz-p-2 rz-text-align-center">
@@ -58,6 +61,7 @@
 @code {
     //Get Global Core Settings
     private Core.AppCore _appCore = Core.AppCore.Instance;
+    private RadzenTextBox _fullName { get; set; }
     private RadzenTextBox _username { get; set; }
     private RadzenPassword _password { get; set; }
     public int SelectedOption { get; set; }

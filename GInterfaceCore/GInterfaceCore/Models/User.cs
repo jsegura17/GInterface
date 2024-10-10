@@ -12,5 +12,14 @@ namespace GInterfaceCore.Models
 
         [JsonPropertyName("Password")]
         public string Password { get; set; }
+        
+        [JsonPropertyName("FullName")]
+        public string FullName { get; set; }
+
+        [JsonPropertyName("UserType")]
+        public string UserType { get; set; }
+
+        [JsonPropertyName("Site")]
+        public string Site { get; set; }
     }
 }

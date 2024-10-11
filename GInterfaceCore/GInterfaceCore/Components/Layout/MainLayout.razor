@@ -7,6 +7,10 @@
 
     <main>
         <div class="top-row px-4">
+            @if (_appCore.IsLoginUser)
+            {
+                <a href="#" onclick="LogoutAsync">LogOut</a>
+            }
             <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
             <RadzenComponents @rendermode="InteractiveAuto" />
         </div>
@@ -22,3 +26,7 @@
     <a href="" class="reload">Reload</a>
     <a class="dismiss">🗙</a>
 </div>
+@code{
+    //Get Global Core Settings
+    private Core.AppCore _appCore = Core.AppCore.Instance;
+}

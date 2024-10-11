@@ -109,6 +109,28 @@
     {//Registro del usuario
         string site = UserTypeHelper.GetStringValue(SelectedOption);
         _appCore.InsertUser(registerModel.FullName, registerModel.Username, registerModel.Password,site);
+        if (_appCore.InsertUserStatus)
+        {
+            // Autenticación fallida
+            NotificationService.Notify(new NotificationMessage
+                {
+                    Severity = NotificationSeverity.Info,
+                    Summary = "Register Summary",
+                    Detail = _appCore.GlobalMsg,
+                    Duration = 4000
+                });
+        }else
+        {
+            // Autenticación fallida
+            NotificationService.Notify(new NotificationMessage
+                {
+                    Severity = NotificationSeverity.Error,
+                    Summary = "Register Summary",
+                    Detail = _appCore.GlobalMsg,
+                    Duration = 4000
+                });
+        }
+
         DialogService.Close();
         }
     }

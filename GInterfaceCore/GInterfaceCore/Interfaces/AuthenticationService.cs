@@ -3,6 +3,7 @@ using System.Data;
 
 using System.Data.SqlClient;
 using System.Configuration;
+using Microsoft.AspNetCore.Http.Extensions;
 namespace GInterfaceCore.Interfaces
 {
     public class AuthenticationService : IAuthenticationService
@@ -25,6 +26,10 @@ namespace GInterfaceCore.Interfaces
         public async Task LogoutAsync()
         {
             // Aquí implementarías la lógica para cerrar la sesión del usuario
+            await Task.Run(() => { _appCore.LogOut(); });
+
+            _appCore._navigationManager.NavigateTo("/");   
+            
         }
     }
 }

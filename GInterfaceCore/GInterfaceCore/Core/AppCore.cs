@@ -62,6 +62,7 @@ namespace GInterfaceCore.Core
 
         //Global Variables
         public string GlobalMsg { get; set; } = string.Empty;
+        public bool InsertUserStatus { get; set; } = false;
 
         public ExcelParse _excelParse = new ExcelParse();
 
@@ -1065,8 +1066,6 @@ namespace GInterfaceCore.Core
 
         public void InsertUser(string fullName, string email, string password, string site)
         {
-
-            string message = string.Empty;
             bool status = false;
 
             using (SqlConnection connection = GetDBConnection())
@@ -1102,7 +1101,7 @@ namespace GInterfaceCore.Core
                         });
                         command.Parameters.Add(new SqlParameter("@testMode", SqlDbType.Int)
                         {
-                            Value = 1
+                            Value = 0
                         });
 
                         // Agregar parámetro de salida
@@ -1122,8 +1121,8 @@ namespace GInterfaceCore.Core
                         command.ExecuteNonQuery();
 
                         // Obtener el mensaje y status del nuevo registro
-                        message = (string)messageParam.Value;
-                        status = (bool)statusParam.Value;
+                        instance.GlobalMsg = (string)messageParam.Value;
+                        instance.InsertUserStatus = (bool)statusParam.Value;
                     }
                 }
                 catch (SqlException ex)

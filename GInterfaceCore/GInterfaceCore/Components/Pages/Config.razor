@@ -1,6 +1,9 @@
 ﻿@page "/config"
 @page "/config/{IsAdmin:bool}"
 @rendermode InteractiveServer
+@using Microsoft.AspNetCore.SignalR.Client
+@inject NavigationManager Navigation
+@implements IAsyncDisposable
 
 <PageTitle>Configuración de Tipos de Documentos</PageTitle>
 
@@ -39,6 +42,7 @@
     private List<FileCSV> templateFiles = null;
     public Dictionary<int, string> DocumentTypeItems;
     public string fileName;
+    private HubConnection hubConnection;
     [Parameter]
     public bool IsAdmin { get; set; }
 
@@ -57,9 +61,23 @@
     protected override async void OnInitialized()
     {
         templateFiles = _appCore.GetTemplateFiles();
-
         DocumentTypeItems = await _appCore.documentTypeAsync();
     }
+    protected override async Task OnInitializedAsync()
+    {
+        hubConnection = new HubConnectionBuilder()
+            .WithUrl(Navigation.ToAbsoluteUri("/hubsign"))
+            .Build();
+
+        hubConnection.On("FileUploadCompleted", () =>
+        {
+            templateFiles = _appCore.GetTemplateFiles();
+            StateHasChanged(); 
+        });
+        await hubConnection.StartAsync();
+    }
+    async Task Send() => await hubConnection.SendAsync("SendAsync");
+
 
     public string name(FileCSV file)
     {
@@ -76,11 +94,17 @@
         return resultado;
     }
 
+    public async ValueTask DisposeAsync()
+    {
+        await hubConnection.DisposeAsync();
+    }
+
     private async Task OpenTempFileUpload()
     {
         FileCSV file = null;
         var result = await DialogService.OpenComponentExtension<TempFileUpload>("Espera");
-
+        
+        Navigation.NavigateTo(Navigation.Uri, forceLoad: true);
         if (result != null)
         {
             int headerSize;
@@ -93,17 +117,14 @@
                 {
                     await InvokeAsync(async () =>
                     {
-                        // Verificar si el tipo de archivo existe en el diccionario
+                        // Notificar a todos los clientes conectados que se ha subido un archivo
+                      
 
-                        // Usar el valor del diccionario en la notificación
                         NotificationService.Notify(new NotificationMessage
-                                    {
-                                        Severity = NotificationSeverity.Info,
-                                        Summary = "Button Clicked",
-
-                                    });
-
-
+                                {
+                                    Severity = NotificationSeverity.Info,
+                                    Summary = "Archivo subido correctamente",
+                                });
 
                         DialogService.Close();
                     });
@@ -133,6 +154,7 @@
             }
         }
     }
+
 
 
 

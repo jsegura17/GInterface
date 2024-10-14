@@ -41,7 +41,7 @@
         await e.File.OpenReadStream().CopyToAsync(fs);
     }
 
-    private async Task HandleFileSelected(InputFileChangeEventArgs e)
+    private async Task<bool> HandleFileSelected(InputFileChangeEventArgs e)
     {
         var file = e.File;
         var fileName = file.Name;
@@ -62,9 +62,6 @@
                         var parameters = new Dictionary<string, object>() { { "FileName", fileName } };
 
                         // Mostrar modal para pedir el tamaño del header
-                        //var result = await DialogService.OpenAsync<HeaderSizeDialog>("Tamaño del Encabezado",
-                        //new Dictionary<string, object>() { { "FileName", fileName } },
-                        //new DialogOptions() { Width = "500px", Height = "300px" });
                         var result = await DialogService.OpenComponentExtension<HeaderSizeDialog>("Título del Diálogo", parameters);
 
                         if (result != null)
@@ -72,30 +69,21 @@
                             int headerSize;
                             if (int.TryParse(result.HeaderSize.ToString(), out headerSize))
                             {
-                                List<string> requireFields = new List<string> { "No_contiene_encabezado" };
-                                if (result.AdditionalFieldText != null)
-                                {
-                                    requireFields = new List<string>(result.AdditionalFieldText.Split(','));
-                                }
-                                else
-                                {
-                                    requireFields = new List<string> { "No_contiene_encabezado" };
-                                }
-
-
+                                List<string> requireFields = result.AdditionalFieldText != null
+                                ? new List<string>(result.AdditionalFieldText.Split(','))
+                                : new List<string> { "No_contiene_encabezado" };
 
                                 // Simulate background task
                                 List<List<string>> informationExcel = await _excel.SimulateFileUpload(stream, fileName, headerSize, result.StartRow, result.EndRow, requireFields);
-                                var info = result.StartRow+","+result.EndRow;
+                                var info = result.StartRow + "," + result.EndRow;
                                 _appCore.sortDataExcel(informationExcel, fileName, requireFields, info);
                                 _appCore.inbound = result.SelectedOptionInOut;
                                 headers = _appCore.headers;
                                 UploadedContent = "a";
                                 _appCore.documentType = result.SelectedOption;
-                                // Close the dialog
-                           
-                          
 
+                                // Retornar true si se procesa correctamente
+                                return true;
                             }
                             else
                             {
@@ -105,15 +93,15 @@
                                             Summary = "Error en el Tamaño del Encabezado",
                                             Detail = "El tamaño del encabezado ingresado no es válido. Por favor, ingrese un número entero."
                                         });
-                                return;
+                                // Retornar false si hay error con el encabezado
+                                return false;
                             }
                         }
                         else
                         {
-                            // Si el resultado es null, se asumirá que el usuario canceló
-                            return;
+                            // Si el resultado es null, el usuario canceló
+                            return false;
                         }
-
                     }
                     else
                     {
@@ -141,9 +129,10 @@
                             Summary = $"{file.Name}",
                             Detail = $"{FileSizeInKB} KB",
                             Duration = 4000,
-
-
                         });
+
+                // Retornar true si se procesa correctamente el archivo no Excel
+                return true;
             }
             catch (Exception ex)
             {
@@ -154,6 +143,9 @@
                             Summary = "Error al leer el archivo",
                             Detail = ex.Message
                         });
+
+                // Retornar false si ocurre una excepción
+                return false;
             }
         }
         else
@@ -165,6 +157,9 @@
                         Summary = "Error en seleccion",
                         Detail = UploadedContent
                     });
+
+            // Retornar false si no se seleccionó archivo
+            return false;
         }
     }
 

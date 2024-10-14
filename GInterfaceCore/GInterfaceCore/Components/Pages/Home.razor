@@ -45,9 +45,4 @@
             UriHelper.NavigateTo("/login");
         }
     }
-
-    private void OnClick(string text)
-    {
-        NotificationService.Notify(new NotificationMessage { Severity = NotificationSeverity.Info, Summary = "Button Clicked", Detail = text });
-    }
 }

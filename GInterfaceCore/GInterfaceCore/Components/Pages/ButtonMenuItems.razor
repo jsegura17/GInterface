@@ -1,10 +1,16 @@
 ﻿@rendermode InteractiveServer
 
 <RadzenPanelMenu>
-    <RadzenPanelMenuItem Text="Home" Icon="home" Click=@(args => HandleMenu(MenuItems.Home)) />
-    <RadzenPanelMenuItem Text="Manejo de Documentos" Icon="account_box" Click=@(args => HandleMenu(MenuItems.Documentos)) />
-    <RadzenPanelMenuItem Text="Login" Icon="account_box" Click=@(args => HandleMenu(MenuItems.Login)) />
-    <RadzenButton Variant="Variant.Text" Click=@(args => HandleMenu(MenuItems.Login)) Text="Login" ButtonStyle="ButtonStyle.Base" />
+    @if (_appCore.IsLoginUser)
+    {
+        <RadzenPanelMenuItem Text="Home" Icon="home" Click=@(args => HandleMenu(MenuItems.Home)) />    
+        <RadzenPanelMenuItem Text="Manejo de Documentos" Icon="account_box" Click=@(args => HandleMenu(MenuItems.Documentos)) />
+        if (_appCore.IsLoginUser && _appCore.IsAdmin)
+        {
+            <RadzenPanelMenuItem Text="Configuracion" Icon="account_box" Click=@(args => HandleMenu(MenuItems.Config)) />
+            <RadzenPanelMenuItem Text="Registrar" Icon="account_box" Click=@(args => HandleMenu(MenuItems.Registrar)) />
+        }
+    }
 
 </RadzenPanelMenu>
 @code {
@@ -15,12 +21,18 @@
     {
         switch (_menu)
         {
-            case MenuItems.Login:
-                Navigation.NavigateTo("/login");  // Navegación interna en Blazor
+            case MenuItems.Home:
+                Navigation.NavigateTo("/");
                 break;
             case MenuItems.Documentos:
-                Navigation.NavigateTo("/workspace");  // Navegación interna en Blazor
-                break;                
+                Navigation.NavigateTo("/workspace");
+                break;
+            case MenuItems.Config:
+                Navigation.NavigateTo("/config");
+                break;
+            case MenuItems.Registrar:
+                Navigation.NavigateTo("/test");
+                break;
             default:
                 break;
         }

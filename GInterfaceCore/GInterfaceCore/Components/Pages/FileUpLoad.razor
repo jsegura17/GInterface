@@ -85,6 +85,17 @@
                                 {
                                     // Simulate background task
                                 List<List<string>> informationExcel = await _excel.SimulateFileUpload(stream, fileName, int.Parse(stringList[0]), stringList[1], stringList[2], listJson.RequireFields);
+                                if (informationExcel == null || !_appCore.validDocument)
+                                {
+                                    // Cancelar el diálogo actual
+                                    DialogService.Close();
+
+                                    // Abrir otro modal, puedes usar DialogService.Open para abrir un nuevo diálogo
+                                    await DialogService.OpenComponentExtension<ErrorDocument>("Nuevo Modal", null);  // Reemplaza 'YourNewModal' por tu componente
+
+                                    // Salir de la ejecución para no continuar con el proceso
+                                    return;
+                                }
                                 var info = stringList[1] + "," + stringList[2];
                                     _appCore.sortDataExcel(informationExcel, fileName, listJson.RequireFields, info);
                                     UploadedContent = "a";

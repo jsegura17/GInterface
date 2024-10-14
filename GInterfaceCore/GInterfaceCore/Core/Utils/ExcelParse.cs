@@ -1,7 +1,9 @@
 ﻿using ClosedXML.Excel;
 using DocumentFormat.OpenXml.Spreadsheet;
+using GInterfaceCore.Components.Pages;
 using Microsoft.Office.Interop.Excel;
 using Microsoft.SqlServer.Server;
+using Radzen;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -18,7 +20,7 @@ namespace GInterfaceCore.Core.Utils
 {
     public class ExcelParse
     {
-
+        
 
 
         public static async Task<List<List<string>>> ProcessExcelFileAsync(Stream excelFileStream, string nameFile, int headers, string startKeyword, string endKeyword, List<string> headerBase)
@@ -60,6 +62,7 @@ namespace GInterfaceCore.Core.Utils
             {
                 using (var workbook = new XLWorkbook(tempFilePath))
                 {
+                     Core.AppCore _appCore = Core.AppCore.Instance;
                     var worksheet = workbook.Worksheet(1);
                     var xlRange = worksheet.RangeUsed();
 
@@ -82,7 +85,8 @@ namespace GInterfaceCore.Core.Utils
 
                     bool foundStart = false;
                     bool foundEnd = false;
-
+                    bool headValid = false;
+                    
                     // Procesar las filas
                     foreach (var row in rows)
                     {
@@ -109,17 +113,38 @@ namespace GInterfaceCore.Core.Utils
                             {
                                 DataAfterEnd.Add(rowData);
                             }
-
+                            
                             // Buscar las filas que contengan exactamente los valores de headerBase
                             foreach (var headerKeyword in headerBaseKeywords)
                             {
                                 if (rowData.Any(cell => cell.Equals(headerKeyword, StringComparison.Ordinal)))
                                 {
                                     HeaderBaseData.Add(rowData);
+                                    headValid = true;
                                 }
+                               
                             }
                         }
 
+                    }
+                    if (HeaderBaseData.Count == headerBase.Count)
+                    {
+                        headValid = true;
+                    }
+                    else
+                    {
+                        headValid=false;
+                    }
+                    
+                    if (!foundStart || !foundEnd || !headValid)
+                    {
+                        _appCore.validDocument = false;
+                        return null;
+
+                    }
+                    else
+                    {
+                        _appCore.validDocument = true;
                     }
 
                     // Dividir los datos en sub-arrays con longitud igual al número de encabezados

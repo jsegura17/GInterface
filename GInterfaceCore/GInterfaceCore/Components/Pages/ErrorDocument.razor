@@ -1,0 +1,15 @@
+﻿@page "/errorDocument"
+@inject Radzen.DialogService DialogService
+
+<div style="text-align: center; padding: 20px;">
+    <h3>Documento no cumple con el estándar</h3>
+    <p>El documento ingresado no cumple con el estándar de este tipo de documento.</p>
+    <RadzenButton Text="OK" Style="background-color: #007bff; color: white;" Click="CloseDialog" />
+</div>
+
+@code {
+    void CloseDialog()
+    {
+        DialogService.Close();
+    }
+}

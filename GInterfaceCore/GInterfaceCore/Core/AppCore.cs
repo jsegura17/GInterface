@@ -62,6 +62,7 @@ namespace GInterfaceCore.Core
 
         //Global Variables
         public string GlobalMsg { get; set; } = string.Empty;
+        public bool InsertUserStatus { get; set; } = false;
 
         public ExcelParse _excelParse = new ExcelParse();
 
@@ -1064,8 +1065,83 @@ namespace GInterfaceCore.Core
         }
 
 
+        public void InsertUser(string fullName, string email, string password, string site)
+        {
+            bool status = false;
 
-    public void LogOut()
+            using (SqlConnection connection = GetDBConnection())
+            {
+                try
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand("SP_GInterface_Insert_User", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        // Agregar parámetros de entrada
+                        command.Parameters.Add(new SqlParameter("@Name", SqlDbType.NVarChar, -1)
+                        {
+                            Value = fullName
+                        });
+                        command.Parameters.Add(new SqlParameter("@Email", SqlDbType.NVarChar, -1)
+                        {
+                            Value = email
+                        });
+                        command.Parameters.Add(new SqlParameter("@Password", SqlDbType.NVarChar, -1)
+                        {
+                            Value = password
+                        });
+                        command.Parameters.Add(new SqlParameter("@UserType", SqlDbType.NVarChar, -1)
+                        {
+                            Value = "user"
+                        });
+                        command.Parameters.Add(new SqlParameter("@Site", SqlDbType.NVarChar, -1)
+                        {
+                            Value = site
+                        });
+                        command.Parameters.Add(new SqlParameter("@testMode", SqlDbType.Int)
+                        {
+                            Value = 0
+                        });
+
+                        // Agregar parámetro de salida
+
+                        SqlParameter messageParam = new SqlParameter("@MSG", SqlDbType.NVarChar, -1)
+                        {
+                            Direction = ParameterDirection.Output
+                        };
+                        command.Parameters.Add(messageParam);
+
+                        SqlParameter statusParam = new SqlParameter("@Status", SqlDbType.Bit)
+                        {
+                            Direction = ParameterDirection.Output
+                        };
+                        command.Parameters.Add(statusParam);
+
+                        command.ExecuteNonQuery();
+
+                        // Obtener el mensaje y status del nuevo registro
+                        instance.GlobalMsg = (string)messageParam.Value;
+                        instance.InsertUserStatus = (bool)statusParam.Value;
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    // Manejar excepciones, por ejemplo:
+                    Console.WriteLine("SQL Error: " + ex.Message);
+                }
+                catch (Exception ex)
+                {
+                    // Manejar otras excepciones
+                    Console.WriteLine("Error: " + ex.Message);
+                }
+            }
+
+
+        }
+
+        public void LogOut()
         {
             instance.IsLoginUser = false;
             instance.IsAdmin = false;

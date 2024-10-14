@@ -164,8 +164,12 @@ namespace GInterfaceCore.Models
 
         public enum MenuItems
         {
-            [Description("PickList")]
-            Picklist = 1
+            [Description("Home")]
+            Home = 1,
+            [Description("Manejo de Documentos")]
+            Documentos = 2,
+            [Description("Login")]
+            Login = 3
         }
     }
 }

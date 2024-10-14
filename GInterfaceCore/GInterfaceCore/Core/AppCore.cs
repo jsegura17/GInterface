@@ -89,6 +89,7 @@ namespace GInterfaceCore.Core
         public string[] headers;
         public int documentType;
         public string inbound;
+        public bool validDocument;
 
         //Lista de Tipos de Documentos
         public List<EnumTypes.DocumentType> GlobalDocType { get; set; }

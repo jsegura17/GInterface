@@ -3,6 +3,9 @@ using GInterfaceCore.Interfaces;
 using Radzen;
 using Microsoft.Extensions.Logging;
 using Serilog;
+using Microsoft.AspNetCore.SignalR;
+using GInterfaceCore.Hubing;
+using Microsoft.AspNetCore.ResponseCompression;
 
 var builder = WebApplication.CreateBuilder(args);
 // Configura Serilog para escribir en un archivo
@@ -29,7 +32,13 @@ builder.Services.AddScoped<DialogService>();
 builder.Services.AddScoped<NotificationService>();
 builder.Services.AddScoped<TooltipService>();
 builder.Services.AddScoped<ContextMenuService>();
-
+builder.Services.AddSignalR();
+builder.Services.AddResponseCompression(o=>
+{
+    o.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
+          new[] { "application/octet-stream" }
+        );
+});
 
 
 var app = builder.Build();
@@ -50,11 +59,12 @@ app.UseHttpsRedirection();
 
 app.UseStaticFiles();
 app.UseAntiforgery();
-
+app.MapHub<HubSign>("/hubsign");
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode()
     .AddInteractiveWebAssemblyRenderMode()
     .AddAdditionalAssemblies(typeof(GInterfaceCore.Client._Imports).Assembly);
+
 
 try
 {

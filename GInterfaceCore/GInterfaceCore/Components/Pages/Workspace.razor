@@ -1,10 +1,12 @@
 ﻿@page "/workspace"
 @rendermode InteractiveServer
 
+
+
 <div style="text-align: center; margin-top: 20px;">
     <h2 style="background-color: royalblue; border-radius: 15px; padding: 20px;">Bases Disponibles</h2>
     <div style="margin-bottom: 20px;">
-        <label for="UserType">Selección del tipo de usuario:</label>
+        <label for="UserType">Selección del tipo de Documento:</label>
         <RadzenDropDown id="UserType" @bind-Value="SelectedOption" Data="@transaction" TextProperty="Name" ValueProperty="Value" Placeholder="Seleccione una opción" Style="width:100%;" Change="OnSelectedOptionChanged" />
         @if (!string.IsNullOrEmpty(SelectedOptionError))
         {
@@ -17,19 +19,37 @@
     <table style="width:80%; background-color: white;">
         @if (FilteredTemplateFiles != null && FilteredTemplateFiles.Any())
         {
-            <tr>
-                @foreach (var file in FilteredTemplateFiles)
-                {
-                    <td>
-                        <div style="display: flex; flex-direction: column; align-items: center;">
-                            <button @onclick="() => ChargeDocument(file)" class="btn"
-                                    style="background-image: url('/images/integra.png'); width: 100px; height: 100px; background-size: cover; border: none;">
-                            </button>
-                            <p class="size_12 text_center">@file.FileNames</p>
-                        </div>
-                    </td>
-                }
-            </tr>
+            <RadzenDataList AllowVirtualization="true" Style="height:400px;overflow:auto;"
+                            Data="@FilteredTemplateFiles" TItem="FileCSV" PageSize="5" Count="@FilteredTemplateFiles.Count">
+                <Template Context="file">
+                    <RadzenCard Variant="Variant.Outlined" class="rz-p-0" Style="width: 100%; overflow: hidden;">
+                        <RadzenRow Gap="0">
+                            <RadzenColumn Size="12" SizeLG="3" class="rz-p-4">
+                                <RadzenText TextStyle="TextStyle.H6" TagName="TagName.H5" class="rz-color-on-secondary-lighter">@file.FileNames</RadzenText>
+                            </RadzenColumn>
+                            <RadzenColumn Size="12" SizeLG="3" class="rz-p-4">
+                                <RadzenText TextStyle="TextStyle.H6" TagName="TagName.H5" class="rz-mb-0">Fecha de Creción</RadzenText>
+                                <RadzenText TextStyle="TextStyle.Body2">@(file.FileDate)</RadzenText> <!-- Cambia esto si no tienes este campo -->
+                            </RadzenColumn>
+                            <RadzenColumn Size="12" SizeLG="3" class="rz-p-4">
+                                <RadzenText TextStyle="TextStyle.H6" TagName="TagName.H5" class="rz-mb-0">Estado</RadzenText>
+                                <RadzenText TextStyle="TextStyle.Body2">@("Template")</RadzenText> <!-- Cambia esto si no tienes este campo -->
+                            </RadzenColumn>
+
+                            <RadzenColumn Size="12" SizeLG="3" class="rz-p-4">
+                                <RadzenButton Text=""
+                                              Style="background-image: url('/images/integra.png');
+                                                 width: 100px;
+                                                 height: 100px;
+                                                 background-size: cover;
+                                                 border: none;"
+                                              Click="@(() => ChargeDocument(file))" />
+
+                            </RadzenColumn>
+                        </RadzenRow>
+                    </RadzenCard>
+                </Template>
+            </RadzenDataList>
         }
         else
         {
@@ -47,19 +67,37 @@
     <table style="width:80%">
         @if (FilteredPendingFiles != null && FilteredPendingFiles.Any())
         {
-            <tr>
-                @foreach (var file in FilteredPendingFiles)
-                {
-                    <td>
-                        <div style="display: flex; flex-direction: column; align-items: center; margin: 10px;">
-                            <button @onclick="() => ChargeDocument(file)" class="btn"
-                                    style="background-image: url('/images/camiones.jpg'); width: 100px; height: 100px; background-size: cover; border: none;">
-                            </button>
-                            <p class="size_12 text_center">@file.FileNames</p>
-                        </div>
-                    </td>
-                }
-            </tr>
+            <RadzenDataList AllowVirtualization="true" Style="height:400px;overflow:auto;"
+                            Data="@FilteredPendingFiles" TItem="FileCSV" PageSize="5" Count="@FilteredPendingFiles.Count">
+                <Template Context="file">
+                    <RadzenCard Variant="Variant.Outlined" class="rz-p-0" Style="width: 100%; overflow: hidden;">
+                        <RadzenRow Gap="0">
+                            <RadzenColumn Size="12" SizeLG="3" class="rz-p-4">
+                                <RadzenText TextStyle="TextStyle.H6" TagName="TagName.H5" class="rz-color-on-secondary-lighter">@file.FileNames</RadzenText>
+                            </RadzenColumn>
+                            <RadzenColumn Size="12" SizeLG="3" class="rz-p-4">
+                                <RadzenText TextStyle="TextStyle.H6" TagName="TagName.H5" class="rz-mb-0">Fecha de Creción</RadzenText>
+                                <RadzenText TextStyle="TextStyle.Body2">@(file.FileDate)</RadzenText> <!-- Cambia esto si no tienes este campo -->
+                            </RadzenColumn>
+                            <RadzenColumn Size="12" SizeLG="3" class="rz-p-4">
+                                <RadzenText TextStyle="TextStyle.H6" TagName="TagName.H5" class="rz-mb-0">Estado</RadzenText>
+                                <RadzenText TextStyle="TextStyle.Body2">@(file.FileStatus)</RadzenText> <!-- Cambia esto si no tienes este campo -->
+                            </RadzenColumn>
+
+                            <RadzenColumn Size="12" SizeLG="3" class="rz-p-4">
+                                <RadzenButton Text=""
+                                              Style="background-image: url('/images/camiones.jpg');
+                                                 width: 100px;
+                                                 height: 100px;
+                                                 background-size: cover;
+                                                 border: none;"
+                                              Click="@(() => ChargeDocument(file))" />
+
+                            </RadzenColumn>
+                        </RadzenRow>
+                    </RadzenCard>
+                </Template>
+            </RadzenDataList>
         }
         else
         {
@@ -70,14 +108,36 @@
     </table>
 </div>
 
+
+
+
+
+
+
 @code {
-    private List<FileCSV> templateFiles = null;
-    private List<FileCSV> PendingFiles = null;
-    private List<FileCSV> FilteredTemplateFiles = null;
-    private List<FileCSV> FilteredPendingFiles = null;
+    private List<FileCSV> templateFiles = new List<FileCSV>();
+    private List<FileCSV> PendingFiles = new List<FileCSV>();
+    private List<FileCSV> FilteredTemplateFiles = new List<FileCSV>(); // Asegúrate de inicializar
+    private List<FileCSV> FilteredPendingFiles = new List<FileCSV>();
     private Core.AppCore _appCore = Core.AppCore.Instance;
     public string SelectedOption { get; set; }
     public string SelectedOptionError { get; set; }
+
+    public class Product
+    {
+        public string ProductName { get; set; }
+        public int UnitsInStock { get; set; }
+        public string Origin { get; set; }
+        public decimal UnitPrice { get; set; }
+    }
+    private List<Product> products = new List<Product>
+    {
+        new Product { ProductName = "Gadget A", UnitsInStock = 15, Origin = "USA", UnitPrice = 19.99M },
+        new Product { ProductName = "Gadget B", UnitsInStock = 8, Origin = "China", UnitPrice = 12.50M },
+        new Product { ProductName = "Gadget C", UnitsInStock = 0, Origin = "Germany", UnitPrice = 25.75M },
+        new Product { ProductName = "Gadget D", UnitsInStock = 30, Origin = "Japan", UnitPrice = 15.00M }
+    };
+
 
     protected override async void OnInitialized()
     {

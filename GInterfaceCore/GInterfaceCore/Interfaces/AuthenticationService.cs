@@ -3,6 +3,7 @@ using System.Data;
 
 using System.Data.SqlClient;
 using System.Configuration;
+using Microsoft.AspNetCore.Http.Extensions;
 namespace GInterfaceCore.Interfaces
 {
     public class AuthenticationService : IAuthenticationService
@@ -20,11 +21,6 @@ namespace GInterfaceCore.Interfaces
             // Aquí implementarías la lógica de autenticación real
             // Por ejemplo, verificar las credenciales contra una base de datos
             return await Task.FromResult(response);
-        }
-
-        public async Task LogoutAsync()
-        {
-            // Aquí implementarías la lógica para cerrar la sesión del usuario
         }
     }
 }

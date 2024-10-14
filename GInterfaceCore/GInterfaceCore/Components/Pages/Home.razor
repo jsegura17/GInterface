@@ -9,7 +9,6 @@
     </div>
 }
 
-
 @code {
     //Get Global Core Settings
     private Core.AppCore _appCore = Core.AppCore.Instance;
@@ -19,18 +18,36 @@
         base.OnInitialized();
         try
         {
-            if (_appCore.IsLoginUser)
-            {
-                UriHelper.NavigateTo("/");
-            }
-            else
-            {
-                UriHelper.NavigateTo("/login");
-            }
+            CheckLogin();
         }
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
         }   
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (!firstRender)
+        {
+            CheckLogin();
+        }
+    }
+
+    private void CheckLogin()
+    {
+        if (_appCore.IsLoginUser)
+        {
+            UriHelper.NavigateTo("/");
+        }
+        else
+        {
+            UriHelper.NavigateTo("/login");
+        }
+    }
+
+    private void OnClick(string text)
+    {
+        NotificationService.Notify(new NotificationMessage { Severity = NotificationSeverity.Info, Summary = "Button Clicked", Detail = text });
     }
 }

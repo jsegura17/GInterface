@@ -1,4 +1,6 @@
 ﻿@page "/login"
+@page "/login/{Logout:bool}"
+
 @rendermode InteractiveServer
 
 <div class="login-container">
@@ -57,17 +59,28 @@
 </div>
 
 @code {
+    [Parameter]
+    public bool Logout { get; set; } = false;
+
     //Get Global Core Settings
     private Core.AppCore _appCore = Core.AppCore.Instance;
     private RadzenTextBox _username { get; set; }
     private RadzenPassword _password { get; set; }
 
-    private User loginModel;
+    private User loginModel= new User();
 
-    protected override void OnInitialized()
+    protected override async Task OnParametersSetAsync()
     {
-        loginModel = new User { Username = "Jonathan.perez@genesiscgt.com", Password = "Jona123*" };
-        _appCore.IsLoginUser = true;
+        if (!Logout)
+        {
+            loginModel = new User { Username = "Jonathan.perez@genesiscgt.com", Password = "Jona123*" };           
+        }else
+        {
+            _appCore.LogOut();
+            //await Task.Delay(500);
+            await InvokeAsync(StateHasChanged);
+            _appCore._navigationManager.NavigateTo("/login");
+        }
     }
 
     private async void HandleLogin()
@@ -84,7 +97,7 @@
                     Detail = "Inicio de sesión exitoso",
                     Duration = 4000
                 });
-
+            _appCore.IsLoginUser = true;
             UriHelper.NavigateTo("/");
         }
         else
@@ -97,7 +110,7 @@
                     Detail = "Inicio de sesión fallido",
                     Duration = 4000
                 });
-
+            _appCore.IsLoginUser = false;
             await _username.FocusAsync();
 
         }

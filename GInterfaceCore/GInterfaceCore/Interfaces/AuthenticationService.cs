@@ -22,14 +22,5 @@ namespace GInterfaceCore.Interfaces
             // Por ejemplo, verificar las credenciales contra una base de datos
             return await Task.FromResult(response);
         }
-
-        public async Task LogoutAsync()
-        {
-            // Aquí implementarías la lógica para cerrar la sesión del usuario
-            await Task.Run(() => { _appCore.LogOut(); });
-
-            _appCore._navigationManager.NavigateTo("/");   
-            
-        }
     }
 }

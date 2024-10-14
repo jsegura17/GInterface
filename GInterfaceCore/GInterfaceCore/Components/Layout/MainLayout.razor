@@ -1,4 +1,5 @@
 ﻿@inherits LayoutComponentBase
+@inject NavigationManager Navigation
 
 <div class="page">
     <div class="sidebar">
@@ -9,7 +10,7 @@
         <div class="top-row px-4">
             @if (_appCore.IsLoginUser)
             {
-                <a href="#" onclick="LogoutAsync">LogOut</a>
+                <a href="/login/true" >LogOut</a>//todavia no cierra
             }
             <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
             <RadzenComponents @rendermode="InteractiveAuto" />
@@ -29,4 +30,15 @@
 @code{
     //Get Global Core Settings
     private Core.AppCore _appCore = Core.AppCore.Instance;
+
+    protected override async void OnInitialized()
+    {
+        _appCore._navigationManager = this.Navigation;
+    }
+
+    private async Task  logOut()
+    {
+       _appCore._navigationManager.NavigateTo("/login/true");  // Navegación interna en Blazor
+    }
+
 }

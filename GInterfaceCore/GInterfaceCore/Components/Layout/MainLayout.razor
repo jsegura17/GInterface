@@ -1,27 +1,45 @@
-﻿<RadzenLayout Style="grid-template-columns: auto 1fr auto; grid-template-areas: 'rz-header rz-header rz-header' 'rz-sidebar rz-body rz-right-sidebar'">
-    <RadzenHeader>
-        <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="0">            
-            <RadzenLabel Text="Header" />
-            <RadzenButton Variant="Variant.Text" Click=Onclick Text="Salir" ButtonStyle="ButtonStyle.Base" />
-        </RadzenStack>
-    </RadzenHeader>
-    <RadzenSidebar>
-        <ButtonMenuItems></ButtonMenuItems>
-        <div class="rz-p-4">
-            Left Sidebar
+﻿@inherits LayoutComponentBase
+@inject NavigationManager Navigation
+
+<div class="page">
+    <div class="sidebar">
+        <NavMenu />
+    </div>
+
+    <main>
+        <div class="top-row px-4">
+            @if (_appCore.IsLoginUser)
+            {
+                <a href="/login/true">LogOut</a>
+                //todavia no cierra
+            }
+            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
+            <RadzenComponents @rendermode="InteractiveAuto" />
         </div>
-    </RadzenSidebar>
-    <RadzenBody>
-        <div class="rz-p-4">
+
+        <article class="content px-4">
             @Body
-        </div>        
-    </RadzenBody>    
-</RadzenLayout>
+        </article>
+    </main>
+</div>
 
+<div id="blazor-error-ui">
+    An unhandled error has occurred.
+    <a href="" class="reload">Reload</a>
+    <a class="dismiss">🗙</a>
+</div>
 @code {
+    //Get Global Core Settings
+    private Core.AppCore _appCore = Core.AppCore.Instance;
 
-    private void Onclick()
+    protected override async void OnInitialized()
     {
-        Navigation.NavigateTo("/login/true");
+        _appCore._navigationManager = this.Navigation;
     }
+
+    private async Task logOut()
+    {
+        _appCore._navigationManager.NavigateTo("/login/true");  // Navegación interna en Blazor
+    }
+
 }

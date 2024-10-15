@@ -168,8 +168,12 @@ namespace GInterfaceCore.Models
             Home = 1,
             [Description("Manejo de Documentos")]
             Documentos = 2,
+            [Description("Config")]
+            Config = 3,
+            [Description("Registrar")]
+            Registrar = 4,
             [Description("Login")]
-            Login = 3
+            Login = 4,
         }
     }
 }

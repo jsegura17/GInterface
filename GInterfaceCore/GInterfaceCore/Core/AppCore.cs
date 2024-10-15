@@ -48,8 +48,8 @@ namespace GInterfaceCore.Core
         public bool Global_ScanInfo_Running { get; set; } = false;
         public bool IsOnline { get; set; } = false;
         public bool IsInEmulator { get; set; } = false;
-        public bool IsLoginUser { get; set; } = true;
-        public bool IsAdmin { get; set; } = true;
+        public bool IsLoginUser { get; set; } = false;
+        public bool IsAdmin { get; set; } = false;
         public EnumTypes.TransactionTask LastTransactionTask { get; set; }
         public HttpClient Global_HttpClient;
         

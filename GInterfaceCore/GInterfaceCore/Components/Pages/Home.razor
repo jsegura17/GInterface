@@ -13,7 +13,7 @@
     //Get Global Core Settings
     private Core.AppCore _appCore = Core.AppCore.Instance;
 
-    protected override void OnInitialized()
+    protected override async Task OnParametersSetAsync()
     {
         base.OnInitialized();
         try

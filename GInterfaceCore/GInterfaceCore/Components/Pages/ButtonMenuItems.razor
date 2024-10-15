@@ -1,21 +1,22 @@
 ﻿@rendermode InteractiveServer
 
 <RadzenPanelMenu>
-    @if (_appCore.IsLoginUser)
-    {
+
+    
+        
+    
         <RadzenPanelMenuItem Text="Home" Icon="home" Click=@(args => HandleMenu(MenuItems.Home)) />    
         <RadzenPanelMenuItem Text="Manejo de Documentos" Icon="account_box" Click=@(args => HandleMenu(MenuItems.Documentos)) />
-        if (_appCore.IsLoginUser && _appCore.IsAdmin)
-        {
-            <RadzenPanelMenuItem Text="Configuracion" Icon="account_box" Click=@(args => HandleMenu(MenuItems.Config)) />
-            <RadzenPanelMenuItem Text="Registrar" Icon="account_box" Click=@(args => HandleMenu(MenuItems.Registrar)) />
-        }
-    }
+        <RadzenPanelMenuItem Text="Configuracion" Icon="account_box" Click=@(args => HandleMenu(MenuItems.Config)) />
+        <RadzenPanelMenuItem Text="Registrar" Icon="account_box" Click=@(args => HandleMenu(MenuItems.Registrar)) />
+       
+    
 
 </RadzenPanelMenu>
 @code {
     //Get Global Core Settings
     private Core.AppCore _appCore = Core.AppCore.Instance;
+
 
     private void HandleMenu(MenuItems _menu)
     {
@@ -36,6 +37,6 @@
             default:
                 break;
         }
-        //_appCore._navigationManager.NavigateTo(_menu);  // Navegación interna en Blazor
+        //_appCore._navigationManager.NavigateTo("/");  // Navegación interna en Blazor
     }
 }

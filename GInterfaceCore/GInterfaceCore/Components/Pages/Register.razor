@@ -1,0 +1,61 @@
+﻿@page "/register"
+
+<div class="rz-p-0 rz-p-md-12">
+    <RadzenTemplateForm TItem="Model" Data=@model Submit=@OnSubmit InvalidSubmit=@OnInvalidSubmit>
+        <RadzenStack Gap="1rem" class="rz-p-sm-12">
+            <RadzenFormField Text="First Name" Variant="@variant">
+                <ChildContent>
+                    <RadzenTextBox Name="FirstName" @bind-Value=@model.FirstName />
+                </ChildContent>
+                <Helper>
+                    <RadzenRequiredValidator Component="FirstName" Text="First name is required." />
+                </Helper>
+            </RadzenFormField>
+            <RadzenFormField Text="Last Name" Variant="@variant">
+                <ChildContent>
+                    <RadzenTextBox Name="LastName" @bind-Value=@model.LastName />
+                </ChildContent>
+                <Helper>
+                    <RadzenRequiredValidator Component="LastName" Text="Last name is required." />
+                </Helper>
+            </RadzenFormField>
+            <RadzenButton ButtonType="ButtonType.Submit" Text="Submit" ></RadzenButton>
+        </RadzenStack>
+    </RadzenTemplateForm>
+    
+</div>
+
+@code {
+    Variant variant = Variant.Outlined;
+
+    class Model
+    {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+    }
+
+    Model model = new Model();
+
+
+    void OnSubmit(Model model)
+    {
+        NotificationService.Notify(new NotificationMessage
+            {
+                Severity = NotificationSeverity.Info,
+                Summary = "Login Summary",
+                Detail = "Inicio de sesión exitoso",
+                Duration = 4000
+            });
+    }
+
+    void OnInvalidSubmit(FormInvalidSubmitEventArgs args)
+    {
+        NotificationService.Notify(new NotificationMessage
+            {
+                Severity = NotificationSeverity.Error,
+                Summary = "Login Summary",
+                Detail = "Inicio de sesión fallido",
+                Duration = 4000
+            });
+    }
+}

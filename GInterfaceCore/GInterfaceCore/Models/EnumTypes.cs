@@ -27,6 +27,7 @@ namespace GInterfaceCore.Models
 
         public enum UserType
         {
+            Generico = 0,
             Codirecta=1,
             Dinor=2,
             Norteña=3,

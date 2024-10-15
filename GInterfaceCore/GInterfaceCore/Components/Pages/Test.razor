@@ -26,9 +26,14 @@
                     Registro de Usuario
                 </RadzenText>
                 <EditForm Model="registerModel">
+                    <DataAnnotationsValidator />
+                    <ValidationSummary />
                     <div class="row">
                         <div class="rz-p-2 rz-text-align-center">
                             <RadzenTextBox Name="Nombre" @ref=_fullName @bind-Value="registerModel.FullName" Placeholder="Nombre Completo" Style="width:100%" />
+                            <div class="validation-message">
+                                <ValidationMessage For="@(()=>registerModel.FullName)" />
+                            </div>
                         </div>
                         <div class="rz-p-2 rz-text-align-center">
                             <RadzenTextBox @ref=_username @bind-Value="registerModel.Username" Placeholder="Username" Style="width:100%" />
@@ -40,10 +45,10 @@
                     <div style="margin-bottom: 20px;">
                         <label for="UserType">Selección del tipo de usuario:</label>
                         <RadzenDropDown id="UserType" @bind-Value="SelectedOption" Data="@UserTypeItems" TextProperty="Name" ValueProperty="Value" Placeholder="Seleccione una opción" Style="width:100%;" />
-                        @if (!string.IsNullOrEmpty(SelectedOptionError))
+                        @* @if (string.IsNullOrEmpty(SelectedOption))
                         {
                             <div style="color:red;">@SelectedOptionError</div>
-                        }
+                        } *@
                     </div>
                     <div class="row">
                         <div class="rz-p-4 rz-text-align-center">
@@ -86,13 +91,14 @@
     public class UserTypeHelper
     {
         public static Dictionary<int, string> UserTypeDescriptions = new Dictionary<int, string>()
-    {
-        { 1, "CD" },
-        { 2, "DC" },
-        { 3, "ND" },
-        { 4, "MER"},
-        { 5, "DN" }
-    };
+        {
+            { 0, null },
+            { 1, "CD" },
+            { 2, "DC" },
+            { 3, "ND" },
+            { 4, "MER"},
+            { 5, "DN" }
+        };
 
         public static string GetStringValue(int userType)
         {
@@ -105,8 +111,43 @@
         registerModel = new User { Username = "", Password = "", FullName = "", UserType = "user", Site = "" };
     }
 
+    // private bool CheckValidation()
+    // {
+    //     bool _return = true;
+
+    //     if (_fullName==null)
+    //     {
+    //         _return = false;
+    //     }
+
+    //     return _return;
+    // }
+
     private void HandleRegister()
     {//Registro del usuario
+
+        if (SelectedOption == 0)
+        {
+            NotificationService.Notify(new NotificationMessage
+                {
+                    Severity = NotificationSeverity.Error,
+                    Summary = "Register Summary",
+                    Detail = "Debe de ingresar una localidad",
+                    Duration = 2000
+                });
+        }
+        // if (!CheckValidation())
+        // {
+        //     NotificationService.Notify(new NotificationMessage
+        //         {
+        //             Severity = NotificationSeverity.Error,
+        //             Summary = "Register Summary",
+        //             Detail = "Se deben de ingresar todos los campos",
+        //             Duration = 2000
+        //         });
+        //     return;
+        // }
+        
         string site = UserTypeHelper.GetStringValue(SelectedOption);
         _appCore.InsertUser(registerModel.FullName, registerModel.Username, registerModel.Password,site);
         if (_appCore.InsertUserStatus)

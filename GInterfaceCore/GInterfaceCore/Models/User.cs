@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace GInterfaceCore.Models
 {
@@ -8,12 +9,14 @@ namespace GInterfaceCore.Models
         public string AvatarUrl { get; set; }
 
         [JsonPropertyName("Username")]
+       
         public string Username { get; set; }
 
         [JsonPropertyName("Password")]
         public string Password { get; set; }
         
         [JsonPropertyName("FullName")]
+        [Required(ErrorMessage = "Este campo es requerido")]
         public string FullName { get; set; }
 
         [JsonPropertyName("UserType")]

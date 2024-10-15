@@ -28,7 +28,7 @@
                 <EditForm Model="registerModel">
                     <div class="row">
                         <div class="rz-p-2 rz-text-align-center">
-                            <RadzenTextBox @ref=_fullName @bind-Value="registerModel.FullName" Placeholder="Nombre Completo" Style="width:100%" />
+                            <RadzenTextBox Name="Nombre" @ref=_fullName @bind-Value="registerModel.FullName" Placeholder="Nombre Completo" Style="width:100%" />
                         </div>
                         <div class="rz-p-2 rz-text-align-center">
                             <RadzenTextBox @ref=_username @bind-Value="registerModel.Username" Placeholder="Username" Style="width:100%" />
@@ -117,7 +117,7 @@
                     Severity = NotificationSeverity.Info,
                     Summary = "Register Summary",
                     Detail = _appCore.GlobalMsg,
-                    Duration = 4000
+                    Duration = 2000
                 });
         }else
         {
@@ -127,7 +127,7 @@
                     Severity = NotificationSeverity.Error,
                     Summary = "Register Summary",
                     Detail = _appCore.GlobalMsg,
-                    Duration = 4000
+                    Duration = 2000
                 });
         }
 

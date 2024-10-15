@@ -2,6 +2,7 @@
     <RadzenHeader>
         <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="0">            
             <RadzenLabel Text="Header" />
+            <RadzenButton Variant="Variant.Text" Click=Onclick Text="Salir" ButtonStyle="ButtonStyle.Base" />
         </RadzenStack>
     </RadzenHeader>
     <RadzenSidebar>
@@ -18,5 +19,9 @@
 </RadzenLayout>
 
 @code {
-    
+
+    private void Onclick()
+    {
+        Navigation.NavigateTo("/login/true");
+    }
 }

@@ -1,13 +1,14 @@
 ﻿@page "/workspace"
 @rendermode InteractiveServer
 
-
-
 <div style="text-align: center; margin-top: 20px;">
     <h2 style="background-color: royalblue; border-radius: 15px; padding: 20px;">Bases Disponibles</h2>
     <div style="margin-bottom: 20px;">
         <label for="UserType">Selección del tipo de Documento:</label>
-        <RadzenDropDown id="UserType" @bind-Value="SelectedOption" Data="@transaction" TextProperty="Name" ValueProperty="Value" Placeholder="Seleccione una opción" Style="width:100%;" Change="OnSelectedOptionChanged" />
+        <RadzenDropDown id="UserType" @bind-Value="SelectedOption" Data="@transaction"
+                        TextProperty="Name" ValueProperty="Value"
+                        Placeholder="Seleccione una opción" Style="width:100%;"
+                        Change="OnSelectedOptionChanged" />
         @if (!string.IsNullOrEmpty(SelectedOptionError))
         {
             <div style="color:red;">@SelectedOptionError</div>
@@ -17,34 +18,37 @@
 
 <div style="display: flex; justify-content: center; margin-top: 30px;">
     <table style="width:80%; background-color: white;">
-        @if (FilteredTemplateFiles != null && FilteredTemplateFiles.Any())
+        @if (FilteredTemplateFiles?.Any() == true)
         {
             <RadzenDataList AllowVirtualization="true" Style="height:400px;overflow:auto;"
                             Data="@FilteredTemplateFiles" TItem="FileCSV" PageSize="5" Count="@FilteredTemplateFiles.Count">
                 <Template Context="file">
                     <RadzenCard Variant="Variant.Outlined" class="rz-p-0" Style="width: 100%; overflow: hidden;">
                         <RadzenRow Gap="0">
-                            <RadzenColumn Size="12" SizeLG="3" class="rz-p-4">
-                                <RadzenText TextStyle="TextStyle.H6" TagName="TagName.H5" class="rz-color-on-secondary-lighter">@file.FileNames</RadzenText>
+                            <RadzenColumn Size="12" SizeLG="3" class="rz-p-4 datalist-item-title" Style=" min-height: auto; background:var(--rz-secondary-lighter);">
+                                <RadzenText TextStyle="TextStyle.H6" TagName="TagName.H5" class="rz-color-on-secondary-lighter">
+                                    @foreach (var value in file.FileType.Values)
+                                    {
+                                        <span>@value</span> 
+                                    }
+                                </RadzenText>
                             </RadzenColumn>
                             <RadzenColumn Size="12" SizeLG="3" class="rz-p-4">
-                                <RadzenText TextStyle="TextStyle.H6" TagName="TagName.H5" class="rz-mb-0">Fecha de Creción</RadzenText>
-                                <RadzenText TextStyle="TextStyle.Body2">@(file.FileDate)</RadzenText> <!-- Cambia esto si no tienes este campo -->
+                                <RadzenText TextStyle="TextStyle.H6" TagName="TagName.H5" class="rz-mb-0">Fecha de Creación</RadzenText>
+                                <RadzenText TextStyle="TextStyle.Body2">@file.FileDate?.ToString("dd/MM/yyyy") </RadzenText>
                             </RadzenColumn>
                             <RadzenColumn Size="12" SizeLG="3" class="rz-p-4">
                                 <RadzenText TextStyle="TextStyle.H6" TagName="TagName.H5" class="rz-mb-0">Estado</RadzenText>
-                                <RadzenText TextStyle="TextStyle.Body2">@("Template")</RadzenText> <!-- Cambia esto si no tienes este campo -->
+                                <RadzenText TextStyle="TextStyle.Body2">Template</RadzenText>
                             </RadzenColumn>
-
                             <RadzenColumn Size="12" SizeLG="3" class="rz-p-4">
                                 <RadzenButton Text=""
                                               Style="background-image: url('/images/integra.png');
-                                                 width: 100px;
-                                                 height: 100px;
-                                                 background-size: cover;
-                                                 border: none;"
+                                                     width: 100px;
+                                                     height: 100px;
+                                                     background-size: cover;
+                                                     border: none;"
                                               Click="@(() => ChargeDocument(file))" />
-
                             </RadzenColumn>
                         </RadzenRow>
                     </RadzenCard>
@@ -61,11 +65,12 @@
 </div>
 
 <div style="text-align: center; margin-top: 20px;">
-    <h2 style="background-color: royalblue; border-radius: 15px; padding: 20px;">Archivos Pendientes</h2>
+    <h2 class="datalist-item-title" style="background-color: royalblue; border-radius: 15px; padding: 20px;">Archivos Pendientes</h2>
 </div>
+
 <div style="display: flex; justify-content: center; margin-top: 30px;">
-    <table style="width:80%">
-        @if (FilteredPendingFiles != null && FilteredPendingFiles.Any())
+    <table style="width:80%;">
+        @if (FilteredPendingFiles?.Any() == true)
         {
             <RadzenDataList AllowVirtualization="true" Style="height:400px;overflow:auto;"
                             Data="@FilteredPendingFiles" TItem="FileCSV" PageSize="5" Count="@FilteredPendingFiles.Count">
@@ -73,26 +78,26 @@
                     <RadzenCard Variant="Variant.Outlined" class="rz-p-0" Style="width: 100%; overflow: hidden;">
                         <RadzenRow Gap="0">
                             <RadzenColumn Size="12" SizeLG="3" class="rz-p-4">
-                                <RadzenText TextStyle="TextStyle.H6" TagName="TagName.H5" class="rz-color-on-secondary-lighter">@file.FileNames</RadzenText>
+                                <RadzenText TextStyle="TextStyle.H6" TagName="TagName.H5" class="rz-color-on-secondary-lighter">
+                                    @file.FileNames
+                                </RadzenText>
                             </RadzenColumn>
                             <RadzenColumn Size="12" SizeLG="3" class="rz-p-4">
-                                <RadzenText TextStyle="TextStyle.H6" TagName="TagName.H5" class="rz-mb-0">Fecha de Creción</RadzenText>
-                                <RadzenText TextStyle="TextStyle.Body2">@(file.FileDate)</RadzenText> <!-- Cambia esto si no tienes este campo -->
+                                <RadzenText TextStyle="TextStyle.H6" TagName="TagName.H5" class="rz-mb-0">Fecha de Creación</RadzenText>
+                                <RadzenText TextStyle="TextStyle.Body2">@file.FileDate?.ToString("dd/MM/yyyy") </RadzenText>
                             </RadzenColumn>
                             <RadzenColumn Size="12" SizeLG="3" class="rz-p-4">
                                 <RadzenText TextStyle="TextStyle.H6" TagName="TagName.H5" class="rz-mb-0">Estado</RadzenText>
-                                <RadzenText TextStyle="TextStyle.Body2">@(file.FileStatus)</RadzenText> <!-- Cambia esto si no tienes este campo -->
+                                <RadzenText TextStyle="TextStyle.Body2">@file.FileStatus</RadzenText>
                             </RadzenColumn>
-
                             <RadzenColumn Size="12" SizeLG="3" class="rz-p-4">
                                 <RadzenButton Text=""
                                               Style="background-image: url('/images/camiones.jpg');
-                                                 width: 100px;
-                                                 height: 100px;
-                                                 background-size: cover;
-                                                 border: none;"
-                                              Click="@(() => ChargeDocument(file))" />
-
+                                                     width: 100px;
+                                                     height: 100px;
+                                                     background-size: cover;
+                                                     border: none;"
+                                              Click="@(() => ChargeDocumentBlock(file.ID))" />
                             </RadzenColumn>
                         </RadzenRow>
                     </RadzenCard>
@@ -108,51 +113,28 @@
     </table>
 </div>
 
-
-
-
-
-
-
 @code {
     private List<FileCSV> templateFiles = new List<FileCSV>();
     private List<FileCSV> PendingFiles = new List<FileCSV>();
-    private List<FileCSV> FilteredTemplateFiles = new List<FileCSV>(); // Asegúrate de inicializar
+    private List<FileCSV> FilteredTemplateFiles = new List<FileCSV>();
     private List<FileCSV> FilteredPendingFiles = new List<FileCSV>();
     private Core.AppCore _appCore = Core.AppCore.Instance;
     public string SelectedOption { get; set; }
     public string SelectedOptionError { get; set; }
 
-    public class Product
+    protected override async Task OnInitializedAsync()
     {
-        public string ProductName { get; set; }
-        public int UnitsInStock { get; set; }
-        public string Origin { get; set; }
-        public decimal UnitPrice { get; set; }
-    }
-    private List<Product> products = new List<Product>
-    {
-        new Product { ProductName = "Gadget A", UnitsInStock = 15, Origin = "USA", UnitPrice = 19.99M },
-        new Product { ProductName = "Gadget B", UnitsInStock = 8, Origin = "China", UnitPrice = 12.50M },
-        new Product { ProductName = "Gadget C", UnitsInStock = 0, Origin = "Germany", UnitPrice = 25.75M },
-        new Product { ProductName = "Gadget D", UnitsInStock = 30, Origin = "Japan", UnitPrice = 15.00M }
-    };
-
-
-    protected override async void OnInitialized()
-    {
-        templateFiles = _appCore.GetTemplateFiles();
-        PendingFiles = _appCore.GetPendingFiles();
-        FilterFiles(); // Filtrar los archivos desde el inicio
+        await _appCore.documentTypeAsync();
+        templateFiles = _appCore.GetTemplateFiles() ?? new List<FileCSV>();
+        PendingFiles = _appCore.GetPendingFiles() ?? new List<FileCSV>();
     }
 
     private void FilterFiles()
     {
-        // Filtrar archivos basados en la opción seleccionada
         if (!string.IsNullOrEmpty(SelectedOption))
         {
-            FilteredTemplateFiles = templateFiles.Where(file => file.InboundOutbound == SelectedOption).ToList();
-            FilteredPendingFiles = PendingFiles.Where(file => file.InboundOutbound == SelectedOption).ToList();
+            FilteredTemplateFiles = templateFiles?.Where(file => file?.InboundOutbound == SelectedOption).ToList() ?? new List<FileCSV>();
+            FilteredPendingFiles = PendingFiles?.Where(file => file?.InboundOutbound == SelectedOption).ToList() ?? new List<FileCSV>();
         }
     }
 
@@ -168,12 +150,6 @@
         new EnumValue { Name = "Egreso", Value = "Egreso" }
     };
 
-    public class EnumValue
-    {
-        public string Name { get; set; }
-        public string Value { get; set; }
-    }
-
     public async void ChargeDocument(FileCSV file)
     {
         var parameters = new Dictionary<string, object>
@@ -186,5 +162,19 @@
         {
             // Lógica para procesar el archivo
         }
+    }
+
+    public async void ChargeDocumentBlock(int id)
+    {
+        if (id != 0)
+        {
+            _appCore.InsertFormatoIngreso(id);
+        }
+    }
+
+    public class EnumValue
+    {
+        public string Name { get; set; }
+        public string Value { get; set; }
     }
 }

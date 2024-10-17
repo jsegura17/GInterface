@@ -61,7 +61,11 @@
     protected override async void OnInitialized()
     {
         templateFiles = _appCore.GetTemplateFiles();
-        DocumentTypeItems = await _appCore.documentTypeAsync();
+        if (_appCore.DocumentType.Count < 0)
+        {
+            DocumentTypeItems = await _appCore.documentTypeAsync();
+        }
+        
     }
     protected override async Task OnInitializedAsync()
     {

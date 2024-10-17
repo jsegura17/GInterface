@@ -142,7 +142,7 @@ namespace GInterfaceCore.Core.Utils
                         headValid=false;
                     }
                     
-                    if (!foundStart || !foundEnd || !headValid)
+                    if (!foundStart && !foundEnd && !headValid)
                     {
                         _appCore.validDocument = false;
                         return null;

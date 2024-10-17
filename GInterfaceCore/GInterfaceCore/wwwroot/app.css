@@ -72,3 +72,15 @@ h1:focus {
         background-color: black;
         color: white;
     }
+
+.datalist-item-title {
+    min-height: 72px;
+    background-color: var(--rz-secondary-lighter);
+}
+
+.datalist-item-badge {
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 20px;
+    padding: 8px;
+}

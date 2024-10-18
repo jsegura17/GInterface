@@ -84,3 +84,20 @@ h1:focus {
     line-height: 20px;
     padding: 8px;
 }
+
+
+
+.complete-status {
+    color: green;
+    font-weight: bold;
+}
+
+.error-status {
+    color: red;
+    font-weight: bold;
+}
+
+.pending-status {
+    color: cornflowerblue;
+    font-weight: normal;
+}

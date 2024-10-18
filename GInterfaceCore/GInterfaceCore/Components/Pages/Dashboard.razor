@@ -1,31 +1,105 @@
 ﻿@page "/dashboard"
+@rendermode InteractiveServer
+@using Radzen
 
-<RadzenCard>
-    <RadzenHeading Size="H1">Dashboard</RadzenHeading>
-    <RadzenGrid Data="@orders" TItem="Order" AutoGenerateColumns="false">
-        <Columns>
-            <RadzenGridColumn TItem="Order" Property="OrderID" Title="ID" />
-            <RadzenGridColumn TItem="Order" Property="CustomerName" Title="Customer" />
-            <RadzenGridColumn TItem="Order" Property="OrderDate" Title="Date" />
-            <RadzenGridColumn TItem="Order" Property="Total" Title="Total" />
-        </Columns>
-    </RadzenGrid>
-</RadzenCard>
+<h3>Estado de transaction</h3>
+
+<RadzenDataGrid AllowFiltering="true" AllowSorting="true" AllowPaging="true" PageSize="5" Data="@data">
+    <Columns>
+        <RadzenDataGridColumn Property="Location" Title="Nombre del Documento" />
+        <RadzenDataGridColumn Property="Status" Title="Estado">
+            <Template Context="data">
+                @{
+                    var status = data.Status;
+                    var statusClass = status switch
+                    {
+                        "Completed" => "complete-status",
+                        "Error" => "error-status",
+                        "Pending" => "pending-status"
+                        
+                    };
+                }
+                <span class="@statusClass">@status</span>
+            </Template>
+        </RadzenDataGridColumn>
+        <RadzenDataGridColumn Property="Trustworthiness" Title="Empresa" />
+        <RadzenDataGridColumn Property="Rating" Title="Servicio" />
+        <RadzenDataGridColumn Property="SoftwarePercent" Title="Fecha Ingreso" />
+    </Columns>
+</RadzenDataGrid>
+
+<RadzenDataGrid AllowFiltering="true" AllowSorting="true" AllowPaging="true" PageSize="5" Data="@data">
+    <Columns>
+        <RadzenDataGridColumn Property="Location" Title="Nombre del Documento" />
+        <RadzenDataGridColumn Property="Status" Title="Estado">
+            <Template Context="data">
+                @{
+                    var status = data.Status;
+                    var statusClass = status switch
+                    {
+                        "Completed" => "complete-status",
+                        "Error" => "error-status",
+                        "Pending" => "pending-status"
+
+                    };
+                }
+                <span class="@statusClass">@status</span>
+            </Template>
+        </RadzenDataGridColumn>
+        <RadzenDataGridColumn Property="Trustworthiness" Title="Empresa" />
+        <RadzenDataGridColumn Property="Rating" Title="Servicio" />
+        <RadzenDataGridColumn Property="SoftwarePercent" Title="Fecha Ingreso" />
+    </Columns>
+</RadzenDataGrid>
+
+
+<style>
+    .complete-status {
+        color: green;
+        font-weight: bold;
+    }
+
+    .error-status {
+        color: red;
+        font-weight: bold;
+    }
+
+    .pending-status {
+        color: cornflowerblue;
+        font-weight: normal;
+    }
+</style>
 
 @code {
-    // Ejemplo de datos para el grid, reemplaza con tus propios datos y lógica de carga
-    private List<Order> orders = new List<Order>
+    private List<StatusData> data;
+    private List<TransactiosDc> data1;
+    private Core.AppCore _appCore = Core.AppCore.Instance;
+    protected override void OnInitialized()
     {
-        new Order { OrderID = 1, CustomerName = "John Doe", OrderDate = DateTime.Now, Total = 100 },
-        new Order { OrderID = 2, CustomerName = "Jane Smith", OrderDate = DateTime.Now.AddDays(-1), Total = 150 },
-        // ... más órdenes
-    };
+        // Datos fijos para el DataGrid
+        data = new List<StatusData>
+        {
+            new StatusData { Location = "Argentina", Status = "Completed", Trustworthiness = "Perfect", Rating = 4, SoftwarePercent = "52%" },
+            new StatusData { Location = "Sweden", Status = "Error", Trustworthiness = "Sufficient", Rating = 3, SoftwarePercent = "43%" },
+            new StatusData { Location = "Canada", Status = "Completed", Trustworthiness = "Perfect", Rating = 5, SoftwarePercent = "46%" },
+            new StatusData { Location = "France", Status = "Completed", Trustworthiness = "Perfect", Rating = 5, SoftwarePercent = "45%" },
+            new StatusData { Location = "Mexico", Status = "Error", Trustworthiness = "Perfect", Rating = 5, SoftwarePercent = "48%" },
+            new StatusData { Location = "USA", Status = "Pending", Trustworthiness = "Perfect", Rating = 5, SoftwarePercent = "33%" },
+            new StatusData { Location = "UK", Status = "Completed", Trustworthiness = "Sufficient", Rating = 3, SoftwarePercent = "93%" },
+            new StatusData { Location = "Austria", Status = "Pending", Trustworthiness = "Insufficient", Rating = 2, SoftwarePercent = "41%" },
+        };
 
-    public class Order
-    {
-        public int OrderID { get; set; }
-        public string CustomerName { get; set; }
-        public DateTime OrderDate { get; set; }
-        public decimal Total { get; set; }
+        // data1 = _appCore.GetTransaction();
     }
+
+    public class StatusData
+    {
+        public string Location { get; set; }
+        public string Status { get; set; }
+        public string Trustworthiness { get; set; }
+        public int Rating { get; set; } // Rating as integer, assuming a scale from 1 to 5
+        public string SoftwarePercent { get; set; }
+    }
+
 }
+

@@ -1230,6 +1230,39 @@ namespace GInterfaceCore.Core
 
 
         }
+        public List<TransactiosDc> GetTransaction()
+        {
+            List<TransactiosDc> transactionFiles = new List<TransactiosDc>();
+
+            using (SqlConnection connection = GetDBConnection())
+            {
+                SqlCommand cmd = new SqlCommand("SP_GINTERFACE_GetTrasaction", connection);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                connection.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    TransactiosDc transaction = new TransactiosDc
+                    {
+                        ID = Convert.ToInt32(reader["ID"]),
+                        I_ID_CLIENT = Convert.ToInt32(reader["I_ID_CLIENT"]),
+                        I_ID_SYSTEM = Convert.ToInt32(reader["I_ID_SYSTEM"]),
+                        I_ID_TYPEDOC = Convert.ToInt32(reader["I_ID_TYPEDOC"]),
+                        I_JSONTEMPLATE = reader["I_JSONTEMPLATE"].ToString(),
+                        I_JSONDATA = reader["I_JSONDATA"].ToString(),
+                        I_ID_STATUS = Convert.ToInt32(reader["I_ID_STATUS"]),
+                        I_CREATED_DTM = DateOnly.FromDateTime(Convert.ToDateTime(reader["I_CREATED_DTM"]))  // Mapea a DateOnly
+                    };
+
+
+                    transactionFiles.Add(transaction);
+                }
+            }
+
+            return transactionFiles;
+        }
 
         public void LogOut()
         {

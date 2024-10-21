@@ -90,7 +90,13 @@ namespace GInterfaceCore.Core.Utils
                     // Procesar las filas
                     foreach (var row in rows)
                     {
-                        var rowData = row.Cells().Where(cell => !cell.IsEmpty()).Select(cell => cell.GetFormattedString()).ToList();
+                        var rowData = row.Cells()
+                            .Where(cell => !cell.IsEmpty()) // Filtra celdas vacías
+                            .Select(cell => cell.GetFormattedString().Trim()) // Obtiene la cadena formateada y elimina espacios en blanco al inicio y al final
+                            .Where(text => !string.IsNullOrWhiteSpace(text)) // Elimina entradas vacías o espacios en blanco
+                            .ToList(); // Convierte a lista
+                                       // Convierte a lista
+
 
 
                         // Verificar si se encontró la palabra clave de inicio
@@ -136,7 +142,7 @@ namespace GInterfaceCore.Core.Utils
                         headValid=false;
                     }
                     
-                    if (!foundStart || !foundEnd || !headValid)
+                    if (!foundStart && !foundEnd && !headValid)
                     {
                         _appCore.validDocument = false;
                         return null;

@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ConnectionString" xml:space="preserve">
-    <value>Server=genesiscgt.database.windows.net;Database=FacturaElectronicaCR;User Id=sagenesis;Password=Infra170176;</value>
+    <value>Server=WMS-SRV;Database=GInterface;User Id=sa;Password=$ymbar2024!;</value>
   </data>
   <data name="ConnectionStringProd" xml:space="preserve">
     <value>Server=WMS-SRV;Database=GInterface;User Id=sa;Password=$ymbar2024!;</value>

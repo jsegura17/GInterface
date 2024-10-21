@@ -1,0 +1,256 @@
+-- Crear tabla I_CLIENT
+CREATE TABLE I_CLIENT (
+    ID INT IDENTITY(1,1) PRIMARY KEY,  -- Columna ID con autoincremento
+    CLIENT_NAME NVARCHAR(100) NOT NULL  -- Nombre del cliente con longitud de 100
+);
+
+-- Crear tabla I_SYSTEM
+CREATE TABLE I_SYSTEM (
+    ID INT IDENTITY(1,1) PRIMARY KEY,           -- Columna ID con autoincremento
+    ID_CLIENT INT NOT NULL,                     -- Columna para la relación con I_CLIENT
+    I_SYSTEM_NAME NVARCHAR(100) NOT NULL,       -- Nombre del sistema con longitud de 100
+    CONSTRAINT FK_I_SYSTEM_ID_CLIENT FOREIGN KEY (ID_CLIENT) REFERENCES I_CLIENT(ID) -- Clave foránea
+);
+
+USE [GInterface]
+GO
+
+-- Si existe la tabla i_DocumentType, se elimina.
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[i_DocumentType]') AND type in (N'U'))
+DROP TABLE [dbo].[i_DocumentType]
+GO
+
+-- Crear la tabla i_DocumentType manteniendo Tipo_Documento y agregando las llaves foráneas
+CREATE TABLE [dbo].[i_DocumentType](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Tipo_Documento] [nvarchar](200) NOT NULL,
+	[Numero_Documento] [int] NOT NULL,
+    [ID_CLIENT] [int] NOT NULL,                 -- Llave foránea a I_CLIENT
+    [ID_SYSTEM] [int] NOT NULL,                 -- Llave foránea a I_SYSTEM
+PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+) WITH (
+	PAD_INDEX = OFF, 
+	STATISTICS_NORECOMPUTE = OFF, 
+	IGNORE_DUP_KEY = OFF, 
+	ALLOW_ROW_LOCKS = ON, 
+	ALLOW_PAGE_LOCKS = ON, 
+	OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF
+) ON [PRIMARY],
+CONSTRAINT FK_i_DocumentType_ID_CLIENT FOREIGN KEY (ID_CLIENT) REFERENCES [dbo].[I_CLIENT](ID),  -- Llave foránea a I_CLIENT
+CONSTRAINT FK_i_DocumentType_ID_SYSTEM FOREIGN KEY (ID_SYSTEM) REFERENCES [dbo].[I_SYSTEM](ID)   -- Llave foránea a I_SYSTEM
+) ON [PRIMARY]
+GO
+
+USE [GInterface]
+GO
+
+/****** Object:  Table [dbo].[i_status]    Script Date: 10/18/2024 11:05:30 AM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[i_status](
+	[id] [int] NOT NULL,
+	[description] [nchar](50) NOT NULL,
+	[detail] [nchar](100) NULL,
+ CONSTRAINT [PK_iStatus] PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+
+USE [GInterface]
+GO
+
+-- Crear tabla I_TRANSACTION
+CREATE TABLE [dbo].[I_TRANSACTION](
+    [ID] INT IDENTITY(1,1) PRIMARY KEY,              -- ID autoincremental
+    [I_ID_CLIENT] INT NOT NULL,                      -- Llave foránea de I_CLIENT
+    [I_ID_SYSTEM] INT NOT NULL,                      -- Llave foránea de I_SYSTEM
+    [I_ID_TYPEDOC] INT NOT NULL,                     -- Llave foránea de i_DocumentType
+    [I_JSONTEMPLATE] NVARCHAR(MAX) NULL,             -- Plantilla en formato JSON
+    [I_JSONDATA] NVARCHAR(MAX) NULL,                 -- Datos en formato JSON
+    [I_ID_STATUS] INT NOT NULL,                      -- Llave foránea de I_STATUS
+    [I_CREATED_DTM] DATE NOT NULL,                   -- Fecha de creación
+CONSTRAINT FK_I_TRANSACTION_ID_CLIENT FOREIGN KEY (I_ID_CLIENT) REFERENCES [dbo].[I_CLIENT](ID),    -- Relación con I_CLIENT
+CONSTRAINT FK_I_TRANSACTION_ID_SYSTEM FOREIGN KEY (I_ID_SYSTEM) REFERENCES [dbo].[I_SYSTEM](ID),    -- Relación con I_SYSTEM
+CONSTRAINT FK_I_TRANSACTION_ID_TYPEDOC FOREIGN KEY (I_ID_TYPEDOC) REFERENCES [dbo].[i_DocumentType](Id), -- Relación con i_DocumentType
+CONSTRAINT FK_I_TRANSACTION_ID_STATUS FOREIGN KEY (I_ID_STATUS) REFERENCES [dbo].[I_STATUS](ID)    -- Relación con I_STATUS
+) ON [PRIMARY]
+GO
+
+USE [GInterface]
+GO
+
+/****** Object:  Table [dbo].[i_User]    Script Date: 10/18/2024 12:02:13 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[i_User](
+	[id] [int] NOT NULL,
+	[full_Name] [varchar](50) NULL,
+	[email] [varchar](50) NULL,
+	[user_Pass] [varchar](50) NULL,
+	[type_User] [varchar](10) NULL,
+	[site] [varchar](20) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+
+USE [GInterface]
+GO
+
+/****** Object:  Table [dbo].[i_TEMP_CSV_GLOBAL]    Script Date: 10/18/2024 12:04:41 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[i_TEMP_CSV_GLOBAL](
+	[ID] [int] IDENTITY(1,1) NOT NULL,
+	[Campo1] [bigint] NULL,
+	[Campo2] [bigint] NULL,
+	[Campo3] [bigint] NULL,
+	[Campo4] [bigint] NULL,
+	[Campo5] [bigint] NULL,
+	[Campo6] [bigint] NULL,
+	[Campo7] [bigint] NULL,
+	[Campo8] [bigint] NULL,
+	[Campo9] [bigint] NULL,
+	[Campo10] [bigint] NULL,
+	[Campo11] [bigint] NULL,
+	[Campo12] [bigint] NULL,
+	[Campo13] [bigint] NULL,
+	[Campo14] [bigint] NULL,
+	[Campo15] [bigint] NULL,
+	[Campo16] [varchar](max) NULL,
+	[Campo17] [varchar](max) NULL,
+	[Campo18] [varchar](max) NULL,
+	[Campo19] [varchar](max) NULL,
+	[Campo20] [varchar](max) NULL,
+	[Campo21] [varchar](max) NULL,
+	[Campo22] [varchar](max) NULL,
+	[Campo23] [varchar](max) NULL,
+	[Campo24] [varchar](max) NULL,
+	[Campo25] [varchar](max) NULL,
+	[Campo26] [varchar](max) NULL,
+	[Campo27] [varchar](max) NULL,
+	[Campo28] [varchar](max) NULL,
+	[Campo29] [varchar](max) NULL,
+	[Campo30] [varchar](max) NULL,
+	[Campo31] [varchar](max) NULL,
+	[Campo32] [varchar](max) NULL,
+	[Campo33] [varchar](max) NULL,
+	[Campo34] [varchar](max) NULL,
+	[Campo35] [varchar](max) NULL,
+	[Campo36] [varchar](max) NULL,
+	[Campo37] [varchar](max) NULL,
+	[Campo38] [varchar](max) NULL,
+	[Campo39] [varchar](max) NULL,
+	[Campo40] [varchar](max) NULL,
+	[Campo41] [varchar](max) NULL,
+	[Campo42] [varchar](max) NULL,
+	[Campo43] [varchar](max) NULL,
+	[Campo44] [varchar](max) NULL,
+	[Campo45] [varchar](max) NULL,
+	[ID_FILE_CSV] [int] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+
+USE [GInterface]
+GO
+
+/****** Object:  Table [dbo].[i_Template_Files]    Script Date: 10/18/2024 12:05:11 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[i_Template_Files](
+	[ID] [int] IDENTITY(1,1) NOT NULL,
+	[FileNames] [varchar](200) NULL,
+	[FileDate] [datetime] NULL,
+	[FileStatus] [int] NULL,
+	[FileType] [int] NULL,
+	[FileFields] [int] NULL,
+	[FileInbound] [nvarchar](30) NULL,
+	[FileJsonObj] [varchar](max) NULL,
+UNIQUE NONCLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+
+USE [GInterface]
+GO
+
+/****** Object:  Table [dbo].[i_FILE_CSV]    Script Date: 10/18/2024 12:04:15 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[i_FILE_CSV](
+	[ID] [int] IDENTITY(1,1) NOT NULL,
+	[FileNames] [varchar](200) NULL,
+	[FileDate] [datetime] NULL,
+	[FileStatus] [int] NULL,
+	[FileFields] [int] NULL,
+	[FileType] [int] NULL,
+	[FileInbound] [nvarchar](30) NULL,
+	[FileJsonObj] [varchar](max) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+
+USE [GInterface]
+GO
+
+/****** Object:  Table [dbo].[i_Products_Size]    Script Date: 10/18/2024 1:48:32 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[i_Products_Size](
+	[codigo_productos_presentaciones] [varchar](50) NULL,
+	[codigo_productos] [int] NOT NULL,
+	[codigo_presentaciones] [varchar](4) NOT NULL,
+	[codigo_ean] [varchar](22) NULL,
+	[cantidad_presentacion] [int] NULL,
+	[UV] [int] NULL,
+	[cantidad_Unidades] [int] NULL
+) ON [PRIMARY]
+GO
+
+
+
+

@@ -74,8 +74,10 @@
     private List<StatusData> data;
     private List<TransactiosDc> data1;
     private Core.AppCore _appCore = Core.AppCore.Instance;
-    protected override void OnInitialized()
+    protected async Task OnInitialized()
     {
+        if(_appCore.DocumentType.Count ==0)
+        await _appCore.GetDocumentTypeAsync();
         // Datos fijos para el DataGrid
         data = new List<StatusData>
         {
@@ -89,7 +91,7 @@
             new StatusData { Location = "Austria", Status = "Pending", Trustworthiness = "Insufficient", Rating = 2, SoftwarePercent = "41%" },
         };
 
-        // data1 = _appCore.GetTransaction();
+         data1 = _appCore.GetTransaction();
     }
 
     public class StatusData

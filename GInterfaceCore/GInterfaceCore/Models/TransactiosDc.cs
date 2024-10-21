@@ -11,7 +11,7 @@ namespace GInterfaceCore.Models
 
         public int I_ID_SYSTEM { get; set; }  // Llave foránea de I_SYSTEM
 
-        public int I_ID_TYPEDOC { get; set; }  // Llave foránea de i_DocumentType
+        public Dictionary<int, string> I_ID_TYPEDOC { get; set; }  // Llave foránea de i_DocumentType
 
         public string I_JSONTEMPLATE { get; set; }  // Plantilla en formato JSON
 

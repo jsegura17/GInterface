@@ -1248,13 +1248,27 @@ namespace GInterfaceCore.Core
 
                 while (reader.Read())
                 {
+                    var json = reader["I_JSONTEMPLATE"].ToString();
+                    JsonDocument document = JsonDocument.Parse(json);
+                    var idSiteDocument = document.RootElement.GetProperty("id_document").GetString();
+                    idSiteDocument = idSiteDocument.Split('_').Last();
+
+
+                    var diction = new Dictionary<int, string>();
+                    var idFileType = Convert.ToInt32(reader["I_ID_TYPEDOC"]);
+
+                    if (instance.DocumentType.TryGetValue(idFileType, out string value))
+                    {
+                        // Si se encuentra la clave, añadirla al nuevo diccionario
+                        diction.Add(idFileType, value);
+                    }
                     TransactiosDc transaction = new TransactiosDc
                     {
                         ID = Convert.ToInt32(reader["ID"]),
                         I_ID_CLIENT = Convert.ToInt32(reader["I_ID_CLIENT"]),
                         I_ID_SYSTEM = Convert.ToInt32(reader["I_ID_SYSTEM"]),
-                        I_ID_TYPEDOC = Convert.ToInt32(reader["I_ID_TYPEDOC"]),
-                        I_JSONTEMPLATE = reader["I_JSONTEMPLATE"].ToString(),
+                        I_ID_TYPEDOC = diction ,
+                        I_JSONTEMPLATE = idSiteDocument,
                         I_JSONDATA = reader["I_JSONDATA"].ToString(),
                         I_ID_STATUS = Convert.ToInt32(reader["I_ID_STATUS"]),
                         I_CREATED_DTM = DateOnly.FromDateTime(Convert.ToDateTime(reader["I_CREATED_DTM"]))  // Mapea a DateOnly

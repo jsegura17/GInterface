@@ -449,7 +449,7 @@ namespace GInterfaceCore.Core
             }
 
         }
-        public void InsertFileCsv(string fileNames, TransactionStatus fileStatus, int fileFields, string fileJsonObj, DataTable csvData, string inbound)
+        public void InsertFileCsv(string fileNames, TransactionStatus fileStatus, int fileFields, string fileJsonObj, DataTable csvData, string inbound, int fileType)
         {
 
             string message = string.Empty;
@@ -461,7 +461,7 @@ namespace GInterfaceCore.Core
                 {
                     connection.Open();
 
-                    using (SqlCommand command = new SqlCommand("SP_GInterface_INSERT_FILE_CSV", connection))
+                    using (SqlCommand command = new SqlCommand("SP_GINTERFACE_INSERT_FILE_CSV", connection))
                     {
                         command.CommandType = CommandType.StoredProcedure;
 
@@ -481,6 +481,10 @@ namespace GInterfaceCore.Core
                         command.Parameters.Add(new SqlParameter("@Inbound", SqlDbType.NVarChar, -1)
                         {
                             Value = inbound
+                        });
+                        command.Parameters.Add(new SqlParameter("@FileType", SqlDbType.Int)
+                        {
+                            Value = fileType
                         });
                         command.Parameters.Add(new SqlParameter("@FileJsonObj", SqlDbType.NVarChar, -1)
                         {
@@ -550,7 +554,7 @@ namespace GInterfaceCore.Core
                 {
                     connection.Open();
 
-                    using (SqlCommand command = new SqlCommand("SP_GInterface_INSERT_BASE_FILE_CSV", connection))
+                    using (SqlCommand command = new SqlCommand("SP_GINTERFACE_INSERT_BASE_FILE_CSV", connection))
                     {
                         command.CommandType = CommandType.StoredProcedure;
 
@@ -632,7 +636,7 @@ namespace GInterfaceCore.Core
                 {
                     connection.Open();
 
-                    using (SqlCommand command = new SqlCommand("SP_GInterface_INGRESO", connection))
+                    using (SqlCommand command = new SqlCommand("SP_GINTERFACE_INGRESO", connection))
                     {
                         command.CommandType = CommandType.StoredProcedure;
 
@@ -783,7 +787,7 @@ namespace GInterfaceCore.Core
 
             using (SqlConnection connection = GetDBConnection())
             {
-                using (SqlCommand command = new SqlCommand("SP_GInterface_GetDocumentType", connection))
+                using (SqlCommand command = new SqlCommand("SP_GINTERFACE_GetDocumentType", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
 
@@ -1165,7 +1169,7 @@ namespace GInterfaceCore.Core
                 {
                     connection.Open();
 
-                    using (SqlCommand command = new SqlCommand("SP_GInterface_Insert_User", connection))
+                    using (SqlCommand command = new SqlCommand("SP_GINTERFACE_Insert_User", connection))
                     {
                         command.CommandType = CommandType.StoredProcedure;
 

@@ -162,6 +162,7 @@ GO
 
 /****** Object:  StoredProcedure [dbo].[SP_GInterface_INSERT_FILE_CSV]    Script Date: 10/21/2024 8:58:17 AM ******/
 /****** Este Sp se utiliza para guardar los docs Tanto reporte como data en las tablas i_FILE_CSV y i_TEMP_CSV_GLOBAL******/
+
 SET ANSI_NULLS ON
 GO
 
@@ -169,11 +170,12 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 
-CREATE  PROCEDURE [dbo].[SP_GINTERFACE_INSERT_FILE_CSV]
+ALTER  PROCEDURE [dbo].[SP_GInterface_INSERT_FILE_CSV]
 	@FileNames NVARCHAR(MAX),
     @FileStatus INT,
     @FileFields INT,
 	@Inbound nvarchar (30),
+	@FileType int,
     @FileJsonObj NVARCHAR(MAX),
 	----Temp
 	@CsvData [dbo].[TempGlobalType] READONLY ,
@@ -225,8 +227,8 @@ PROCESS_RUN:
 		
 		--LOGIC INSERT	
 		-- Insertar el nuevo registro
-		INSERT INTO i_FILE_CSV (FileNames, FileDate, FileStatus, FileFields,FileInbound, FileJsonObj)
-			VALUES (@FileNames, GETDATE(), @FileStatus, @FileFields,@Inbound, @FileJsonObj);
+		INSERT INTO i_FILE_CSV (FileNames, FileDate, FileStatus, FileFields,FileInbound,FileType, FileJsonObj)
+			VALUES (@FileNames, GETDATE(), @FileStatus, @FileFields,@Inbound,@FileType, @FileJsonObj);
 
 		--Obtener el ID de FILE_CSV, supones que el valor del WHERE es UNICO (Solo existe un Registro)
 		SELECT @FILE_CSV_ID = id
@@ -296,6 +298,9 @@ PROCESS_STOP:
 
 END
 GO
+
+
+
 
 /****** Este SP se encarga exclusivamente para convertir los datos de ingresos guardados en datos de valor para block con conversion y seleccion de datos ******/
 

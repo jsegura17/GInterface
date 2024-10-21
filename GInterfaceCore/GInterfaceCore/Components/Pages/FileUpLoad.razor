@@ -27,7 +27,7 @@
 
     private void OnClick(string text)
     {
-        _appCore.InsertFileCsv(_appCore.CFileName, _appCore.fileStatus, _appCore.head, _appCore.ObjJason, _appCore.InfotTempo, _appCore.inbound);
+        _appCore.InsertFileCsv(_appCore.CFileName, _appCore.fileStatus, _appCore.head, _appCore.ObjJason, _appCore.InfotTempo, _appCore.inbound, _appCore.documentType);
         DialogService.Close();
         NotificationService.Notify(new NotificationMessage { Severity = NotificationSeverity.Info, Summary = "Button Clicked", Detail = text });
     }
@@ -69,7 +69,7 @@
                         //new DialogOptions() { Width = "500px", Height = "300px" });
 
                         var result =SomeParameter;
-                        
+
                         var listJson = _appCore.TemplateJson(result);
                         if (result != null)
                         {
@@ -84,22 +84,30 @@
                             InvokeAsync(async () =>
                                 {
                                     // Simulate background task
-                                List<List<string>> informationExcel = await _excel.SimulateFileUpload(stream, fileName, int.Parse(stringList[0]), stringList[1], stringList[2], listJson.RequireFields);
-                                if (informationExcel == null || !_appCore.validDocument)
-                                {
-                                    // Cancelar el diálogo actual
-                                    DialogService.Close();
+                                    List<List<string>> informationExcel = await _excel.SimulateFileUpload(stream, fileName, int.Parse(stringList[0]), stringList[1], stringList[2], listJson.RequireFields);
+                                    if (informationExcel == null || !_appCore.validDocument)
+                                    {
+                                        // Cancelar el diálogo actual
+                                        DialogService.Close();
 
-                                    // Abrir otro modal, puedes usar DialogService.Open para abrir un nuevo diálogo
-                                    await DialogService.OpenComponentExtension<ErrorDocument>("Nuevo Modal", null);  // Reemplaza 'YourNewModal' por tu componente
+                                        // Abrir otro modal, puedes usar DialogService.Open para abrir un nuevo diálogo
+                                        await DialogService.OpenComponentExtension<ErrorDocument>("Nuevo Modal", null);  // Reemplaza 'YourNewModal' por tu componente
 
-                                    // Salir de la ejecución para no continuar con el proceso
-                                    return;
-                                }
-                                var info = stringList[1] + "," + stringList[2];
+                                        // Salir de la ejecución para no continuar con el proceso
+                                        return;
+                                    }
+                                    var info = stringList[1] + "," + stringList[2];
                                     _appCore.sortDataExcel(informationExcel, fileName, listJson.RequireFields, info);
                                     UploadedContent = "a";
                                     _appCore.inbound = result.InboundOutbound;
+                                    var fileType = result.FileType; // Obtienes el diccionario
+
+                                    
+                                        // Obtén el primer (y único) elemento del diccionario
+                                        var firstEntry = fileType.First();
+                                        _appCore.documentType = firstEntry.Key; // Asigna el valor de la clave al documentType
+                                    
+                                
                                     // Close the dialog
                                     DialogService.Close();
                                 });

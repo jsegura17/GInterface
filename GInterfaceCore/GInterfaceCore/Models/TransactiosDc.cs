@@ -1,5 +1,7 @@
 ﻿
 
+
+
 namespace GInterfaceCore.Models
 {
     public class TransactiosDc
@@ -17,7 +19,7 @@ namespace GInterfaceCore.Models
 
         public string I_JSONDATA { get; set; }  // Datos en formato JSON
 
-        public int I_ID_STATUS { get; set; }  // Llave foránea de I_STATUS
+        public Status I_ID_STATUS { get; set; }  // Llave foránea de I_STATUS
 
         public DateOnly I_CREATED_DTM { get; set; }
     }

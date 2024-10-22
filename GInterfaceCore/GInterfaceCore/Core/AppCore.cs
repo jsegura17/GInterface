@@ -275,7 +275,7 @@ namespace GInterfaceCore.Core
                 try
                 {
                     connection.Open();
-                    using (SqlCommand command = new SqlCommand("sp_i_ValidateUserCredentials", connection))
+                    using (SqlCommand command = new SqlCommand("SP_i_ValidateUserCredentials", connection))
                     {
                         command.CommandType = CommandType.StoredProcedure;
 
@@ -749,7 +749,7 @@ namespace GInterfaceCore.Core
 
             using (SqlConnection connection = GetDBConnection())
             {
-                SqlCommand cmd = new SqlCommand("SP_GetFileCsv", connection);
+                SqlCommand cmd = new SqlCommand("SP_GINTERFACE_GetFileCsv", connection);
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 connection.Open();
@@ -1234,7 +1234,7 @@ namespace GInterfaceCore.Core
 
 
         }
-        public List<TransactiosDc> GetTransaction()
+        public async Task<List<TransactiosDc>> GetTransaction()
         {
             List<TransactiosDc> transactionFiles = new List<TransactiosDc>();
 
@@ -1262,6 +1262,7 @@ namespace GInterfaceCore.Core
                         // Si se encuentra la clave, añadirla al nuevo diccionario
                         diction.Add(idFileType, value);
                     }
+                    Status status = await instance.GetStatusByIdAsync(Convert.ToInt32(reader["I_ID_STATUS"]));
                     TransactiosDc transaction = new TransactiosDc
                     {
                         ID = Convert.ToInt32(reader["ID"]),
@@ -1270,7 +1271,7 @@ namespace GInterfaceCore.Core
                         I_ID_TYPEDOC = diction ,
                         I_JSONTEMPLATE = idSiteDocument,
                         I_JSONDATA = reader["I_JSONDATA"].ToString(),
-                        I_ID_STATUS = Convert.ToInt32(reader["I_ID_STATUS"]),
+                        I_ID_STATUS = status,
                         I_CREATED_DTM = DateOnly.FromDateTime(Convert.ToDateTime(reader["I_CREATED_DTM"]))  // Mapea a DateOnly
                     };
 
@@ -1281,6 +1282,37 @@ namespace GInterfaceCore.Core
 
             return transactionFiles;
         }
+        public async Task<Status> GetStatusByIdAsync(int id)
+        {
+            Status status = null;
+
+            using (SqlConnection connection = GetDBConnection())
+            {
+                using (SqlCommand command = new SqlCommand("SP_GetStatusById", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@Id", id); // Pasar el Id como parámetro
+
+                    await connection.OpenAsync();
+
+                    using (SqlDataReader reader = await command.ExecuteReaderAsync())
+                    {
+                        if (await reader.ReadAsync())
+                        {
+                            status = new Status
+                            {
+                                id = reader.GetInt32(reader.GetOrdinal("id")),
+                                description = reader.GetString(reader.GetOrdinal("description")),
+                                detail= reader.GetString(reader.GetOrdinal("detail"))
+                            };
+                        }
+                    }
+                }
+            }
+
+            return status;
+        }
+
 
         public void LogOut()
         {

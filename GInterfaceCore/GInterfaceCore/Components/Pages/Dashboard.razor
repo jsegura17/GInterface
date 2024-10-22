@@ -3,20 +3,22 @@
 @using Radzen
 
 <h3>Estado de transacción</h3>
-
+<RadzenButton Click=@(args => OnClick()) Text="Refresh" Icon="refresh" ButtonStyle="ButtonStyle.Primary" />
 <RadzenDataGrid AllowFiltering="true" AllowSorting="true" AllowPaging="true" PageSize="5" Data="@data1">
     <Columns>
         <RadzenDataGridColumn Property="I_JSONTEMPLATE" Title="Nombre del Documento" />
         <RadzenDataGridColumn Property="I_ID_STATUS" Title="Estado">
             <Template Context="data">
-                @if (data.I_ID_STATUS != null)
-                {
-                    <span class="@data.I_ID_STATUS.description">@data.I_ID_STATUS.description</span>
+                @{
+                    var statusClass = data.I_ID_STATUS?.description switch
+                    {
+                        "Completed" => "complete-status",
+                        "Error" => "error-status",
+                        "Pending" => "pending-status",
+                        _ => "unknown-status"
+                    };
                 }
-                else
-                {
-                    <span class="unknown-status">Unknown</span>
-                }
+                <span class="@statusClass">@data.I_ID_STATUS?.description ?? "Unknown"</span>
             </Template>
         </RadzenDataGridColumn>
         <RadzenDataGridColumn Property="I_ID_CLIENT" Title="Empresa" />
@@ -24,6 +26,7 @@
         <RadzenDataGridColumn Property="I_CREATED_DTM" Title="Fecha Ingreso" />
     </Columns>
 </RadzenDataGrid>
+
 
 <style>
     .complete-status {
@@ -61,7 +64,11 @@
         // Obtener los datos reales desde el método GetTransaction
         data1 = await _appCore.GetTransaction(); // Usa await aquí
     }
-
+    private async Task OnClick()
+    {
+        data1 = await _appCore.GetTransaction(); // Refrescar datos
+        await InvokeAsync(StateHasChanged);      // Actualizar la UI
+    }
     public class TransactiosDc
     {
         public int ID { get; set; }

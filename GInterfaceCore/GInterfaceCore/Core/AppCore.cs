@@ -91,6 +91,9 @@ namespace GInterfaceCore.Core
         public string inbound;
         public bool validDocument;
 
+
+        public Dictionary<int, string> DocumentTypeTemp = new Dictionary<int, string>();
+
         //Lista de Tipos de Documentos
         public List<EnumTypes.DocumentType> GlobalDocType { get; set; }
 
@@ -272,7 +275,7 @@ namespace GInterfaceCore.Core
                 try
                 {
                     connection.Open();
-                    using (SqlCommand command = new SqlCommand("sp_i_ValidateUserCredentials", connection))
+                    using (SqlCommand command = new SqlCommand("SP_i_ValidateUserCredentials", connection))
                     {
                         command.CommandType = CommandType.StoredProcedure;
 
@@ -446,7 +449,7 @@ namespace GInterfaceCore.Core
             }
 
         }
-        public void InsertFileCsv(string fileNames, TransactionStatus fileStatus, int fileFields, string fileJsonObj, DataTable csvData, string inbound)
+        public void InsertFileCsv(string fileNames, TransactionStatus fileStatus, int fileFields, string fileJsonObj, DataTable csvData, string inbound, int fileType)
         {
 
             string message = string.Empty;
@@ -458,7 +461,7 @@ namespace GInterfaceCore.Core
                 {
                     connection.Open();
 
-                    using (SqlCommand command = new SqlCommand("SP_GInterface_INSERT_FILE_CSV", connection))
+                    using (SqlCommand command = new SqlCommand("SP_GINTERFACE_INSERT_FILE_CSV", connection))
                     {
                         command.CommandType = CommandType.StoredProcedure;
 
@@ -478,6 +481,10 @@ namespace GInterfaceCore.Core
                         command.Parameters.Add(new SqlParameter("@Inbound", SqlDbType.NVarChar, -1)
                         {
                             Value = inbound
+                        });
+                        command.Parameters.Add(new SqlParameter("@FileType", SqlDbType.Int)
+                        {
+                            Value = fileType
                         });
                         command.Parameters.Add(new SqlParameter("@FileJsonObj", SqlDbType.NVarChar, -1)
                         {
@@ -547,7 +554,7 @@ namespace GInterfaceCore.Core
                 {
                     connection.Open();
 
-                    using (SqlCommand command = new SqlCommand("SP_GInterface_INSERT_BASE_FILE_CSV", connection))
+                    using (SqlCommand command = new SqlCommand("SP_GINTERFACE_INSERT_BASE_FILE_CSV", connection))
                     {
                         command.CommandType = CommandType.StoredProcedure;
 
@@ -617,6 +624,54 @@ namespace GInterfaceCore.Core
 
 
         }
+        public void InsertFormatoIngreso(int idFileCsv)
+        {
+
+            string message = string.Empty;
+            bool status = false;
+
+            using (SqlConnection connection = GetDBConnection())
+            {
+                try
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand("SP_GINTERFACE_INGRESO", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        // Agregar parámetros de entrada
+                        command.Parameters.Add(new SqlParameter("@IdFileCSV", SqlDbType.NVarChar, -1)
+                        {
+                            Value = idFileCsv
+                        });
+                      
+
+                        // Tabla Temp
+                        // Agregar parámetro de salida
+
+                        
+
+                        command.ExecuteNonQuery();
+
+                        // Obtener el mensaje y status del nuevo registro
+                        
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    // Manejar excepciones, por ejemplo:
+                    Console.WriteLine("SQL Error: " + ex.Message);
+                }
+                catch (Exception ex)
+                {
+                    // Manejar otras excepciones
+                    Console.WriteLine("Error: " + ex.Message);
+                }
+            }
+
+
+        }
         public List<FileCSV> GetTemplateFiles()
         {
             List<FileCSV> templateFiles = new List<FileCSV>();
@@ -631,6 +686,15 @@ namespace GInterfaceCore.Core
 
                 while (reader.Read())
                 {
+                    var diction = new Dictionary<int, string>();
+                    var idFileType = Convert.ToInt32(reader["FileType"]);
+
+                    if (instance.DocumentType.TryGetValue(idFileType, out string value))
+                    {
+                        // Si se encuentra la clave, añadirla al nuevo diccionario
+                        diction.Add(idFileType, value);
+                    }
+
                     FileCSV file = new FileCSV
                     {
                         ID = Convert.ToInt32(reader["ID"]),
@@ -638,7 +702,7 @@ namespace GInterfaceCore.Core
                         FileDate = Convert.ToDateTime(reader["FileDate"]),
                         FileStatus = (TransactionStatus)Convert.ToInt32(reader["FileStatus"]), // Asegúrate de que FileStatus sea un int en la base de datos y se pueda mapear a TransactionStatus
                         FileFields = Convert.ToInt32(reader["FileFields"]),
-                        FileType = GetDocumentType(Convert.ToInt32(reader["FileType"])),
+                        FileType = diction,
                         InboundOutbound = reader["FileInbound"].ToString(),
                         FileJsonObj = reader["FileJsonObj"].ToString()
                     };
@@ -652,10 +716,32 @@ namespace GInterfaceCore.Core
         }
         private Dictionary<int, string> GetDocumentType(int fileTypeId)
         {
-             documentTypeAsync();
+            var response = instance.DocumentType;
+            var D = new Dictionary<int, string>();
+            if (instance.DocumentTypeTemp.Count<0) 
+            {
+                foreach (var item in response)
+                {
+                    instance.DocumentTypeTemp.Add(item.Key, item.Value);
+                   
+                }
+                 D = instance.DocumentTypeTemp;
+            }
             
-             return instance.DocumentType; // Retorna la descripción del tipo de documento
-           
+
+            // Crear un diccionario para contener el resultado filtrado
+            Dictionary<int, string> filteredDocumentType = new Dictionary<int, string>();
+
+            // Verificar si el fileTypeId existe en el diccionario original
+            if (D.ContainsKey(fileTypeId))
+            {
+                // Si existe, agregar ese elemento al diccionario filtrado
+                filteredDocumentType.Add(fileTypeId, D[fileTypeId]);
+            }
+
+            // Retornar el diccionario filtrado si contiene datos, o null si no hay coincidencias
+            return filteredDocumentType.Count > 0 ? filteredDocumentType : null;
+
         }
         public List<FileCSV> GetPendingFiles()
         {
@@ -663,7 +749,7 @@ namespace GInterfaceCore.Core
 
             using (SqlConnection connection = GetDBConnection())
             {
-                SqlCommand cmd = new SqlCommand("SP_GetFileCsv", connection);
+                SqlCommand cmd = new SqlCommand("SP_GINTERFACE_GetFileCsv", connection);
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 connection.Open();
@@ -701,7 +787,7 @@ namespace GInterfaceCore.Core
 
             using (SqlConnection connection = GetDBConnection())
             {
-                using (SqlCommand command = new SqlCommand("SP_GInterface_GetDocumentType", connection))
+                using (SqlCommand command = new SqlCommand("SP_GINTERFACE_GetDocumentType", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
 
@@ -979,7 +1065,8 @@ namespace GInterfaceCore.Core
                     objjson = convertJsonExcel(headers, fieldNames, requireData, endStartInfo, fileFields, excel);
                     // Insertar en base de datos
                     DataTable dataTable = LoadCsvData(processedData);
-                    instance.CFileName = fileName;
+                    
+                    instance.CFileName = fileName.Replace(" ", "_");
                     instance.fileStatus = TransactionStatus.Pending;
                     instance.ObjJason = objjson;
                     instance.InfotTempo = dataTable;
@@ -1036,6 +1123,13 @@ namespace GInterfaceCore.Core
                 node.Add(item);
                 columns.Add(fieldNames[index]);
             }
+            foreach (var item in excel)
+            {
+                if (item.Count<2)
+                {
+                    item.Add("x");
+                }
+            }
             List<string> onlySeconds = excel.Select(sublista => sublista[1])
                                        .Take(require.Count)
                                        .ToList();
@@ -1075,7 +1169,7 @@ namespace GInterfaceCore.Core
                 {
                     connection.Open();
 
-                    using (SqlCommand command = new SqlCommand("SP_GInterface_Insert_User", connection))
+                    using (SqlCommand command = new SqlCommand("SP_GINTERFACE_Insert_User", connection))
                     {
                         command.CommandType = CommandType.StoredProcedure;
 
@@ -1140,6 +1234,85 @@ namespace GInterfaceCore.Core
 
 
         }
+        public async Task<List<TransactiosDc>> GetTransaction()
+        {
+            List<TransactiosDc> transactionFiles = new List<TransactiosDc>();
+
+            using (SqlConnection connection = GetDBConnection())
+            {
+                SqlCommand cmd = new SqlCommand("SP_GINTERFACE_GetTrasaction", connection);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                connection.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    var json = reader["I_JSONTEMPLATE"].ToString();
+                    JsonDocument document = JsonDocument.Parse(json);
+                    var idSiteDocument = document.RootElement.GetProperty("id_document").GetString();
+                    idSiteDocument = idSiteDocument.Split('_').Last();
+
+
+                    var diction = new Dictionary<int, string>();
+                    var idFileType = Convert.ToInt32(reader["I_ID_TYPEDOC"]);
+
+                    if (instance.DocumentType.TryGetValue(idFileType, out string value))
+                    {
+                        // Si se encuentra la clave, añadirla al nuevo diccionario
+                        diction.Add(idFileType, value);
+                    }
+                    Status status = await instance.GetStatusByIdAsync(Convert.ToInt32(reader["I_ID_STATUS"]));
+                    TransactiosDc transaction = new TransactiosDc
+                    {
+                        ID = Convert.ToInt32(reader["ID"]),
+                        I_ID_CLIENT = Convert.ToInt32(reader["I_ID_CLIENT"]),
+                        I_ID_SYSTEM = Convert.ToInt32(reader["I_ID_SYSTEM"]),
+                        I_ID_TYPEDOC = diction ,
+                        I_JSONTEMPLATE = idSiteDocument,
+                        I_JSONDATA = reader["I_JSONDATA"].ToString(),
+                        I_ID_STATUS = status,
+                        I_CREATED_DTM = DateOnly.FromDateTime(Convert.ToDateTime(reader["I_CREATED_DTM"]))  // Mapea a DateOnly
+                    };
+
+
+                    transactionFiles.Add(transaction);
+                }
+            }
+
+            return transactionFiles;
+        }
+        public async Task<Status> GetStatusByIdAsync(int id)
+        {
+            Status status = null;
+
+            using (SqlConnection connection = GetDBConnection())
+            {
+                using (SqlCommand command = new SqlCommand("SP_GetStatusById", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@Id", id); // Pasar el Id como parámetro
+
+                    await connection.OpenAsync();
+
+                    using (SqlDataReader reader = await command.ExecuteReaderAsync())
+                    {
+                        if (await reader.ReadAsync())
+                        {
+                            status = new Status
+                            {
+                                id = reader.GetInt32(reader.GetOrdinal("id")),
+                                description = reader.GetString(reader.GetOrdinal("description")),
+                                detail= reader.GetString(reader.GetOrdinal("detail"))
+                            };
+                        }
+                    }
+                }
+            }
+
+            return status;
+        }
+
 
         public void LogOut()
         {

@@ -9,7 +9,8 @@ namespace GInterfaceCore.Models
 
         public int ID { get; set; }
         public string FileNames { get; set; }
-        public DateTime FileDate { get; set; }
+        public DateTime? FileDate { get; set; }
+
         public TransactionStatus FileStatus { get; set; } // status the document
         public int FileFields { get; set; }
         public Dictionary<int, string> FileType { get; set; } // status the document

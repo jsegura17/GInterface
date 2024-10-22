@@ -1,31 +1,76 @@
 ﻿@page "/dashboard"
+@rendermode InteractiveServer
+@using Radzen
 
-<RadzenCard>
-    <RadzenHeading Size="H1">Dashboard</RadzenHeading>
-    <RadzenGrid Data="@orders" TItem="Order" AutoGenerateColumns="false">
-        <Columns>
-            <RadzenGridColumn TItem="Order" Property="OrderID" Title="ID" />
-            <RadzenGridColumn TItem="Order" Property="CustomerName" Title="Customer" />
-            <RadzenGridColumn TItem="Order" Property="OrderDate" Title="Date" />
-            <RadzenGridColumn TItem="Order" Property="Total" Title="Total" />
-        </Columns>
-    </RadzenGrid>
-</RadzenCard>
+<h3>Estado de transacción</h3>
+
+<RadzenDataGrid AllowFiltering="true" AllowSorting="true" AllowPaging="true" PageSize="5" Data="@data1">
+    <Columns>
+        <RadzenDataGridColumn Property="I_JSONTEMPLATE" Title="Nombre del Documento" />
+        <RadzenDataGridColumn Property="I_ID_STATUS" Title="Estado">
+            <Template Context="data">
+                @if (data.I_ID_STATUS != null)
+                {
+                    <span class="@data.I_ID_STATUS.description">@data.I_ID_STATUS.description</span>
+                }
+                else
+                {
+                    <span class="unknown-status">Unknown</span>
+                }
+            </Template>
+        </RadzenDataGridColumn>
+        <RadzenDataGridColumn Property="I_ID_CLIENT" Title="Empresa" />
+        <RadzenDataGridColumn Property="I_ID_SYSTEM" Title="Servicio" />
+        <RadzenDataGridColumn Property="I_CREATED_DTM" Title="Fecha Ingreso" />
+    </Columns>
+</RadzenDataGrid>
+
+<style>
+    .complete-status {
+        color: green;
+        font-weight: bold;
+    }
+
+    .error-status {
+        color: red;
+        font-weight: bold;
+    }
+
+    .pending-status {
+        color: cornflowerblue;
+        font-weight: normal;
+    }
+
+        .unknown-status {
+            color: gray;
+            font-weight: normal;
+        }
+</style>
 
 @code {
-    // Ejemplo de datos para el grid, reemplaza con tus propios datos y lógica de carga
-    private List<Order> orders = new List<Order>
-    {
-        new Order { OrderID = 1, CustomerName = "John Doe", OrderDate = DateTime.Now, Total = 100 },
-        new Order { OrderID = 2, CustomerName = "Jane Smith", OrderDate = DateTime.Now.AddDays(-1), Total = 150 },
-        // ... más órdenes
-    };
+    private List<GInterfaceCore.Models.TransactiosDc> data1;
+    private Core.AppCore _appCore = Core.AppCore.Instance;
 
-    public class Order
+    protected override async Task OnInitializedAsync()
     {
-        public int OrderID { get; set; }
-        public string CustomerName { get; set; }
-        public DateTime OrderDate { get; set; }
-        public decimal Total { get; set; }
+        if (_appCore.DocumentType.Count == 0)
+        {
+            await _appCore.GetDocumentTypeAsync();
+        }
+
+        // Obtener los datos reales desde el método GetTransaction
+        data1 = await _appCore.GetTransaction(); // Usa await aquí
+    }
+
+    public class TransactiosDc
+    {
+        public int ID { get; set; }
+        public int I_ID_CLIENT { get; set; }
+        public int I_ID_SYSTEM { get; set; }
+        public Dictionary<int, string> I_ID_TYPEDOC { get; set; }
+        public string I_JSONTEMPLATE { get; set; }
+        public string I_JSONDATA { get; set; }
+        public Status I_ID_STATUS { get; set; } // Cambiado a Status
+        public DateOnly I_CREATED_DTM { get; set; }
     }
 }

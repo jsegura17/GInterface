@@ -2,56 +2,28 @@
 @rendermode InteractiveServer
 @using Radzen
 
-<h3>Estado de transaction</h3>
+<h3>Estado de transacción</h3>
 
-<RadzenDataGrid AllowFiltering="true" AllowSorting="true" AllowPaging="true" PageSize="5" Data="@data">
+<RadzenDataGrid AllowFiltering="true" AllowSorting="true" AllowPaging="true" PageSize="5" Data="@data1">
     <Columns>
-        <RadzenDataGridColumn Property="Location" Title="Nombre del Documento" />
-        <RadzenDataGridColumn Property="Status" Title="Estado">
+        <RadzenDataGridColumn Property="I_JSONTEMPLATE" Title="Nombre del Documento" />
+        <RadzenDataGridColumn Property="I_ID_STATUS" Title="Estado">
             <Template Context="data">
-                @{
-                    var status = data.Status;
-                    var statusClass = status switch
-                    {
-                        "Completed" => "complete-status",
-                        "Error" => "error-status",
-                        "Pending" => "pending-status"
-                        
-                    };
+                @if (data.I_ID_STATUS != null)
+                {
+                    <span class="@data.I_ID_STATUS.description">@data.I_ID_STATUS.description</span>
                 }
-                <span class="@statusClass">@status</span>
+                else
+                {
+                    <span class="unknown-status">Unknown</span>
+                }
             </Template>
         </RadzenDataGridColumn>
-        <RadzenDataGridColumn Property="Trustworthiness" Title="Empresa" />
-        <RadzenDataGridColumn Property="Rating" Title="Servicio" />
-        <RadzenDataGridColumn Property="SoftwarePercent" Title="Fecha Ingreso" />
+        <RadzenDataGridColumn Property="I_ID_CLIENT" Title="Empresa" />
+        <RadzenDataGridColumn Property="I_ID_SYSTEM" Title="Servicio" />
+        <RadzenDataGridColumn Property="I_CREATED_DTM" Title="Fecha Ingreso" />
     </Columns>
 </RadzenDataGrid>
-
-<RadzenDataGrid AllowFiltering="true" AllowSorting="true" AllowPaging="true" PageSize="5" Data="@data">
-    <Columns>
-        <RadzenDataGridColumn Property="Location" Title="Nombre del Documento" />
-        <RadzenDataGridColumn Property="Status" Title="Estado">
-            <Template Context="data">
-                @{
-                    var status = data.Status;
-                    var statusClass = status switch
-                    {
-                        "Completed" => "complete-status",
-                        "Error" => "error-status",
-                        "Pending" => "pending-status"
-
-                    };
-                }
-                <span class="@statusClass">@status</span>
-            </Template>
-        </RadzenDataGridColumn>
-        <RadzenDataGridColumn Property="Trustworthiness" Title="Empresa" />
-        <RadzenDataGridColumn Property="Rating" Title="Servicio" />
-        <RadzenDataGridColumn Property="SoftwarePercent" Title="Fecha Ingreso" />
-    </Columns>
-</RadzenDataGrid>
-
 
 <style>
     .complete-status {
@@ -68,38 +40,37 @@
         color: cornflowerblue;
         font-weight: normal;
     }
+
+        .unknown-status {
+            color: gray;
+            font-weight: normal;
+        }
 </style>
 
 @code {
-    private List<StatusData> data;
-    private List<TransactiosDc> data1;
+    private List<GInterfaceCore.Models.TransactiosDc> data1;
     private Core.AppCore _appCore = Core.AppCore.Instance;
-    protected override void OnInitialized()
+
+    protected override async Task OnInitializedAsync()
     {
-        // Datos fijos para el DataGrid
-        data = new List<StatusData>
+        if (_appCore.DocumentType.Count == 0)
         {
-            new StatusData { Location = "Argentina", Status = "Completed", Trustworthiness = "Perfect", Rating = 4, SoftwarePercent = "52%" },
-            new StatusData { Location = "Sweden", Status = "Error", Trustworthiness = "Sufficient", Rating = 3, SoftwarePercent = "43%" },
-            new StatusData { Location = "Canada", Status = "Completed", Trustworthiness = "Perfect", Rating = 5, SoftwarePercent = "46%" },
-            new StatusData { Location = "France", Status = "Completed", Trustworthiness = "Perfect", Rating = 5, SoftwarePercent = "45%" },
-            new StatusData { Location = "Mexico", Status = "Error", Trustworthiness = "Perfect", Rating = 5, SoftwarePercent = "48%" },
-            new StatusData { Location = "USA", Status = "Pending", Trustworthiness = "Perfect", Rating = 5, SoftwarePercent = "33%" },
-            new StatusData { Location = "UK", Status = "Completed", Trustworthiness = "Sufficient", Rating = 3, SoftwarePercent = "93%" },
-            new StatusData { Location = "Austria", Status = "Pending", Trustworthiness = "Insufficient", Rating = 2, SoftwarePercent = "41%" },
-        };
+            await _appCore.GetDocumentTypeAsync();
+        }
 
-        // data1 = _appCore.GetTransaction();
+        // Obtener los datos reales desde el método GetTransaction
+        data1 = await _appCore.GetTransaction(); // Usa await aquí
     }
 
-    public class StatusData
+    public class TransactiosDc
     {
-        public string Location { get; set; }
-        public string Status { get; set; }
-        public string Trustworthiness { get; set; }
-        public int Rating { get; set; } // Rating as integer, assuming a scale from 1 to 5
-        public string SoftwarePercent { get; set; }
+        public int ID { get; set; }
+        public int I_ID_CLIENT { get; set; }
+        public int I_ID_SYSTEM { get; set; }
+        public Dictionary<int, string> I_ID_TYPEDOC { get; set; }
+        public string I_JSONTEMPLATE { get; set; }
+        public string I_JSONDATA { get; set; }
+        public Status I_ID_STATUS { get; set; } // Cambiado a Status
+        public DateOnly I_CREATED_DTM { get; set; }
     }
-
 }
-

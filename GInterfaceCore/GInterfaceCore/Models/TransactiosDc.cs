@@ -11,7 +11,7 @@ namespace GInterfaceCore.Models
 
         public int I_ID_CLIENT { get; set; }  // Llave foránea de I_CLIENT
 
-        public int I_ID_SYSTEM { get; set; }  // Llave foránea de I_SYSTEM
+        public SystemM I_ID_SYSTEM { get; set; }  // Llave foránea de I_SYSTEM
 
         public Dictionary<int, string> I_ID_TYPEDOC { get; set; }  // Llave foránea de i_DocumentType
 

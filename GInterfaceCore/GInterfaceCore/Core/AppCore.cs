@@ -678,7 +678,7 @@ namespace GInterfaceCore.Core
 
             using (SqlConnection connection = GetDBConnection())
             {
-                SqlCommand cmd = new SqlCommand("SP_GetBaseFileTemplate", connection);
+                SqlCommand cmd = new SqlCommand("SP_GINTERFACE_GetBaseFileTemplate", connection);
                 cmd.CommandType = CommandType.StoredProcedure;
                 Console.WriteLine(connection);
                 connection.Open();
@@ -1248,10 +1248,20 @@ namespace GInterfaceCore.Core
 
                 while (reader.Read())
                 {
+                    string tipoDocumento;
                     var json = reader["I_JSONTEMPLATE"].ToString();
-                    JsonDocument document = JsonDocument.Parse(json);
-                    var idSiteDocument = document.RootElement.GetProperty("id_document").GetString();
-                    idSiteDocument = idSiteDocument.Split('_').Last();
+                    using (JsonDocument doc = JsonDocument.Parse(json))
+                    {
+                        // Acceder al array "customer" y luego al primer elemento
+                        var customer = doc.RootElement.GetProperty("customer")[0];
+
+                        // Extraer el valor de "TipoDocumento"
+                        tipoDocumento = customer.GetProperty("TipoDocumento").GetString();
+
+                      
+                        
+                    }
+                    //tipoDocumento = tipoDocumento.Split('_').Last();
 
 
                     var diction = new Dictionary<int, string>();
@@ -1262,14 +1272,15 @@ namespace GInterfaceCore.Core
                         // Si se encuentra la clave, añadirla al nuevo diccionario
                         diction.Add(idFileType, value);
                     }
+                    var sys = await instance.GetSystemByIdAsync(Convert.ToInt32(reader["I_ID_SYSTEM"]));
                     Status status = await instance.GetStatusByIdAsync(Convert.ToInt32(reader["I_ID_STATUS"]));
                     TransactiosDc transaction = new TransactiosDc
                     {
                         ID = Convert.ToInt32(reader["ID"]),
                         I_ID_CLIENT = Convert.ToInt32(reader["I_ID_CLIENT"]),
-                        I_ID_SYSTEM = Convert.ToInt32(reader["I_ID_SYSTEM"]),
+                        I_ID_SYSTEM = sys,
                         I_ID_TYPEDOC = diction ,
-                        I_JSONTEMPLATE = idSiteDocument,
+                        I_JSONTEMPLATE = tipoDocumento,
                         I_JSONDATA = reader["I_JSONDATA"].ToString(),
                         I_ID_STATUS = status,
                         I_CREATED_DTM = DateOnly.FromDateTime(Convert.ToDateTime(reader["I_CREATED_DTM"]))  // Mapea a DateOnly
@@ -1282,13 +1293,44 @@ namespace GInterfaceCore.Core
 
             return transactionFiles;
         }
+        public async Task<SystemM> GetSystemByIdAsync(int iSystem)
+        {
+            SystemM system = null;
+
+            using (SqlConnection connection = GetDBConnection())
+            {
+                using (SqlCommand command = new SqlCommand("SP_GINTERFACE_GetSystemById", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@I_SYSTEM", iSystem);
+
+                    await connection.OpenAsync();
+
+                    using (SqlDataReader reader = await command.ExecuteReaderAsync())
+                    {
+                        if (await reader.ReadAsync())
+                        {
+                            system = new SystemM
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("id")),
+                                I_ID_CLIENT = reader.GetInt32(reader.GetOrdinal("ID_CLIENT")),
+                                SystemName = reader.GetString(reader.GetOrdinal("I_SYSTEM_NAME"))
+                            };
+                        }
+                    }
+                }
+            }
+
+            return system;
+        }
+
         public async Task<Status> GetStatusByIdAsync(int id)
         {
             Status status = null;
 
             using (SqlConnection connection = GetDBConnection())
             {
-                using (SqlCommand command = new SqlCommand("SP_GetStatusById", connection))
+                using (SqlCommand command = new SqlCommand("SP_GINTERFACE_GetStatusById", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.AddWithValue("@Id", id); // Pasar el Id como parámetro

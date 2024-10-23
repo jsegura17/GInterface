@@ -170,7 +170,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 
-ALTER  PROCEDURE [dbo].[SP_GInterface_INSERT_FILE_CSV]
+CREATE  PROCEDURE [dbo].[SP_GINTERFACE_INSERT_FILE_CSV]
 	@FileNames NVARCHAR(MAX),
     @FileStatus INT,
     @FileFields INT,
@@ -649,6 +649,33 @@ END
 GO
 
 
+
+CREATE PROCEDURE SP_GINTERFACE_GetStatusById
+    @Id INT -- Definir el parámetro de entrada
+AS
+BEGIN
+    -- Seleccionar el status por Id
+    SELECT id, description, detail
+    FROM i_STATUS
+    WHERE Id = @Id; -- Filtrar por el Id proporcionado
+END;
+
+
+CREATE PROCEDURE SP_GINTERFACE_GetSystemById
+    @I_SYSTEM INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT 
+        id,
+        I_ID_CLIENT,
+        SystemName
+    FROM 
+        YourTableName -- Reemplaza con el nombre real de tu tabla
+    WHERE 
+        I_SYSTEM = @I_SYSTEM;
+END
 
 
 

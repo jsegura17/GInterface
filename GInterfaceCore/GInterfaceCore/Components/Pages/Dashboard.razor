@@ -3,31 +3,43 @@
 @using Radzen
 
 <h3>Estado de transacción</h3>
-<RadzenButton Click=@(args => OnClick()) Text="Refresh" Icon="refresh" ButtonStyle="ButtonStyle.Primary" />
-<RadzenDataGrid AllowFiltering="true" AllowSorting="true" AllowPaging="true" PageSize="5" Data="@data1">
+<div class="d-flex justify-content-start align-items-center">
+
+
+    <!-- Label e Input para filtrar con estilo RadzenTextBox -->
+    <label for="filterInput" class="mb-0 me-2">Filtrar por nombre:</label>
+    <RadzenTextBox id="filterInput" @bind-Value="filterText" Placeholder="Escribe para filtrar..." Style="width: 300px;" class="input-margin" @oninput="OnInputChange" />
+    <!-- Botón Refresh con márgenes -->
+    <RadzenButton Click=@(args => OnClick()) Text="Refresh" Icon="refresh" ButtonStyle="ButtonStyle.Primary" class="button-margin" />
+</div>
+
+
+
+<!-- DataGrid para mostrar los datos -->
+<RadzenDataGrid AllowFiltering="true" AllowSorting="false" AllowPaging="false" PageSize="5" Data="@filteredData">
     <Columns>
-        <RadzenDataGridColumn Property="I_JSONTEMPLATE" Title="Nombre del Documento" />
+        <RadzenDataGridColumn Property="I_JSONTEMPLATE" Title="Tipo de Documento" />
         <RadzenDataGridColumn Property="I_ID_STATUS" Title="Estado">
             <Template Context="data">
                 @{
-                    var statusClass = data.I_ID_STATUS?.description switch
+                    var statusClass = data.I_ID_STATUS?.description?.Trim().ToLower() switch
                     {
-                        "Completed" => "complete-status",
-                        "Error" => "error-status",
-                        "Pending" => "pending-status",
+                        "completed" => "complete-status",
+                        "error" => "error-status",
+                        "pending" => "pending-status",
                         _ => "unknown-status"
                     };
                 }
-                <span class="@statusClass">@data.I_ID_STATUS?.description ?? "Unknown"</span>
+                <span class="@statusClass">@data.I_ID_STATUS?.description</span>
             </Template>
         </RadzenDataGridColumn>
-        <RadzenDataGridColumn Property="I_ID_CLIENT" Title="Empresa" />
-        <RadzenDataGridColumn Property="I_ID_SYSTEM" Title="Servicio" />
+        <RadzenDataGridColumn Property="I_ID_CLIENT" Title="Tipo Envio" />
+        <RadzenDataGridColumn Property="I_ID_SYSTEM.SystemName" Title="Servicio" />
         <RadzenDataGridColumn Property="I_CREATED_DTM" Title="Fecha Ingreso" />
     </Columns>
 </RadzenDataGrid>
 
-
+<!-- Estilos personalizados -->
 <style>
     .complete-status {
         color: green;
@@ -44,15 +56,29 @@
         font-weight: normal;
     }
 
-        .unknown-status {
-            color: gray;
-            font-weight: normal;
-        }
+    .unknown-status {
+        color: gray;
+        font-weight: normal;
+    }
+
+    /* Márgenes para el botón y el input */
+    .button-margin {
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+
+    .input-margin {
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
 </style>
 
 @code {
     private List<GInterfaceCore.Models.TransactiosDc> data1;
     private Core.AppCore _appCore = Core.AppCore.Instance;
+    private string filterText = string.Empty;
+    private List<GInterfaceCore.Models.TransactiosDc> filteredData;
+    private CancellationTokenSource cts = new CancellationTokenSource();
 
     protected override async Task OnInitializedAsync()
     {
@@ -62,18 +88,48 @@
         }
 
         // Obtener los datos reales desde el método GetTransaction
-        data1 = await _appCore.GetTransaction(); // Usa await aquí
+        data1 = await _appCore.GetTransaction();
+        filteredData = data1; // Inicialmente, no filtrar
     }
+
     private async Task OnClick()
     {
         data1 = await _appCore.GetTransaction(); // Refrescar datos
+        filteredData = data1; // Actualizar el DataGrid con los nuevos datos
         await InvokeAsync(StateHasChanged);      // Actualizar la UI
     }
+
+    private async Task OnInputChange(ChangeEventArgs e)
+    {
+        cts.Cancel(); // Cancelar cualquier filtro anterior en proceso
+        cts = new CancellationTokenSource();
+
+        try
+        {
+            // Espera 300ms antes de aplicar el filtro para evitar filtrados excesivos
+            await Task.Delay(300, cts.Token);
+
+            // Aplicar el filtro después del retraso
+            FilterData();
+        }
+        catch (TaskCanceledException)
+        {
+            // Si el filtro es cancelado, no hacer nada
+        }
+    }
+
+    private void FilterData()
+    {
+        // Filtra los datos que contienen el texto ingresado (ignora mayúsculas/minúsculas)
+        filteredData = data1.Where(p => p.I_JSONTEMPLATE.Contains(filterText, StringComparison.OrdinalIgnoreCase)).ToList();
+        StateHasChanged();
+    }
+
     public class TransactiosDc
     {
         public int ID { get; set; }
         public int I_ID_CLIENT { get; set; }
-        public int I_ID_SYSTEM { get; set; }
+        public SystemM I_ID_SYSTEM { get; set; }
         public Dictionary<int, string> I_ID_TYPEDOC { get; set; }
         public string I_JSONTEMPLATE { get; set; }
         public string I_JSONDATA { get; set; }

@@ -62,7 +62,7 @@
                         var parameters = new Dictionary<string, object>() { { "FileName", fileName } };
 
                         // Mostrar modal para pedir el tamaño del header
-                        var result = await DialogService.OpenComponentExtension<HeaderSizeDialog>("Título del Diálogo", parameters);
+                        var result = await DialogService.OpenComponentExtension<HeaderSizeDialog>("Título del Diálogo", parameters, null);
 
                         if (result != null)
                         {

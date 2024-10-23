@@ -61,7 +61,7 @@ namespace GInterfaceCore.Properties {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Server=WMS-SRV;Database=GInterface;User Id=sa;Password=$ymbar2024!;.
+        ///   Busca una cadena traducida similar a Server=144.144.144.50;Database=GInterface;User Id=sa;Password=$ymbar2024!;.
         /// </summary>
         internal static string ConnectionString {
             get {

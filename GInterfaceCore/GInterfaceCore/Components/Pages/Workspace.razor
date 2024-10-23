@@ -97,7 +97,7 @@
                                                      height: 100px;
                                                      background-size: cover;
                                                      border: none;"
-                                              Click="@(() => ChargeDocumentBlock(file.ID))" />
+                                              Click="@(() => ChargeDocumentTranscation(file))" />
                             </RadzenColumn>
                         </RadzenRow>
                     </RadzenCard>
@@ -164,12 +164,9 @@
         }
     }
 
-    public async void ChargeDocumentBlock(int id)
+    public async void ChargeDocumentTranscation(FileCSV file)
     {
-        if (id != 0)
-        {
-            _appCore.InsertFormatoIngreso(id);
-        }
+        _appCore.InsertTransactionInfo(file);
     }
 
     public class EnumValue

@@ -647,8 +647,7 @@ namespace GInterfaceCore.Core
                         });
                       
 
-                        // Tabla Temp
-                        // Agregar parámetro de salida
+                        
 
                         
 
@@ -923,46 +922,47 @@ namespace GInterfaceCore.Core
             }
             return table;
         }
-        public List<string> RequireHeaders() 
+        public void InsertTransactionInfo(FileCSV file)
         {
-            List<string> requireHeaderlist = new List<string> { };
-              
-            
+            // Asumiendo que FileType es un Dictionary<int, string>
+            var key = file.FileType.Keys.FirstOrDefault(); // Obtiene el primer key en el diccionario
 
-            switch (instance.documentType)
+            switch (key)
             {
                 case 1:
-                    // Código a ejecutar si variable es igual a valor1
+                    instance.InsertFormatoIngreso(file.ID);
                     break;
 
                 case 2:
-                    // Código a ejecutar si variable es igual a valor2
+                    // Código a ejecutar si la clave es 2
                     break;
 
                 case 3:
-                    // Código a ejecutar si variable es igual a valor3
+                    // Código a ejecutar si la clave es 3
                     break;
+
                 case 4:
-                    // Código a ejecutar si variable es igual a valor3
+                    // Código a ejecutar si la clave es 4
                     break;
+
                 case 5:
-                    // Código a ejecutar si variable es igual a valor3
+                    // Código a ejecutar si la clave es 5
                     break;
+
                 case 6:
-                    // Código a ejecutar si variable es igual a valor3
+                    // Código a ejecutar si la clave es 6
                     break;
+
                 case 7:
-                    // Código a ejecutar si variable es igual a valor3
+                    // Código a ejecutar si la clave es 7
                     break;
 
                 default:
                     // Código a ejecutar si ninguno de los casos anteriores coincide
                     break;
             }
-
-
-            return requireHeaderlist;
         }
+
 
 
         public void sortDataExcel(List<List<string>> excel, string fileName, List<string> dataArray, string endStartInfo)
@@ -1355,6 +1355,7 @@ namespace GInterfaceCore.Core
             return status;
         }
 
+        
 
         public void LogOut()
         {

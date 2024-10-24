@@ -82,7 +82,7 @@ namespace GInterfaceCore.Core
         /// Para esta parte va hacer para compartir los datos generados para guardar el csv
         /// </summary>
         public string CFileName = "";
-        public TransactionStatus fileStatus;
+        public int fileStatus;
         public string ObjJason = "";
         public DataTable InfotTempo;
         public int head;
@@ -434,7 +434,7 @@ namespace GInterfaceCore.Core
                     }
                     DataTable dataTable = LoadCsvData(itemTemp);
                     instance.CFileName = fileName;
-                    instance.fileStatus = TransactionStatus.Pending;
+                    instance.fileStatus = 1;
                     instance.ObjJason = objjson;
                     instance.InfotTempo = dataTable;
                     instance.head = headers.Length;
@@ -449,7 +449,7 @@ namespace GInterfaceCore.Core
             }
 
         }
-        public void InsertFileCsv(string fileNames, TransactionStatus fileStatus, int fileFields, string fileJsonObj, DataTable csvData, string inbound, int fileType)
+        public void InsertFileCsv(string fileNames, int fileStatus, int fileFields, string fileJsonObj, DataTable csvData, string inbound, int fileType)
         {
 
             string message = string.Empty;
@@ -542,7 +542,7 @@ namespace GInterfaceCore.Core
 
         }
 
-        public void InsertBaseFileCsv(string fileNames, TransactionStatus fileStatus, int fileFields, int fileType, string fileJsonObj, string inbound)
+        public void InsertBaseFileCsv(string fileNames, int fileStatus, int fileFields, int fileType, string fileJsonObj, string inbound)
         {
 
             string message = string.Empty;
@@ -647,8 +647,7 @@ namespace GInterfaceCore.Core
                         });
                       
 
-                        // Tabla Temp
-                        // Agregar parámetro de salida
+                        
 
                         
 
@@ -678,7 +677,7 @@ namespace GInterfaceCore.Core
 
             using (SqlConnection connection = GetDBConnection())
             {
-                SqlCommand cmd = new SqlCommand("SP_GetBaseFileTemplate", connection);
+                SqlCommand cmd = new SqlCommand("SP_GINTERFACE_GetBaseFileTemplate", connection);
                 cmd.CommandType = CommandType.StoredProcedure;
                 Console.WriteLine(connection);
                 connection.Open();
@@ -757,6 +756,13 @@ namespace GInterfaceCore.Core
 
                 while (reader.Read())
                 {
+                    var idFileType = Convert.ToInt32(reader["FileType"]);
+                    var diction = new Dictionary<int, string>();
+                    if (instance.DocumentType.TryGetValue(idFileType, out string value))
+                    {
+                        // Si se encuentra la clave, añadirla al nuevo diccionario
+                        diction.Add(idFileType, value);
+                    }
                     FileCSV file = new FileCSV
                     {
                         ID = Convert.ToInt32(reader["ID"]),
@@ -764,6 +770,7 @@ namespace GInterfaceCore.Core
                         FileDate = Convert.ToDateTime(reader["FileDate"]),
                         FileStatus = (TransactionStatus)Convert.ToInt32(reader["FileStatus"]), // Asegúrate de que FileStatus sea un int en la base de datos y se pueda mapear a TransactionStatus
                         FileFields = Convert.ToInt32(reader["FileFields"]),
+                        FileType = diction,
                         InboundOutbound = reader["FileInbound"].ToString(),
                         FileJsonObj = reader["FileJsonObj"].ToString()
                     };
@@ -923,46 +930,47 @@ namespace GInterfaceCore.Core
             }
             return table;
         }
-        public List<string> RequireHeaders() 
+        public void InsertTransactionInfo(FileCSV file)
         {
-            List<string> requireHeaderlist = new List<string> { };
-              
-            
+            // Asumiendo que FileType es un Dictionary<int, string>
+            var key = file.FileType.Keys.FirstOrDefault(); // Obtiene el primer key en el diccionario
 
-            switch (instance.documentType)
+            switch (key)
             {
                 case 1:
-                    // Código a ejecutar si variable es igual a valor1
+                   
                     break;
 
                 case 2:
-                    // Código a ejecutar si variable es igual a valor2
+                    // Código a ejecutar si la clave es 2
                     break;
 
                 case 3:
-                    // Código a ejecutar si variable es igual a valor3
+                    // Código a ejecutar si la clave es 3
                     break;
+
                 case 4:
-                    // Código a ejecutar si variable es igual a valor3
+                    instance.InsertFormatoIngreso(file.ID);
                     break;
+
                 case 5:
-                    // Código a ejecutar si variable es igual a valor3
+                    // Código a ejecutar si la clave es 5
                     break;
+
                 case 6:
-                    // Código a ejecutar si variable es igual a valor3
+                    // Código a ejecutar si la clave es 6
                     break;
+
                 case 7:
-                    // Código a ejecutar si variable es igual a valor3
+                    // Código a ejecutar si la clave es 7
                     break;
 
                 default:
                     // Código a ejecutar si ninguno de los casos anteriores coincide
                     break;
             }
-
-
-            return requireHeaderlist;
         }
+
 
 
         public void sortDataExcel(List<List<string>> excel, string fileName, List<string> dataArray, string endStartInfo)
@@ -1067,7 +1075,7 @@ namespace GInterfaceCore.Core
                     DataTable dataTable = LoadCsvData(processedData);
                     
                     instance.CFileName = fileName.Replace(" ", "_");
-                    instance.fileStatus = TransactionStatus.Pending;
+                    instance.fileStatus = 1;
                     instance.ObjJason = objjson;
                     instance.InfotTempo = dataTable;
                     instance.head = headers.Count;
@@ -1248,10 +1256,20 @@ namespace GInterfaceCore.Core
 
                 while (reader.Read())
                 {
+                    string tipoDocumento;
                     var json = reader["I_JSONTEMPLATE"].ToString();
-                    JsonDocument document = JsonDocument.Parse(json);
-                    var idSiteDocument = document.RootElement.GetProperty("id_document").GetString();
-                    idSiteDocument = idSiteDocument.Split('_').Last();
+                    using (JsonDocument doc = JsonDocument.Parse(json))
+                    {
+                        // Acceder al array "customer" y luego al primer elemento
+                        var customer = doc.RootElement.GetProperty("TemplateItems")[0];
+
+                        // Extraer el valor de "TipoDocumento"
+                        tipoDocumento = customer.GetProperty("codigo_ordenes_documento").GetString();
+
+                      
+                        
+                    }
+                    //tipoDocumento = tipoDocumento.Split('_').Last();
 
 
                     var diction = new Dictionary<int, string>();
@@ -1262,14 +1280,15 @@ namespace GInterfaceCore.Core
                         // Si se encuentra la clave, añadirla al nuevo diccionario
                         diction.Add(idFileType, value);
                     }
+                    var sys = await instance.GetSystemByIdAsync(Convert.ToInt32(reader["I_ID_SYSTEM"]));
                     Status status = await instance.GetStatusByIdAsync(Convert.ToInt32(reader["I_ID_STATUS"]));
                     TransactiosDc transaction = new TransactiosDc
                     {
                         ID = Convert.ToInt32(reader["ID"]),
                         I_ID_CLIENT = Convert.ToInt32(reader["I_ID_CLIENT"]),
-                        I_ID_SYSTEM = Convert.ToInt32(reader["I_ID_SYSTEM"]),
+                        I_ID_SYSTEM = sys,
                         I_ID_TYPEDOC = diction ,
-                        I_JSONTEMPLATE = idSiteDocument,
+                        I_JSONTEMPLATE = tipoDocumento,
                         I_JSONDATA = reader["I_JSONDATA"].ToString(),
                         I_ID_STATUS = status,
                         I_CREATED_DTM = DateOnly.FromDateTime(Convert.ToDateTime(reader["I_CREATED_DTM"]))  // Mapea a DateOnly
@@ -1282,13 +1301,44 @@ namespace GInterfaceCore.Core
 
             return transactionFiles;
         }
+        public async Task<SystemM> GetSystemByIdAsync(int iSystem)
+        {
+            SystemM system = null;
+
+            using (SqlConnection connection = GetDBConnection())
+            {
+                using (SqlCommand command = new SqlCommand("SP_GINTERFACE_GetSystemById", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@I_SYSTEM", iSystem);
+
+                    await connection.OpenAsync();
+
+                    using (SqlDataReader reader = await command.ExecuteReaderAsync())
+                    {
+                        if (await reader.ReadAsync())
+                        {
+                            system = new SystemM
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("id")),
+                                I_ID_CLIENT = reader.GetInt32(reader.GetOrdinal("ID_CLIENT")),
+                                SystemName = reader.GetString(reader.GetOrdinal("I_SYSTEM_NAME"))
+                            };
+                        }
+                    }
+                }
+            }
+
+            return system;
+        }
+
         public async Task<Status> GetStatusByIdAsync(int id)
         {
             Status status = null;
 
             using (SqlConnection connection = GetDBConnection())
             {
-                using (SqlCommand command = new SqlCommand("SP_GetStatusById", connection))
+                using (SqlCommand command = new SqlCommand("SP_GINTERFACE_GetStatusById", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.AddWithValue("@Id", id); // Pasar el Id como parámetro
@@ -1313,6 +1363,7 @@ namespace GInterfaceCore.Core
             return status;
         }
 
+        
 
         public void LogOut()
         {

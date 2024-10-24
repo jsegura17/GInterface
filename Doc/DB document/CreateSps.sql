@@ -1,3 +1,6 @@
+--ACTUALIZADO EL 24-10-2024 
+
+
 /****** Object:  StoredProcedure [dbo].[SP_GetBaseFileTemplate]    Script Date: 10/21/2024 8:48:38 AM ******/
 /****** Se encarga de traer los Templates del los archivos para la web ******/
 SET ANSI_NULLS ON

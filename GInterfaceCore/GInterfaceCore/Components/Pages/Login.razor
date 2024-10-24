@@ -88,6 +88,7 @@
     {
         // Aquí iría la lógica de autenticación
         var isAuthenticated = await AuthenticationService.LoginAsync(loginModel.Username, loginModel.Password);
+       
         if (isAuthenticated)
         {
             // Autenticación exitosa

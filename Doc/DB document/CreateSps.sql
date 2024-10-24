@@ -1,3 +1,6 @@
+--ACTUALIZADO EL 24-10-2024 
+
+
 /****** Object:  StoredProcedure [dbo].[SP_GetBaseFileTemplate]    Script Date: 10/21/2024 8:48:38 AM ******/
 /****** Se encarga de traer los Templates del los archivos para la web ******/
 SET ANSI_NULLS ON
@@ -689,6 +692,267 @@ BEGIN
     WHERE 
         I_SYSTEM = @I_SYSTEM;
 END
+
+
+GO
+
+/****** Object:  StoredProcedure [dbo].[SP_i_ValidateUserCredentials]    Script Date: 10/24/2024 3:03:01 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+
+
+CREATE PROCEDURE [dbo].[SP_i_ValidateUserCredentials]
+    @Email VARCHAR(50),
+    @Password VARCHAR(50),
+    @IsValid BIT OUTPUT,
+    @IsAdmin BIT OUTPUT
+AS
+BEGIN
+    SET @IsValid = 0;
+    SET @IsAdmin = 0; -- Asumimos que el usuario no es admin por defecto
+
+    -- Declaramos una variable para almacenar el tipo de usuario
+    DECLARE @UserType VARCHAR(10);
+
+    -- Buscamos el usuario con las credenciales proporcionadas y obtenemos su tipo de usuario
+    SELECT @UserType = [type_User]
+    FROM dbo.i_User AS us
+    WHERE us.email = @Email AND us.user_Pass = @Password;
+
+    -- Si encontramos un usuario, entonces las credenciales son válidas
+    IF @UserType IS NOT NULL
+    BEGIN
+        SET @IsValid = 1;
+        -- Comprobamos si el tipo de usuario es 'admin' y establecemos @IsAdmin en consecuencia
+        IF @UserType = 'admin'
+        BEGIN
+            SET @IsAdmin = 1;
+        END
+    END
+END;
+GO
+
+
+USE [GInterface]
+GO
+
+/****** Object:  StoredProcedure [dbo].[SP_GINTERFACE_GetTrasaction]    Script Date: 10/24/2024 3:04:04 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[SP_GINTERFACE_GetTrasaction]
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- Selecciona los datos de la tabla I_TRANSACTION
+    SELECT 
+        ID,
+        I_ID_CLIENT,
+        I_ID_SYSTEM,
+        I_ID_TYPEDOC,
+        I_JSONTEMPLATE,
+        I_JSONDATA,
+        I_ID_STATUS,
+        I_CREATED_DTM
+    FROM 
+        I_TRANSACTION;
+END
+GO
+
+USE [GInterface]
+GO
+
+/****** Object:  StoredProcedure [dbo].[SP_GInterface_Import_Income]    Script Date: 10/24/2024 3:05:24 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+
+CREATE PROCEDURE [dbo].[SP_GInterface_Import_Income]
+	
+	
+	-- Test control.  Rolls back the transaction if in test mode.  1 to test; 0 to persist changes.
+	@testMode bit = 0, -- IMPORTANT live this value in 1 for testing, set it to 0 to apply the changes,
+	@MSG NVARCHAR(MAX) OUTPUT,
+	@Status BIT OUTPUT
+AS
+BEGIN
+	
+	PRINT 'Proceso iniciado'
+
+	DECLARE @CodigoERP nvarchar(max)
+	DECLARE @TipoDocumento nvarchar(max)
+	DECLARE @TipoEntidad nvarchar(max)
+	DECLARE @Entidad nvarchar(max)
+	DECLARE @FechaOrden date
+	DECLARE @ABM char(1)
+	DECLARE @Producto nvarchar(max)
+	DECLARE @Presentacion nvarchar(max)
+	DECLARE @Cantidad decimal(18,0)
+
+	DECLARE @TransactionStatus int
+	DECLARE @jsonTemplate nvarchar(max)
+	DECLARE @jsonData nvarchar(max)
+	DECLARE @IDTRANSACTION int
+
+	DECLARE @CodigoEntidad NVARCHAR(50);
+	DECLARE @CodigoTipoEntidad NVARCHAR(50);
+	
+	 -- Se declara cursor para procesar cada transacción pendiente
+    DECLARE TransactionCursor CURSOR FOR 
+    SELECT ID 
+    FROM [dbo].[I_TRANSACTION] 
+    WHERE I_ID_STATUS = 1  
+    
+    OPEN TransactionCursor
+    FETCH NEXT FROM TransactionCursor INTO @IDTRANSACTION
+    
+    WHILE @@FETCH_STATUS = 0
+	BEGIN
+	BEGIN TRAN T1
+	BEGIN TRY
+	
+	
+	-- Recuperar los JSONs desde la tabla
+
+	SELECT	@jsonTemplate = [I_JSONTEMPLATE],
+			@jsonData = [I_JSONDATA] 
+			FROM [dbo].[I_TRANSACTION] WHERE ID = @IDTRANSACTION;
+	
+
+	-- Extraer los valores del JSON Template
+
+    SELECT 
+		@CodigoERP=CodigoERP,
+		@TipoDocumento=TipoDocumento,
+		@TipoEntidad=TipoEntidad,
+		@Entidad=Entidad,
+		@FechaOrden=FechaOrden,
+		@ABM=ABM
+	FROM 
+		OPENJSON(@jsonTemplate, '$.TemplateItems') 
+		WITH (
+			CodigoERP NVARCHAR(50) '$.codigo_ordenes_erp',
+			TipoDocumento NVARCHAR(50) '$.codigo_ordenes_documento',
+			TipoEntidad NVARCHAR(50) '$.codigo_entidades_tipo',
+			Entidad NVARCHAR(50) '$.codigo_entidades',
+			FechaOrden DATE '$.fecha_orden',
+			ABM CHAR(1) '$.abm'
+		);  
+	
+	--Validacion de datos necesarios	
+
+	SELECT @CodigoEntidad = [codigo_entidades] 
+	FROM [sys_block_MorelDistribucion].[dbo].[Entidades]
+	WHERE [codigo_entidades] = @Entidad;  -- Comparación de Entidad
+
+	SELECT @CodigoTipoEntidad = [codigo_entidades_tipos] 
+	FROM [sys_block_MorelDistribucion].[dbo].[i_Entidades_Categorias]
+	WHERE [codigo_entidades_tipos] = @TipoEntidad;  -- Comparación de TipoEntidad
+	
+	
+
+	-- Comparar los resultados de las validaciones
+	IF (@CodigoEntidad IS NOT NULL AND @CodigoTipoEntidad IS NOT NULL)
+	BEGIN
+	PRINT 'Validacion de los datos exitosa'
+		-- Insertar data de orden
+	INSERT INTO [sys_block_MorelDistribucion].[dbo].[i_Ordenes_Ingreso](
+	codigo_ordenes_erp,
+	codigo_ordenes_documento,
+	codigo_entidades_tipo,
+	codigo_entidades,
+	fecha_orden,
+	abm) VALUES(
+	@CodigoERP,
+	@TipoDocumento,
+	@TipoEntidad,
+	@Entidad,
+	@FechaOrden,
+	@ABM); 
+	--Insertar data items
+	INSERT INTO [sys_block_MorelDistribucion].[dbo].[i_Ordenes_Ingreso_Items](
+	[codigo_ordenes_erp],
+	[codigo_productos],
+	[codigo_presentaciones],
+	[cantidad]
+	)SELECT 
+		@CodigoERP,
+		items.Producto,
+		items.Presentacion,
+		items.Cantidad
+	FROM 
+		OPENJSON(@jsonData, '$.Items') 
+		WITH (
+			Producto NVARCHAR(50) '$.codigo_producto',
+			Presentacion NVARCHAR(50) '$.Unidad',
+			Cantidad decimal(18,0) '$.cantidad'
+		) AS items;
+	END
+	ELSE
+	BEGIN
+		-- Si falla la validacion
+		
+		ROLLBACK TRAN T1;
+		PRINT 'Validacion Fallida';
+		SET @MSG = 'La validacion de los datos falló';
+		SET @Status = 0;
+		UPDATE I_TRANSACTION SET I_ID_STATUS = 11 WHERE ID = @IDTRANSACTION;
+		RETURN;
+	END
+
+
+	 IF (@testMode = 1)
+       BEGIN
+              ROLLBACK TRAN T1;
+              PRINT N'------- TEST MODE ON ------- Changes rolled back.';
+			  SET @MSG = 'Testing Mode ON - No se Cargaron Datos por ser pruebas';
+			  SET @Status = 0; 
+       END
+     ELSE
+	   BEGIN
+			  COMMIT TRAN T1;
+			  PRINT N'------- TEST MODE OFF ------- Changes was commited.';			  
+			  SET @MSG = 'Insertion successful.';
+			  SET @Status = 1; -- True (1) for success
+			  UPDATE I_TRANSACTION SET I_ID_STATUS=3 WHERE ID=@IDTRANSACTION;
+			  SELECT * FROM [sys_block_MorelDistribucion].[dbo].[i_Ordenes_Ingreso]
+			  SELECT * FROM [sys_block_MorelDistribucion].[dbo].[i_Ordenes_Ingreso_Items]
+	   END
+	END TRY
+	BEGIN CATCH
+		SET @MSG = ERROR_MESSAGE();
+        SET @Status = 0; -- False (0) for failure
+		PRINT N'Error: ' + ERROR_MESSAGE()
+		ROLLBACK TRAN T1;
+		UPDATE I_TRANSACTION SET I_ID_STATUS = 11 WHERE ID = @IDTRANSACTION;
+	END CATCH
+
+	 FETCH NEXT FROM TransactionCursor INTO @IDTRANSACTION
+    END
+    
+    CLOSE TransactionCursor
+    DEALLOCATE TransactionCursor
+
+	PRINT @MSG
+	PRINT 'Proceso Detenido'
+
+END
+GO
+
+
 
 
 

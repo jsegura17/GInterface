@@ -69,7 +69,7 @@
 </div>
 
 <div style="display: flex; justify-content: center; margin-top: 30px;">
-    <table style="width:80%;">
+    <table style="width:80%;  background-color: white;">
         @if (FilteredPendingFiles?.Any() == true)
         {
             <RadzenDataList AllowVirtualization="true" Style="height:400px;overflow:auto;"
@@ -77,7 +77,7 @@
                 <Template Context="file">
                     <RadzenCard Variant="Variant.Outlined" class="rz-p-0" Style="width: 100%; overflow: hidden;">
                         <RadzenRow Gap="0">
-                            <RadzenColumn Size="12" SizeLG="3" class="rz-p-4">
+                            <RadzenColumn Size="12" SizeLG="3" class="rz-p-4" Style=" min-height: auto; background:var(--rz-secondary-lighter);">
                                 <RadzenText TextStyle="TextStyle.H6" TagName="TagName.H5" class="rz-color-on-secondary-lighter">
                                     @file.FileNames
                                 </RadzenText>
@@ -97,7 +97,8 @@
                                                      height: 100px;
                                                      background-size: cover;
                                                      border: none;"
-                                              Click="@(() => ChargeDocumentTranscation(file))" />
+                                              Click="@(() => ChargeDocumentTranscation(file))" 
+                                              Disabled="@IsFileCompleted(file)" />
                             </RadzenColumn>
                         </RadzenRow>
                     </RadzenCard>
@@ -134,7 +135,10 @@
         if (!string.IsNullOrEmpty(SelectedOption))
         {
             FilteredTemplateFiles = templateFiles?.Where(file => file?.InboundOutbound == SelectedOption).ToList() ?? new List<FileCSV>();
-            FilteredPendingFiles = PendingFiles?.Where(file => file?.InboundOutbound == SelectedOption).ToList() ?? new List<FileCSV>();
+            FilteredPendingFiles = PendingFiles?
+            .Where(file => file?.InboundOutbound == SelectedOption && file?.FileStatus == TransactionStatus.Pending)
+            .ToList() ?? new List<FileCSV>();
+            
         }
     }
 
@@ -166,7 +170,34 @@
 
     public async void ChargeDocumentTranscation(FileCSV file)
     {
-        _appCore.InsertTransactionInfo(file);
+        var confirmResult = await DialogService.Confirm("¿Estás seguro de que deseas continuar con la transacción?", "Confirmación",
+        new ConfirmOptions() { OkButtonText = "Confirmar", CancelButtonText = "Cancelar" });
+
+        if (confirmResult.HasValue && confirmResult.Value)
+        {
+            // El usuario confirmó, continúa con la lógica de transacción
+            _appCore.InsertTransactionInfo(file);
+        }
+        else
+        {
+            // El usuario canceló la acción
+        }
+    }
+
+    // Método para verificar si el archivo está en estado "completed"
+    private bool IsFileCompleted(FileCSV file)
+    {
+        foreach (var item in file.FileType)
+        {
+
+            if (item.Value == "Completed")
+            {
+                return true;
+            }
+            return false;
+        }
+        return false;
+
     }
 
     public class EnumValue

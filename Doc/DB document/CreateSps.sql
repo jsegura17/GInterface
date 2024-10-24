@@ -308,10 +308,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 CREATE PROCEDURE [dbo].[SP_GINTERFACE_INGRESO]
-    @IdFileCSV INT,  -- ID de la tabla i_FILE_CSV que contiene el JSON
-    @testMode BIT = 1, -- Test mode
-    @MSG NVARCHAR(MAX) OUTPUT,
-    @Status BIT OUTPUT
+    @IdFileCSV INT  -- ID de la tabla i_FILE_CSV que contiene el JSON
 AS
 BEGIN
     -- Variables para almacenar los datos extraídos del JSON
@@ -320,173 +317,189 @@ BEGIN
             @codigo_ordenes_documento NVARCHAR(MAX),
             @codigo_entidades_tipo NVARCHAR(MAX),
             @codigo_entidades NVARCHAR(MAX),
-            @fecha_orden DATE,
+            @fecha_orden DATETIME,
             @abm NVARCHAR(MAX),
-            @RECORD_EXIST AS BIT = 'false',
-            @Erp_Reporte INT
+            @jsonTemplate NVARCHAR(MAX),
+            @jsonDatan NVARCHAR(MAX),
+            @FileType INT,  -- Variable para almacenar el FileType
+            @FileStatus INT, -- Variable para almacenar el FileStatus
+            @InsertedId INT; -- Mover aquí para usar en el bloque CATCH
 
-    -- Verificar si ya existe el archivo CSV
-    PRINT '--Validar si existe un dato.'
-    IF EXISTS (SELECT * FROM [dbo].[i_FILE_CSV] WHERE ID = @IdFileCSV)
-    BEGIN
-        SET @MSG = 'Ya existe ese CSV en la DB...!';
-        SET @testMode = 1;
-        RAISERROR(@MSG, 16, 1);
-        SELECT @MSG [Error Msg];
-        SET @RECORD_EXIST = 'true';
-    END;
-
-    IF @RECORD_EXIST = 0
-    BEGIN
-        GOTO PROCESS_RUN
-    END
-    ELSE
-    BEGIN
-        GOTO PROCESS_STOP
-    END
-
-PROCESS_RUN:
-    PRINT 'Proceso iniciado';
-
-    -- Variables para tabla temporal
+    -- Crear tabla temporal para almacenar los resultados
     CREATE TABLE #Resultados (
         codigo_ordenes_erp NVARCHAR(MAX),
         codigo_ordenes_documento NVARCHAR(MAX),
         codigo_entidades_tipo NVARCHAR(MAX),
         codigo_entidades NVARCHAR(MAX),
-        fecha_orden DATE,
+        fecha_orden DATETIME,
         abm NVARCHAR(MAX),
         CodigoProducto INT,
         CantidadCS INT,
         CantidadEA INT
     );
 
-    BEGIN TRAN T1;
-    BEGIN TRY
-        -- Obtener el JSON de la tabla i_FILE_CSV
-        SELECT @JsonData = f.FileJsonObj 
-        FROM i_FILE_CSV AS f
-        WHERE ID = @IdFileCSV; 
+    DECLARE @Erp_Reporte INT;
 
-        -- Extraer DataRequireFields del JSON
-        DECLARE @DataRequireFields TABLE (Pos INT, Campo NVARCHAR(MAX));
-        INSERT INTO @DataRequireFields (Pos, Campo)
-        SELECT ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) AS Pos, value
-        FROM OPENJSON(@JsonData, '$.DataRequireFields');
+    -- Obtener el JSON, FileType y FileStatus de la tabla i_FILE_CSV
+    SELECT @JsonData = f.FileJsonObj,
+           @FileType = f.FileType,      -- Asignar el FileType a la variable
+           @FileStatus = f.FileStatus   -- Asignar el FileStatus a la variable
+    FROM i_FILE_CSV AS f
+    WHERE ID = @IdFileCSV; 
 
-        -- Obtener reporte ERP
-        SELECT @Erp_Reporte = COUNT(*) + 1
-        FROM i_FILE_CSV F
-        WHERE F.FileStatus = 2;
+    -- Extraer DataRequireFields del JSON
+    DECLARE @DataRequireFields TABLE (Pos INT, Campo NVARCHAR(MAX));
 
-        -- Generar el código ERP
-        SET @codigo_ordenes_erp = CONCAT('ing-', @Erp_Reporte);
+    INSERT INTO @DataRequireFields (Pos, Campo)
+    SELECT ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) AS Pos, value
+    FROM OPENJSON(@JsonData, '$.DataRequireFields');
 
-        -- Asignar los valores de DataRequireFields
-        SELECT 
-            @codigo_ordenes_documento = (SELECT Campo FROM @DataRequireFields WHERE Pos = 5),
-            @codigo_entidades = (SELECT Campo FROM @DataRequireFields WHERE Pos = 4),
-            @codigo_entidades_tipo = (SELECT Campo FROM @DataRequireFields WHERE Pos = 3),
-            @fecha_orden = GETDATE(),
-            @abm = (SELECT Campo FROM @DataRequireFields WHERE Pos = 1);
+    -- Calcular el código ERP
+    SELECT @Erp_Reporte = ISNULL(MAX(t.ID), 0) + 1
+    FROM I_TRANSACTION AS t;
 
-        -- Declarar un cursor para iterar sobre los registros de i_TEMP_CSV_GLOBAL
-        DECLARE cur CURSOR FOR
-        SELECT Campo1, Campo2
-        FROM i_TEMP_CSV_GLOBAL AS temp
-        WHERE temp.ID_FILE_CSV = @IdFileCSV;
+    -- Generar el código ERP una sola vez
+    SET @codigo_ordenes_erp = CONCAT('ing-', @Erp_Reporte);
 
-        -- Abrir el cursor
-        OPEN cur;
+    -- Ajustar los valores de DataRequireFields con la posición correcta
+    SELECT 
+        @codigo_ordenes_documento = (SELECT Campo FROM @DataRequireFields WHERE Pos = 5),
+        @codigo_entidades = (SELECT Campo FROM @DataRequireFields WHERE Pos = 4),
+        @codigo_entidades_tipo = (SELECT Campo FROM @DataRequireFields WHERE Pos = 3),
+        @fecha_orden = GETDATE(), -- Cambiado para usar DATETIME
+        @abm = (SELECT Campo FROM @DataRequireFields WHERE Pos = 1);
 
-        -- Variables para almacenar los datos obtenidos del cursor
-        DECLARE @CodigoProducto INT, @CantidadCS INT, @CantidadEA INT;
+    -- Declarar un cursor para iterar sobre los registros de i_TEMP_CSV_GLOBAL
+    DECLARE cur CURSOR FOR
+    SELECT Campo1, Campo2
+    FROM i_TEMP_CSV_GLOBAL AS temp
+    WHERE temp.ID_FILE_CSV = @IdFileCSV;
 
-        -- Obtener el primer registro
+    -- Abrir el cursor
+    OPEN cur;
+
+    -- Variables para almacenar los datos obtenidos del cursor
+    DECLARE @CodigoProducto INT, @CantidadCS INT, @CantidadEA INT;
+
+    -- Obtener el primer registro
+    FETCH NEXT FROM cur INTO @CodigoProducto, @CantidadCS;
+
+    -- Iterar sobre los registros
+    WHILE @@FETCH_STATUS = 0
+    BEGIN
+        -- Calcular CantidadEA usando la función que convierte CantidadCS a EA
+        SET @CantidadEA = [dbo].[fn_GInterface_Get_EA](@CodigoProducto, @CantidadCS, 0, 0);
+
+        -- Insertar los datos en la tabla temporal
+        INSERT INTO #Resultados (
+            codigo_ordenes_erp, 
+            codigo_ordenes_documento, 
+            codigo_entidades_tipo, 
+            codigo_entidades, 
+            fecha_orden, 
+            abm,
+            CodigoProducto,
+            CantidadCS,
+            CantidadEA
+        )
+        VALUES (
+            @codigo_ordenes_erp, 
+            @codigo_ordenes_documento, 
+            @codigo_entidades_tipo, 
+            @codigo_entidades, 
+            @fecha_orden, 
+            @abm,
+            @CodigoProducto,
+            @CantidadCS,
+            @CantidadEA
+        );
+
+        -- Obtener el siguiente registro
         FETCH NEXT FROM cur INTO @CodigoProducto, @CantidadCS;
+    END;
 
-        -- Iterar sobre los registros
-        WHILE @@FETCH_STATUS = 0
-        BEGIN
-            -- Calcular CantidadEA usando la función que convierte CantidadCS a EA
-            SET @CantidadEA = [dbo].[fn_GInterface_Get_EA](@CodigoProducto, @CantidadCS, 0, 0);
+    -- Cerrar y liberar el cursor
+    CLOSE cur;
+    DEALLOCATE cur;
 
-            -- Insertar los datos en la tabla temporal
-            INSERT INTO #Resultados (
-                codigo_ordenes_erp, 
-                codigo_ordenes_documento, 
-                codigo_entidades_tipo, 
-                codigo_entidades, 
-                fecha_orden, 
-                abm,
-                CodigoProducto,
-                CantidadCS,
-                CantidadEA
-            )
-            VALUES (
-                @codigo_ordenes_erp, 
-                @codigo_ordenes_documento, 
-                @codigo_entidades_tipo, 
-                @codigo_entidades, 
-                CONVERT(DATE, @fecha_orden, 103), 
-                @abm,
-                @CodigoProducto,
-                @CantidadCS,
-                @CantidadEA
-            );
+    -- Generar el JSON template
+    SELECT @jsonTemplate = (
+        SELECT 
+            (
+                SELECT 
+                    @codigo_ordenes_erp AS codigo_ordenes_erp,
+                    @codigo_ordenes_documento AS codigo_ordenes_documento,
+                     @codigo_entidades AS codigo_entidades_tipo,
+                     @codigo_entidades_tipo AS codigo_entidades,
+                    @fecha_orden AS fecha_orden,
+                    @abm AS abm
+                FOR JSON PATH -- Esta línea crea el array
+            ) AS TemplateItems -- El alias que envuelve el array
+        FOR JSON PATH, WITHOUT_ARRAY_WRAPPER -- Genera el JSON sin envolver el array completo
+    );
 
-            -- Obtener el siguiente registro
-            FETCH NEXT FROM cur INTO @CodigoProducto, @CantidadCS;
-        END;
+    -- Generar el JSON data
+    SELECT @jsonDatan = (
+        SELECT 
+            (
+                SELECT 
+                    CAST(CodigoProducto AS NVARCHAR(MAX)) AS codigo_producto,
+                    CantidadEA AS cantidad,
+                    'EA' AS Unidad
+                FROM #Resultados
+                FOR JSON PATH
+            ) AS Items
+        FOR JSON PATH, WITHOUT_ARRAY_WRAPPER
+    );
 
-        -- Cerrar y liberar el cursor
-        CLOSE cur;
-        DEALLOCATE cur;
+    -- Imprimir los JSON generados para verificar
+    PRINT @jsonTemplate;
+    PRINT @jsonDatan;
 
-        -- Modo de prueba
-        IF (@testMode = 1)
-        BEGIN
-            ROLLBACK TRAN T1;
-            PRINT N'------- TEST MODE ON ------- Changes rolled back.';
-            SET @MSG = 'Testing Mode ON - No se cargaron datos por ser pruebas';
-            SET @Status = 0;
-        END
-        ELSE
-        BEGIN
-            COMMIT TRAN T1;
-            PRINT N'------- TEST MODE ON ------- Changes were committed.';
-            SET @MSG = 'Insertion successful.';
-            SET @Status = 1;
-        END
+    -- Imprimir los valores de FileType y FileStatus
+
+    BEGIN TRY
+        BEGIN TRANSACTION;
+
+        -- Insertar en la tabla I_TRANSACTION
+        INSERT INTO I_TRANSACTION([I_ID_CLIENT], [I_ID_SYSTEM], [I_ID_TYPEDOC], [I_JSONTEMPLATE], [I_JSONDATA], [I_ID_STATUS], [I_CREATED_DTM])
+        VALUES (1, 3, @FileType, @jsonTemplate, @jsonDatan, @FileStatus, @fecha_orden);
+
+        -- Obtener el ID del archivo que acabas de insertar o una referencia para la tabla i_File_CSV
+        SET @InsertedId = SCOPE_IDENTITY(); -- Ahora lo establece aquí
+
+        -- Actualizar la tabla i_File_CSV, cambiando el FileType
+        UPDATE i_File_CSV
+        SET FileStatus = 3 -- Cambiar el valor por el nuevo tipo que deseas asignar
+        WHERE ID = @IdFileCSV; -- Cambiado para usar @IdFileCSV
+
+        -- Confirmar la transacción
+        COMMIT TRANSACTION;
     END TRY
     BEGIN CATCH
-        SET @MSG = ERROR_MESSAGE();
-        SET @Status = 0;
-        PRINT N'Error: ' + ERROR_MESSAGE();
-        ROLLBACK TRAN T1;
-    END CATCH
+        -- Manejar el error y revertir la transacción en caso de fallo
+        ROLLBACK TRANSACTION;
 
-PROCESS_STOP:
-    PRINT @MSG;
-    PRINT 'Proceso Detenido';
+        -- Verificar si se pudo obtener @InsertedId
+        IF @InsertedId IS NOT NULL
+        BEGIN
+            UPDATE i_File_CSV
+            SET FileStatus = 11 -- Valor específico para setear en caso de error
+            WHERE ID = @InsertedId; 
+        END
+
+        -- Opcional: registrar el error
+        DECLARE @ErrorMessage NVARCHAR(4000) = ERROR_MESSAGE();
+        PRINT @ErrorMessage;
+    END CATCH;
 
     -- Devolver los resultados
-    SELECT 
-        codigo_ordenes_erp, 
-        codigo_ordenes_documento, 
-        codigo_entidades_tipo, 
-        codigo_entidades, 
-        fecha_orden,  
-        abm,
-        CodigoProducto,
-        CantidadCS,
-        CantidadEA
-    FROM #Resultados;
+    SELECT * FROM #Resultados;
 
     -- Eliminar la tabla temporal
     DROP TABLE #Resultados;
-END
-GO
+END;
+
 
 
 /****** Este SP se encarga exclusivamente para poder generar el template de los archivos que se van a utilizar en un futuro ******/

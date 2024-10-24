@@ -82,7 +82,7 @@ namespace GInterfaceCore.Core
         /// Para esta parte va hacer para compartir los datos generados para guardar el csv
         /// </summary>
         public string CFileName = "";
-        public TransactionStatus fileStatus;
+        public int fileStatus;
         public string ObjJason = "";
         public DataTable InfotTempo;
         public int head;
@@ -434,7 +434,7 @@ namespace GInterfaceCore.Core
                     }
                     DataTable dataTable = LoadCsvData(itemTemp);
                     instance.CFileName = fileName;
-                    instance.fileStatus = TransactionStatus.Pending;
+                    instance.fileStatus = 1;
                     instance.ObjJason = objjson;
                     instance.InfotTempo = dataTable;
                     instance.head = headers.Length;
@@ -449,7 +449,7 @@ namespace GInterfaceCore.Core
             }
 
         }
-        public void InsertFileCsv(string fileNames, TransactionStatus fileStatus, int fileFields, string fileJsonObj, DataTable csvData, string inbound, int fileType)
+        public void InsertFileCsv(string fileNames, int fileStatus, int fileFields, string fileJsonObj, DataTable csvData, string inbound, int fileType)
         {
 
             string message = string.Empty;
@@ -542,7 +542,7 @@ namespace GInterfaceCore.Core
 
         }
 
-        public void InsertBaseFileCsv(string fileNames, TransactionStatus fileStatus, int fileFields, int fileType, string fileJsonObj, string inbound)
+        public void InsertBaseFileCsv(string fileNames, int fileStatus, int fileFields, int fileType, string fileJsonObj, string inbound)
         {
 
             string message = string.Empty;
@@ -756,6 +756,13 @@ namespace GInterfaceCore.Core
 
                 while (reader.Read())
                 {
+                    var idFileType = Convert.ToInt32(reader["FileType"]);
+                    var diction = new Dictionary<int, string>();
+                    if (instance.DocumentType.TryGetValue(idFileType, out string value))
+                    {
+                        // Si se encuentra la clave, añadirla al nuevo diccionario
+                        diction.Add(idFileType, value);
+                    }
                     FileCSV file = new FileCSV
                     {
                         ID = Convert.ToInt32(reader["ID"]),
@@ -763,6 +770,7 @@ namespace GInterfaceCore.Core
                         FileDate = Convert.ToDateTime(reader["FileDate"]),
                         FileStatus = (TransactionStatus)Convert.ToInt32(reader["FileStatus"]), // Asegúrate de que FileStatus sea un int en la base de datos y se pueda mapear a TransactionStatus
                         FileFields = Convert.ToInt32(reader["FileFields"]),
+                        FileType = diction,
                         InboundOutbound = reader["FileInbound"].ToString(),
                         FileJsonObj = reader["FileJsonObj"].ToString()
                     };
@@ -930,7 +938,7 @@ namespace GInterfaceCore.Core
             switch (key)
             {
                 case 1:
-                    instance.InsertFormatoIngreso(file.ID);
+                   
                     break;
 
                 case 2:
@@ -942,7 +950,7 @@ namespace GInterfaceCore.Core
                     break;
 
                 case 4:
-                    // Código a ejecutar si la clave es 4
+                    instance.InsertFormatoIngreso(file.ID);
                     break;
 
                 case 5:
@@ -1067,7 +1075,7 @@ namespace GInterfaceCore.Core
                     DataTable dataTable = LoadCsvData(processedData);
                     
                     instance.CFileName = fileName.Replace(" ", "_");
-                    instance.fileStatus = TransactionStatus.Pending;
+                    instance.fileStatus = 1;
                     instance.ObjJason = objjson;
                     instance.InfotTempo = dataTable;
                     instance.head = headers.Count;
@@ -1253,10 +1261,10 @@ namespace GInterfaceCore.Core
                     using (JsonDocument doc = JsonDocument.Parse(json))
                     {
                         // Acceder al array "customer" y luego al primer elemento
-                        var customer = doc.RootElement.GetProperty("customer")[0];
+                        var customer = doc.RootElement.GetProperty("TemplateItems")[0];
 
                         // Extraer el valor de "TipoDocumento"
-                        tipoDocumento = customer.GetProperty("TipoDocumento").GetString();
+                        tipoDocumento = customer.GetProperty("codigo_ordenes_documento").GetString();
 
                       
                         

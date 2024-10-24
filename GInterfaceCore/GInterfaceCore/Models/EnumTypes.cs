@@ -119,6 +119,7 @@ namespace GInterfaceCore.Models
 
         public enum TransactionStatus
         {
+            nothing,
             Pending,
             Processing,
             Completed,
